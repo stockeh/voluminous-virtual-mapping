@@ -2,6 +2,7 @@ package application.system.util;
 
 import java.util.Properties;
 
+
 /**
  * Singleton class to load properties file for configuration.
  * 
@@ -23,7 +24,7 @@ public final class Configurations {
     try
     {
       properties.load( getClass().getClassLoader()
-          .getResourceAsStream( Properties.CONF_NAME ) );
+          .getResourceAsStream( application.system.util.Properties.CONF_NAME ) );
     } catch ( Exception e )
     {
       e.printStackTrace();
