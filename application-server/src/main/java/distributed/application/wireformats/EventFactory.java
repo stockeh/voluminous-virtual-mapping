@@ -14,9 +14,10 @@ import distributed.common.wireformats.Factory;
  * @author stock
  *
  */
-public class EventFactory implements Factory{
+public class EventFactory implements Factory {
 
-  private static final Logger LOG = Logger.getInstance(Properties.SYSTEM_LOG_LEVEL);
+  private static final Logger LOG =
+      Logger.getInstance( Properties.SYSTEM_LOG_LEVEL );
 
   private static final EventFactory instance = new EventFactory();
 
@@ -54,7 +55,8 @@ public class EventFactory implements Factory{
   public Event createEvent(byte[] marshalledBytes) throws IOException {
     switch ( ByteBuffer.wrap( marshalledBytes ).getInt() )
     {
-      case Protocol.REGISTER_REQUEST :
+      case Protocol.REGISTER_SERVER_REQUEST :
+      case Protocol.REGISTER_SERVER_RESPONSE :
         return new GenericMessage( marshalledBytes );
 
       default :

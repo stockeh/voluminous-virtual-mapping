@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.Date;
+import java.util.Map;
 import java.util.Scanner;
-import distributed.application.metadata.ServerMetadata;
+import distributed.application.metadata.SwitchMetadata;
+import distributed.application.util.Constants;
 import distributed.application.util.Properties;
 import distributed.application.wireformats.EventFactory;
+import distributed.application.wireformats.GenericMessage;
 import distributed.application.wireformats.Protocol;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
@@ -22,24 +25,28 @@ import distributed.common.wireformats.Event;
  */
 public class Switch implements Node {
 
-  private static final Logger LOG = Logger.getInstance(Properties.SYSTEM_LOG_LEVEL);
+  private static final Logger LOG =
+      Logger.getInstance( Properties.SYSTEM_LOG_LEVEL );
+
+  private static final String LIST_SERVERS = "list-servers";
 
   private static final String EXIT = "exit";
 
   private static final String HELP = "help";
 
-  private final ServerMetadata metadata;
+  private final SwitchMetadata metadata;
 
 
   /**
-   * Default constructor - creates a new server tying the <b>host:port</b>
-   * combination for the node as the identifier for itself.
+   * Default constructor - creates a new server tying the
+   * <b>host:port</b> combination for the node as the identifier for
+   * itself.
    * 
    * @param host
    * @param port
    */
   private Switch(String host, int port) {
-    this.metadata = new ServerMetadata( host, port );
+    this.metadata = new SwitchMetadata( host, port );
   }
 
   /**
@@ -49,7 +56,8 @@ public class Switch implements Node {
    * @param args
    */
   public static void main(String[] args) {
-    try ( ServerSocket serverSocket = new ServerSocket( 0 ) )
+    try ( ServerSocket serverSocket =
+        new ServerSocket( Integer.valueOf( Properties.SWITCH_PORT ) ) )
     {
       Switch node = new Switch( InetAddress.getLocalHost().getHostName(),
           serverSocket.getLocalPort() );
@@ -57,7 +65,8 @@ public class Switch implements Node {
       LOG.info( "Switch node starting up at: " + new Date() + ", on "
           + node.metadata.getConnection() );
 
-      ( new Thread( new TCPServerThread( node, serverSocket, EventFactory.getInstance()),
+      ( new Thread(
+          new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
           "Server Thread" ) ).start();
 
       node.interact();
@@ -87,6 +96,10 @@ public class Switch implements Node {
       switch ( input[ 0 ] )
       {
 
+        case LIST_SERVERS :
+          displayServerConnections();
+          break;
+
         case EXIT :
           running = false;
           break;
@@ -108,6 +121,26 @@ public class Switch implements Node {
   }
 
   /**
+   * Display all of the connected servers.
+   * 
+   */
+  private synchronized void displayServerConnections() {
+    Map<String, TCPConnection> serverConnections =
+        metadata.getServerConnections();
+    if ( serverConnections.size() == 0 )
+    {
+      LOG.error(
+          "There are no connections to identify. Initialize a new server." );
+    } else
+    {
+      LOG.info(
+          "\nThere are " + serverConnections.size() + " total servers:\n" );
+      serverConnections.forEach( (k, v) -> System.out.println( "\t>\t" + k ) );
+      System.out.println();
+    }
+  }
+
+  /**
    * {@inheritDoc}
    */
   @Override
@@ -115,8 +148,36 @@ public class Switch implements Node {
     LOG.debug( event.toString() );
     switch ( event.getType() )
     {
-      case Protocol.REGISTER_REQUEST :
+      case Protocol.REGISTER_SERVER_REQUEST :
+        register( event, connection );
         break;
+    }
+  }
+
+  /**
+   * Register a new server with the switch
+   * 
+   * @param event
+   * @param connection
+   */
+  private synchronized void register(Event event, TCPConnection connection) {
+    GenericMessage request = ( GenericMessage ) event;
+    String identifier = request.getMessage();
+    metadata.addServerConnection( identifier, connection );
+
+    GenericMessage response =
+        new GenericMessage( Protocol.REGISTER_SERVER_RESPONSE,
+            Boolean.toString( Constants.SUCCESS ) );
+    try
+    {
+      connection.getTCPSender().sendData( response.getBytes() );
+      LOG.info(
+          ( new StringBuilder() ).append( "The server [ " ).append( identifier )
+              .append( " ] successfully connected!" ).toString() );
+    } catch ( IOException e )
+    {
+      LOG.error( "Unable to send response message to server. " + e.toString() );
+      e.printStackTrace();
     }
   }
 
@@ -128,8 +189,7 @@ public class Switch implements Node {
     StringBuilder sb = new StringBuilder();
 
     sb.append( "\n\t" ).append( EXIT )
-        .append( "\t\t: gracefully leave the network and distribute stored " )
-        .append( "files.\n" );
+        .append( "\t\t: gracefully leave the network.\n" );
 
     System.out.println( sb.toString() );
   }

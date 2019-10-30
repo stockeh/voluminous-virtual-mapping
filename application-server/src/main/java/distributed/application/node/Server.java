@@ -3,11 +3,14 @@ package distributed.application.node;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Date;
 import java.util.Scanner;
 import distributed.application.metadata.ServerMetadata;
+import distributed.application.util.Constants;
 import distributed.application.util.Properties;
 import distributed.application.wireformats.EventFactory;
+import distributed.application.wireformats.GenericMessage;
 import distributed.application.wireformats.Protocol;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
@@ -22,7 +25,8 @@ import distributed.common.wireformats.Event;
  */
 public class Server implements Node {
 
-  private static final Logger LOG = Logger.getInstance(Properties.SYSTEM_LOG_LEVEL);
+  private static final Logger LOG =
+      Logger.getInstance( Properties.SYSTEM_LOG_LEVEL );
 
   private static final String EXIT = "exit";
 
@@ -32,8 +36,9 @@ public class Server implements Node {
 
 
   /**
-   * Default constructor - creates a new server tying the <b>host:port</b>
-   * combination for the node as the identifier for itself.
+   * Default constructor - creates a new server tying the
+   * <b>host:port</b> combination for the node as the identifier for
+   * itself.
    * 
    * @param host
    * @param port
@@ -57,8 +62,11 @@ public class Server implements Node {
       LOG.info( "Server node starting up at: " + new Date() + ", on "
           + node.metadata.getConnection() );
 
-      ( new Thread( new TCPServerThread( node, serverSocket, EventFactory.getInstance()),
+      ( new Thread(
+          new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
           "Server Thread" ) ).start();
+
+      node.discoverSwitchConnection();
 
       node.interact();
     } catch ( IOException e )
@@ -67,6 +75,24 @@ public class Server implements Node {
           "Unable to successfully start server. Exiting. " + e.toString() );
       System.exit( 1 );
     }
+  }
+
+  /**
+   * Connect the server to the switch
+   * 
+   * @throws IOException if unable to connect to the switch, and thus,
+   *         the network
+   */
+  private void discoverSwitchConnection() throws IOException {
+    Socket socketToSwitch =
+        new Socket( Properties.SWITCH_HOST, Properties.SWITCH_PORT );
+    TCPConnection connection =
+        new TCPConnection( this, socketToSwitch, EventFactory.getInstance() );
+    connection.startReceiver();
+
+    GenericMessage request = new GenericMessage(
+        Protocol.REGISTER_SERVER_REQUEST, metadata.getConnection() );
+    connection.getTCPSender().sendData( request.getBytes() );
   }
 
   /**
@@ -115,8 +141,30 @@ public class Server implements Node {
     LOG.debug( event.toString() );
     switch ( event.getType() )
     {
-      case Protocol.REGISTER_REQUEST :
+      case Protocol.REGISTER_SERVER_RESPONSE :
+        registerServerResponseHandler( event, connection );
         break;
+    }
+  }
+
+  /**
+   * Display the response status from the switch.
+   * 
+   * @param event
+   * @param connection
+   */
+  private void registerServerResponseHandler(Event event,
+      TCPConnection connection) {
+    if ( Boolean.parseBoolean(
+        ( ( GenericMessage ) event ).getMessage() ) == Constants.SUCCESS )
+    {
+      LOG.info( "The server successfuly connected with the switch!" );
+    } else
+    {
+      LOG.error(
+          "The server was NOT able to connect with the switch successfully. Exiting!" );
+      connection.close();
+      System.exit( 1 );
     }
   }
 
@@ -128,8 +176,7 @@ public class Server implements Node {
     StringBuilder sb = new StringBuilder();
 
     sb.append( "\n\t" ).append( EXIT )
-        .append( "\t\t: gracefully leave the network and distribute stored " )
-        .append( "files.\n" );
+        .append( "\t\t: gracefully leave the network.\n" );
 
     System.out.println( sb.toString() );
   }

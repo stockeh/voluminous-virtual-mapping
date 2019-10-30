@@ -9,21 +9,22 @@ package distributed.application.metadata;
  */
 public class ServerMetadata {
 
-  private final String host;
-
-  private final int port;
+  private final String connection;
 
   /**
    * Default Constructor -
    * 
    */
   public ServerMetadata(String host, int port) {
-    this.host = host;
-    this.port = port;
+    this.connection = host + ":" + port;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getConnection() {
-    return host + ":" + port;
+    return connection;
   }
 
 }
