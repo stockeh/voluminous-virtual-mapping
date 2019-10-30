@@ -1,4 +1,4 @@
-package cs555.system.wireformats;
+package application.system.wireformats;
 
 /**
  * Interface defining the wireformats between nodes.

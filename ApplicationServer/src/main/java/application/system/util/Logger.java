@@ -1,4 +1,4 @@
-package cs555.system.util;
+package application.system.util;
 
 /**
  * Class used to print <tt>info</tt>, <tt>debug</tt> and
@@ -23,7 +23,7 @@ public class Logger {
    * 
    */
   private Logger() {
-    if ( cs555.system.util.Properties.SYSTEM_LOG_LEVEL
+    if ( Properties.SYSTEM_LOG_LEVEL
         .equalsIgnoreCase( "INFO" ) )
     {
       this.INFO = true;

@@ -1,4 +1,4 @@
-package cs555.system.wireformats;
+package application.system.wireformats;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

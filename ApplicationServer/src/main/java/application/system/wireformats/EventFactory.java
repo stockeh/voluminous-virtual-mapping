@@ -1,8 +1,8 @@
-package cs555.system.wireformats;
+package application.system.wireformats;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import cs555.system.util.Logger;
+import application.system.util.Logger;
 
 /**
  * Singleton class in charge of creating objects, i.e., messaging

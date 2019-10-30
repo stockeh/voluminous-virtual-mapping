@@ -1,9 +1,9 @@
-package cs555.system.transport;
+package application.system.transport;
 
 import java.io.IOException;
 import java.net.Socket;
-import cs555.system.node.Node;
-import cs555.system.util.Logger;
+import application.system.node.Node;
+import application.system.util.Logger;
 
 /**
  * This class is used to establish a connection by starting a new

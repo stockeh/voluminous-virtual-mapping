@@ -1,10 +1,11 @@
-package cs555.system.transport;
+package application.system.transport;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import cs555.system.node.Node;
-import cs555.system.util.Logger;
+
+import application.system.util.Logger;
+import application.system.node.Node;
 
 /**
  * A new TCP Server Thread is setup on the discovery and each new

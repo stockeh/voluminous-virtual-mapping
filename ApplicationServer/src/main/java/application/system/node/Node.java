@@ -1,7 +1,7 @@
-package cs555.system.node;
+package application.system.node;
 
-import cs555.system.transport.TCPConnection;
-import cs555.system.wireformats.Event;
+import application.system.transport.TCPConnection;
+import application.system.wireformats.Event;
 
 /**
  * Interface for the server and switch, so underlying communication is

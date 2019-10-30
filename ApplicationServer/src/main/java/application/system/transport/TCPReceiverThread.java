@@ -1,12 +1,13 @@
-package cs555.system.transport;
+package application.system.transport;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
-import cs555.system.node.Node;
-import cs555.system.util.Logger;
-import cs555.system.wireformats.Event;
-import cs555.system.wireformats.EventFactory;
+
+import application.system.util.Logger;
+import application.system.wireformats.Event;
+import application.system.wireformats.EventFactory;
+import application.system.node.Node;
 
 /**
  * The TCP Receiving Thread to acknowledge new wireformat messages

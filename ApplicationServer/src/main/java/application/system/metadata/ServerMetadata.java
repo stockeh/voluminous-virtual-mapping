@@ -1,4 +1,4 @@
-package cs555.system.metadata;
+package application.system.metadata;
 
 /**
  * Class to maintain the information needed for a given server. This

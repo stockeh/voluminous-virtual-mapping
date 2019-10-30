@@ -1,4 +1,4 @@
-package cs555.system.util;
+package application.system.util;
 
 import java.util.Properties;
 
@@ -23,7 +23,7 @@ public final class Configurations {
     try
     {
       properties.load( getClass().getClassLoader()
-          .getResourceAsStream( cs555.system.util.Properties.CONF_NAME ) );
+          .getResourceAsStream( application.system.util.Properties.CONF_NAME ) );
     } catch ( Exception e )
     {
       e.printStackTrace();

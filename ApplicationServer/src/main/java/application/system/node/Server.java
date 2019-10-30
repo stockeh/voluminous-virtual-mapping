@@ -1,16 +1,17 @@
-package cs555.system.node;
+package application.system.node;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.Date;
 import java.util.Scanner;
-import cs555.system.metadata.ServerMetadata;
-import cs555.system.transport.TCPConnection;
-import cs555.system.transport.TCPServerThread;
-import cs555.system.util.Logger;
-import cs555.system.wireformats.Event;
-import cs555.system.wireformats.Protocol;
+
+import application.system.transport.TCPConnection;
+import application.system.util.Logger;
+import application.system.wireformats.Event;
+import application.system.wireformats.Protocol;
+import application.system.metadata.ServerMetadata;
+import application.system.transport.TCPServerThread;
 
 /**
  *
