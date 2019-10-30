@@ -2,12 +2,10 @@ package distributed.client.wireformats;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import distributed.common.util.Logger;
 import distributed.client.util.Properties;
-import distributed.client.wireformats.GenericMessage;
-import distributed.client.wireformats.Protocol;
-import distributed.common.wireformats.Factory;
+import distributed.common.util.Logger;
 import distributed.common.wireformats.Event;
+import distributed.common.wireformats.Factory;
 
 /**
  * Singleton class in charge of creating objects, i.e., messaging
@@ -16,9 +14,10 @@ import distributed.common.wireformats.Event;
  * @author stock
  *
  */
-public class EventFactory implements Factory{
+public class EventFactory implements Factory {
 
-  private static final Logger LOG = Logger.getInstance(Properties.SYSTEM_LOG_LEVEL);
+  private static final Logger LOG =
+      Logger.getInstance( Properties.SYSTEM_LOG_LEVEL );
 
   private static final EventFactory instance = new EventFactory();
 

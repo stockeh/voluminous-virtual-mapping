@@ -1,12 +1,11 @@
 package distributed.application.wireformats;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import distributed.application.util.Properties;
 import distributed.common.util.Logger;
 import distributed.common.wireformats.Event;
 import distributed.common.wireformats.Factory;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
 
 /**
  * Singleton class in charge of creating objects, i.e., messaging

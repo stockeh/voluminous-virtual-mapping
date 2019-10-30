@@ -5,12 +5,10 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.Date;
 import java.util.Scanner;
-
-
+import distributed.application.metadata.ServerMetadata;
 import distributed.application.util.Properties;
 import distributed.application.wireformats.EventFactory;
 import distributed.application.wireformats.Protocol;
-import distributed.application.metadata.ServerMetadata;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;

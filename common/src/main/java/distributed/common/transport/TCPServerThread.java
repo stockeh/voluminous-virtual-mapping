@@ -1,12 +1,11 @@
 package distributed.common.transport;
 
-import distributed.common.node.Node;
-import distributed.common.util.Logger;
-import distributed.common.wireformats.Factory;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import distributed.common.node.Node;
+import distributed.common.util.Logger;
+import distributed.common.wireformats.Factory;
 
 /**
  * A new TCP Server Thread is setup on the discovery and each new
@@ -22,7 +21,7 @@ import java.net.Socket;
  */
 public class TCPServerThread implements Runnable {
 
-  private static final Logger LOG = Logger.getInstance("debug");
+  private static final Logger LOG = Logger.getInstance( "debug" );
 
   private Node node;
 
@@ -36,8 +35,10 @@ public class TCPServerThread implements Runnable {
    * 
    * @param node
    * @param serverSocket
+   * @param factory
    */
-  public TCPServerThread(Node node, ServerSocket serverSocket, Factory factory) {
+  public TCPServerThread(Node node, ServerSocket serverSocket,
+      Factory factory) {
     this.node = node;
     this.serverSocket = serverSocket;
     this.factory = factory;
@@ -56,7 +57,8 @@ public class TCPServerThread implements Runnable {
       try
       {
         Socket incomingConnectionSocket = serverSocket.accept();
-        ( new TCPConnection( node, incomingConnectionSocket, factory ) ).startReceiver();
+        ( new TCPConnection( node, incomingConnectionSocket, factory ) )
+            .startReceiver();
       } catch ( IOException e )
       {
         LOG.debug( "Closing Server Socket Connection... " + e.toString() );

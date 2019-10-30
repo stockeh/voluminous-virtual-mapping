@@ -21,10 +21,10 @@ public class Logger {
   /**
    * Private constructor
    * 
+   * @param logLevel
    */
   private Logger(String logLevel) {
-    if ( logLevel
-        .equalsIgnoreCase( "INFO" ) )
+    if ( logLevel.equalsIgnoreCase( "INFO" ) )
     {
       this.INFO = true;
       this.DEBUG = false;
@@ -40,10 +40,14 @@ public class Logger {
    * Single instance ensures that singleton instances are created only
    * when needed.
    * 
+   * @param logLevel
    * @return Returns the instance for the class
    */
   public static Logger getInstance(String logLevel) {
-    if(instance == null) instance = new Logger(logLevel);
+    if ( instance == null )
+    {
+      instance = new Logger( logLevel );
+    }
     return instance;
   }
 

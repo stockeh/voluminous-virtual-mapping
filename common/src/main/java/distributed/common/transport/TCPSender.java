@@ -19,8 +19,8 @@ public class TCPSender {
   protected DataOutputStream dout;
 
   /**
-   * Default constructor - Initialize the TCPSender data output
-   * stream information from the <code>socket</code>.
+   * Default constructor - Initialize the TCPSender data output stream
+   * information from the <code>socket</code>.
    * 
    * @param socket
    * @throws IOException
@@ -34,7 +34,7 @@ public class TCPSender {
    * stream. Write the length first, and then the actual data - that way
    * the receiver knows when to stop reading.
    * 
-   * @throws IOException 
+   * @throws IOException
    */
   public synchronized void sendData(final byte[] data) throws IOException {
     int len = data.length;

@@ -5,16 +5,15 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.Date;
 import java.util.Scanner;
-
+import distributed.client.metadata.ClientMetadata;
+import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
+import distributed.client.wireformats.Protocol;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
-import distributed.client.util.Properties;
 import distributed.common.wireformats.Event;
-import distributed.client.wireformats.Protocol;
-import distributed.client.metadata.ClientMetadata;
 
 /**
  *
@@ -23,7 +22,8 @@ import distributed.client.metadata.ClientMetadata;
  */
 public class Client implements Node {
 
-  private static final Logger LOG = Logger.getInstance(Properties.SYSTEM_LOG_LEVEL);
+  private static final Logger LOG =
+      Logger.getInstance( Properties.SYSTEM_LOG_LEVEL );
 
   private static final String EXIT = "exit";
 
@@ -33,8 +33,9 @@ public class Client implements Node {
 
 
   /**
-   * Default constructor - creates a new server tying the <b>host:port</b>
-   * combination for the node as the identifier for itself.
+   * Default constructor - creates a new server tying the
+   * <b>host:port</b> combination for the node as the identifier for
+   * itself.
    * 
    * @param host
    * @param port
@@ -58,7 +59,8 @@ public class Client implements Node {
       LOG.info( "Client node starting up at: " + new Date() + ", on "
           + node.metadata.getConnection() );
 
-      ( new Thread( new TCPServerThread( node, serverSocket, EventFactory.getInstance()),
+      ( new Thread(
+          new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
           "Client Thread" ) ).start();
 
       node.interact();

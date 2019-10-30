@@ -18,13 +18,14 @@ public final class Configurations {
   /**
    * Private constructor
    * 
+   * @param confName
    */
   private Configurations(String confName) {
     this.properties = new Properties();
     try
     {
-      properties.load( getClass().getClassLoader()
-          .getResourceAsStream( confName ) );
+      properties
+          .load( getClass().getClassLoader().getResourceAsStream( confName ) );
     } catch ( Exception e )
     {
       e.printStackTrace();
@@ -44,11 +45,15 @@ public final class Configurations {
    * Get the properties instance using a singleton pattern to guarantee
    * the creation of only one instance.
    * 
+   * @param confName
    * @return the instance associated with the properties file - creates
    *         a new instance if not previously created.
    */
   public static Configurations getInstance(String confName) {
-    if(instance == null) instance = new Configurations(confName);
+    if ( instance == null )
+    {
+      instance = new Configurations( confName );
+    }
     return instance;
   }
 

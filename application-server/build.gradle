@@ -10,8 +10,19 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile project(':common')
+configurations {
+    libs
+}
 
+dependencies {
+    testImplementation 'junit:junit:4.12'
+    compile project(':common')
+    libs files('../common/build/libs/common-1.0-SNAPSHOT.jar')
+    configurations.compile.extendsFrom(configurations.libs)
+}
+
+jar {
+    from {
+            configurations.libs.collect { it.isDirectory() ? it : zipTree(it) }
+        }
 }

@@ -1,8 +1,6 @@
 package distributed.client.wireformats;
 
 
-import distributed.common.wireformats.Event;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -10,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import distributed.common.wireformats.Event;
 
 /**
  * 
@@ -95,7 +94,7 @@ public class GenericMessage implements Event {
     byte[] msg = message.getBytes();
     dout.writeInt( msg.length );
     dout.write( msg );
-    
+
     dout.flush();
     marshalledBytes = outputStream.toByteArray();
 

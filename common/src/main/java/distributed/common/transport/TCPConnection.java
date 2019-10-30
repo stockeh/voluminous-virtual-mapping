@@ -1,12 +1,11 @@
 package distributed.common.transport;
 
 
+import java.io.IOException;
+import java.net.Socket;
 import distributed.common.node.Node;
 import distributed.common.util.Logger;
 import distributed.common.wireformats.Factory;
-
-import java.io.IOException;
-import java.net.Socket;
 
 /**
  * This class is used to establish a connection by starting a new
@@ -17,7 +16,7 @@ import java.net.Socket;
  */
 public class TCPConnection {
 
-  private static final Logger LOG = Logger.getInstance("debug");
+  private static final Logger LOG = Logger.getInstance( "debug" );
 
   private Socket socket;
 
@@ -32,12 +31,14 @@ public class TCPConnection {
    * 
    * @param node
    * @param socket
+   * @param factory
    * @throws IOException
    */
-  public TCPConnection(Node node, Socket socket, Factory factor) throws IOException {
+  public TCPConnection(Node node, Socket socket, Factory factory)
+      throws IOException {
     this.socket = socket;
     this.sender = new TCPSender( this.socket );
-    this.receiver = new TCPReceiverThread( node, this.socket, this, factor);
+    this.receiver = new TCPReceiverThread( node, this.socket, this, factory );
   }
 
   /**
@@ -50,8 +51,8 @@ public class TCPConnection {
   }
 
   /**
-   * Get the TCPSender so the server or server can send a message over the
-   * socket
+   * Get the TCPSender so the server or server can send a message over
+   * the socket
    * 
    * @return the TCPSender instance that was instantiated during the
    *         {@link #run()} method of the new thread.
