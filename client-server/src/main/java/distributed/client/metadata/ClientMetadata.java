@@ -1,4 +1,4 @@
-package distributed.application.metadata;
+package distributed.client.metadata;
 
 /**
  * Class to maintain the information needed for a given server. This
@@ -7,7 +7,7 @@ package distributed.application.metadata;
  * @author stock
  *
  */
-public class ServerMetadata {
+public class ClientMetadata {
 
   private final String host;
 
@@ -17,7 +17,7 @@ public class ServerMetadata {
    * Default Constructor -
    * 
    */
-  public ServerMetadata(String host, int port) {
+  public ClientMetadata(String host, int port) {
     this.host = host;
     this.port = port;
   }

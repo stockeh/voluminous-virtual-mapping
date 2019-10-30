@@ -12,7 +12,7 @@ package distributed.common.util;
  */
 public class Logger {
 
-  private final static Logger instance = new Logger();
+  private static Logger instance = null;
 
   private final boolean INFO;
 
@@ -22,8 +22,8 @@ public class Logger {
    * Private constructor
    * 
    */
-  private Logger() {
-    if ( Properties.SYSTEM_LOG_LEVEL
+  private Logger(String logLevel) {
+    if ( logLevel
         .equalsIgnoreCase( "INFO" ) )
     {
       this.INFO = true;
@@ -35,13 +35,15 @@ public class Logger {
     }
   }
 
+
   /**
    * Single instance ensures that singleton instances are created only
    * when needed.
    * 
    * @return Returns the instance for the class
    */
-  public static Logger getInstance() {
+  public static Logger getInstance(String logLevel) {
+    if(instance == null) instance = new Logger(logLevel);
     return instance;
   }
 

@@ -6,12 +6,15 @@ import java.net.ServerSocket;
 import java.util.Date;
 import java.util.Scanner;
 
-import distributed.application.transport.TCPConnection;
-import distributed.application.util.Logger;
-import distributed.application.wireformats.Event;
+import distributed.application.util.Properties;
+import distributed.application.wireformats.EventFactory;
+import distributed.common.node.Node;
 import distributed.application.wireformats.Protocol;
 import distributed.application.metadata.ServerMetadata;
-import distributed.application.transport.TCPServerThread;
+import distributed.common.transport.TCPConnection;
+import distributed.common.transport.TCPServerThread;
+import distributed.common.util.Logger;
+import distributed.common.wireformats.Event;
 
 /**
  *
@@ -20,7 +23,7 @@ import distributed.application.transport.TCPServerThread;
  */
 public class Server implements Node {
 
-  private static final Logger LOG = Logger.getInstance();
+  private static final Logger LOG = Logger.getInstance(Properties.SYSTEM_LOG_LEVEL);
 
   private static final String EXIT = "exit";
 
@@ -55,7 +58,7 @@ public class Server implements Node {
       LOG.info( "Server node starting up at: " + new Date() + ", on "
           + node.metadata.getConnection() );
 
-      ( new Thread( new TCPServerThread( node, serverSocket ),
+      ( new Thread( new TCPServerThread( node, serverSocket, EventFactory.getInstance()),
           "Server Thread" ) ).start();
 
       node.interact();

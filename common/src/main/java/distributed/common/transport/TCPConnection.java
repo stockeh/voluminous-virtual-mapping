@@ -1,7 +1,9 @@
 package distributed.common.transport;
 
-import application.system.node.Node;
-import application.system.util.Logger;
+
+import distributed.common.node.Node;
+import distributed.common.util.Logger;
+import distributed.common.wireformats.Factory;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -15,13 +17,14 @@ import java.net.Socket;
  */
 public class TCPConnection {
 
-  private static final Logger LOG = Logger.getInstance();
+  private static final Logger LOG = Logger.getInstance("debug");
 
   private Socket socket;
 
   private TCPSender sender;
 
   private TCPReceiverThread receiver;
+
 
   /**
    * Default constructor - create a new TCPConnection given a Node,
@@ -31,10 +34,10 @@ public class TCPConnection {
    * @param socket
    * @throws IOException
    */
-  public TCPConnection(Node node, Socket socket) throws IOException {
+  public TCPConnection(Node node, Socket socket, Factory factor) throws IOException {
     this.socket = socket;
     this.sender = new TCPSender( this.socket );
-    this.receiver = new TCPReceiverThread( node, this.socket, this );
+    this.receiver = new TCPReceiverThread( node, this.socket, this, factor);
   }
 
   /**

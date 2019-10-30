@@ -1,4 +1,4 @@
-package distributed.application.node;
+package distributed.client.node;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -6,27 +6,30 @@ import java.net.ServerSocket;
 import java.util.Date;
 import java.util.Scanner;
 
-import distributed.application.transport.TCPConnection;
-import distributed.application.util.Logger;
-import distributed.application.wireformats.Event;
-import distributed.application.wireformats.Protocol;
-import distributed.application.metadata.ServerMetadata;
-import distributed.application.transport.TCPServerThread;
+import distributed.client.wireformats.EventFactory;
+import distributed.common.node.Node;
+import distributed.common.transport.TCPConnection;
+import distributed.common.transport.TCPServerThread;
+import distributed.common.util.Logger;
+import distributed.client.util.Properties;
+import distributed.common.wireformats.Event;
+import distributed.client.wireformats.Protocol;
+import distributed.client.metadata.ClientMetadata;
 
 /**
  *
  * @author stock
  *
  */
-public class Switch implements Node {
+public class Client implements Node {
 
-  private static final Logger LOG = Logger.getInstance();
+  private static final Logger LOG = Logger.getInstance(Properties.SYSTEM_LOG_LEVEL);
 
   private static final String EXIT = "exit";
 
   private static final String HELP = "help";
 
-  private final ServerMetadata metadata;
+  private final ClientMetadata metadata;
 
 
   /**
@@ -36,8 +39,8 @@ public class Switch implements Node {
    * @param host
    * @param port
    */
-  private Switch(String host, int port) {
-    this.metadata = new ServerMetadata( host, port );
+  private Client(String host, int port) {
+    this.metadata = new ClientMetadata( host, port );
   }
 
   /**
@@ -49,14 +52,14 @@ public class Switch implements Node {
   public static void main(String[] args) {
     try ( ServerSocket serverSocket = new ServerSocket( 0 ) )
     {
-      Switch node = new Switch( InetAddress.getLocalHost().getHostName(),
+      Client node = new Client( InetAddress.getLocalHost().getHostName(),
           serverSocket.getLocalPort() );
 
-      LOG.info( "Switch node starting up at: " + new Date() + ", on "
+      LOG.info( "Client node starting up at: " + new Date() + ", on "
           + node.metadata.getConnection() );
 
-      ( new Thread( new TCPServerThread( node, serverSocket ),
-          "Server Thread" ) ).start();
+      ( new Thread( new TCPServerThread( node, serverSocket, EventFactory.getInstance()),
+          "Client Thread" ) ).start();
 
       node.interact();
     } catch ( IOException e )

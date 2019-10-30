@@ -1,7 +1,7 @@
-package distributed.application.node;
+package distributed.common.node;
 
-import distributed.application.transport.TCPConnection;
-import distributed.application.wireformats.Event;
+import distributed.common.transport.TCPConnection;
+import distributed.common.wireformats.Event;
 
 /**
  * Interface for the server and switch, so underlying communication is

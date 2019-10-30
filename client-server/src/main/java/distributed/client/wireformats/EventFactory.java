@@ -1,8 +1,13 @@
-package distributed.application.wireformats;
+package distributed.client.wireformats;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import distributed.application.util.Logger;
+import distributed.common.util.Logger;
+import distributed.client.util.Properties;
+import distributed.client.wireformats.GenericMessage;
+import distributed.client.wireformats.Protocol;
+import distributed.common.wireformats.Factory;
+import distributed.common.wireformats.Event;
 
 /**
  * Singleton class in charge of creating objects, i.e., messaging
@@ -11,9 +16,9 @@ import distributed.application.util.Logger;
  * @author stock
  *
  */
-public class EventFactory {
+public class EventFactory implements Factory{
 
-  private static final Logger LOG = Logger.getInstance();
+  private static final Logger LOG = Logger.getInstance(Properties.SYSTEM_LOG_LEVEL);
 
   private static final EventFactory instance = new EventFactory();
 
@@ -45,7 +50,6 @@ public class EventFactory {
    * Create a new event, i.e., wireformat object from the marshalled
    * bytes of said object.
    * 
-   * @param message
    * @return the event object from the <code>byte[]</code>.
    * @throws IOException
    */

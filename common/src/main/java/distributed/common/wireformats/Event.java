@@ -1,4 +1,4 @@
-package distributed.application.wireformats;
+package distributed.common.wireformats;
 
 import java.io.IOException;
 

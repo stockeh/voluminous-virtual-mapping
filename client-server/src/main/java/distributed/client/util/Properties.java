@@ -1,4 +1,4 @@
-package distributed.application.util;
+package distributed.client.util;
 
 import distributed.common.util.Configurations;
 

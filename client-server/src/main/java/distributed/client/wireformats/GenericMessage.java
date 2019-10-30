@@ -1,4 +1,7 @@
-package distributed.application.wireformats;
+package distributed.client.wireformats;
+
+
+import distributed.common.wireformats.Event;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

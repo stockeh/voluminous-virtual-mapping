@@ -13,18 +13,18 @@ public final class Configurations {
 
   private final Properties properties;
 
-  private final static Configurations instance = new Configurations();
+  private static Configurations instance = null;
 
   /**
    * Private constructor
    * 
    */
-  private Configurations() {
+  private Configurations(String confName) {
     this.properties = new Properties();
     try
     {
       properties.load( getClass().getClassLoader()
-          .getResourceAsStream( application.system.util.Properties.CONF_NAME ) );
+          .getResourceAsStream( confName ) );
     } catch ( Exception e )
     {
       e.printStackTrace();
@@ -47,7 +47,8 @@ public final class Configurations {
    * @return the instance associated with the properties file - creates
    *         a new instance if not previously created.
    */
-  public static Configurations getInstance() {
+  public static Configurations getInstance(String confName) {
+    if(instance == null) instance = new Configurations(confName);
     return instance;
   }
 
@@ -68,7 +69,7 @@ public final class Configurations {
   /**
    * 
    * @param key to search properties for
-   * @param default value
+   * @param defaultValue
    * @return a property of the property file denoted by the key
    */
   public String getProperty(String key, String defaultValue) {

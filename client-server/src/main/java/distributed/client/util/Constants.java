@@ -1,4 +1,4 @@
-package distributed.common.util;
+package distributed.client.util;
 
 /**
  * Constants that will not change in the program.

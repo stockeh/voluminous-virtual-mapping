@@ -1,9 +1,9 @@
 package distributed.common.transport;
 
-import application.system.node.Node;
-import application.system.util.Logger;
-import application.system.wireformats.Event;
-import application.system.wireformats.EventFactory;
+import distributed.common.node.Node;
+import distributed.common.util.Logger;
+import distributed.common.wireformats.Event;
+import distributed.common.wireformats.Factory;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import java.net.Socket;
  */
 public class TCPReceiverThread implements Runnable {
 
-  private static final Logger LOG = Logger.getInstance();
+  private static final Logger LOG = Logger.getInstance("debug");
 
   private Socket socket;
 
@@ -31,6 +31,8 @@ public class TCPReceiverThread implements Runnable {
   private Node node;
 
   private TCPConnection connection;
+
+  private Factory factory;
 
   /**
    * Default constructor - Initialize the TCPReceiverThread with the
@@ -41,12 +43,13 @@ public class TCPReceiverThread implements Runnable {
    * @param connection
    * @throws IOException
    */
-  public TCPReceiverThread(Node node, Socket socket, TCPConnection connection)
+  public TCPReceiverThread(Node node, Socket socket, TCPConnection connection, Factory factory)
       throws IOException {
     this.node = node;
     this.socket = socket;
     this.connection = connection;
     this.din = new DataInputStream( socket.getInputStream() );
+    this.factory = factory;
   }
 
   /**
@@ -66,8 +69,7 @@ public class TCPReceiverThread implements Runnable {
         byte[] data = new byte[ len ];
         din.readFully( data, 0, len );
 
-        EventFactory eventFactory = EventFactory.getInstance();
-        Event event = eventFactory.createEvent( data );
+        Event event = factory.createEvent( data );
         node.onEvent( event, connection );
 
       } catch ( IOException e )
