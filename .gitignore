@@ -13,3 +13,5 @@
 *.settings/
 *.class
 */bin
+
+*.idea/
