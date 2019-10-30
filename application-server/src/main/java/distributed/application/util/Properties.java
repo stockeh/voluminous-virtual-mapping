@@ -1,4 +1,4 @@
-package application.system.util;
+package distributed.application.util;
 
 /**
  * 

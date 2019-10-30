@@ -1,4 +1,4 @@
-package application.system.util;
+package distributed.application.util;
 
 import java.util.Properties;
 
@@ -24,7 +24,7 @@ public final class Configurations {
     try
     {
       properties.load( getClass().getClassLoader()
-          .getResourceAsStream( application.system.util.Properties.CONF_NAME ) );
+          .getResourceAsStream( distributed.application.util.Properties.CONF_NAME ) );
     } catch ( Exception e )
     {
       e.printStackTrace();

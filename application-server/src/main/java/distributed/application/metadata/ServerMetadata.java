@@ -1,4 +1,4 @@
-package application.system.metadata;
+package distributed.application.metadata;
 
 /**
  * Class to maintain the information needed for a given server. This

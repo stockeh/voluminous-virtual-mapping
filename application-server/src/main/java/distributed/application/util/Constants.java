@@ -1,4 +1,4 @@
-package application.system.util;
+package distributed.application.util;
 
 /**
  * Constants that will not change in the program.

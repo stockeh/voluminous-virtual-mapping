@@ -1,11 +1,11 @@
-package application.system.transport;
+package distributed.application.transport;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import application.system.util.Logger;
-import application.system.node.Node;
+import distributed.application.util.Logger;
+import distributed.application.node.Node;
 
 /**
  * A new TCP Server Thread is setup on the discovery and each new

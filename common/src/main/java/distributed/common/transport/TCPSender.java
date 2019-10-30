@@ -1,4 +1,4 @@
-package application.system.transport;
+package distributed.common.transport;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

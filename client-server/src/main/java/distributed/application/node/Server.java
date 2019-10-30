@@ -1,4 +1,4 @@
-package application.system.node;
+package distributed.application.node;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -6,12 +6,12 @@ import java.net.ServerSocket;
 import java.util.Date;
 import java.util.Scanner;
 
-import application.system.transport.TCPConnection;
-import application.system.util.Logger;
-import application.system.wireformats.Event;
-import application.system.wireformats.Protocol;
-import application.system.metadata.ServerMetadata;
-import application.system.transport.TCPServerThread;
+import distributed.application.transport.TCPConnection;
+import distributed.application.util.Logger;
+import distributed.application.wireformats.Event;
+import distributed.application.wireformats.Protocol;
+import distributed.application.metadata.ServerMetadata;
+import distributed.application.transport.TCPServerThread;
 
 /**
  *

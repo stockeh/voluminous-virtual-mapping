@@ -1,9 +1,9 @@
-package application.system.transport;
+package distributed.application.transport;
 
 import java.io.IOException;
 import java.net.Socket;
-import application.system.node.Node;
-import application.system.util.Logger;
+import distributed.application.node.Node;
+import distributed.application.util.Logger;
 
 /**
  * This class is used to establish a connection by starting a new

@@ -1,4 +1,4 @@
-package application.system.wireformats;
+package distributed.application.wireformats;
 
 /**
  * Interface defining the wireformats between nodes.

@@ -1,4 +1,4 @@
-package application.system.util;
+package distributed.application.util;
 
 /**
  * Class used to print <tt>info</tt>, <tt>debug</tt> and

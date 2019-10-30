@@ -1,8 +1,8 @@
-package application.system.wireformats;
+package distributed.application.wireformats;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import application.system.util.Logger;
+import distributed.application.util.Logger;
 
 /**
  * Singleton class in charge of creating objects, i.e., messaging
