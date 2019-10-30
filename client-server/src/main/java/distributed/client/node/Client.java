@@ -131,8 +131,7 @@ public class Client implements Node {
     StringBuilder sb = new StringBuilder();
 
     sb.append( "\n\t" ).append( EXIT )
-        .append( "\t\t: gracefully leave the network and distribute stored " )
-        .append( "files.\n" );
+        .append( "\t\t: gracefully leave the network.\n" );
 
     System.out.println( sb.toString() );
   }

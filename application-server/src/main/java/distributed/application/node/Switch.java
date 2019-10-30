@@ -191,6 +191,9 @@ public class Switch implements Node {
     sb.append( "\n\t" ).append( EXIT )
         .append( "\t\t: gracefully leave the network.\n" );
 
+    sb.append( "\n\t" ).append( LIST_SERVERS )
+        .append( "\t: display the identifiers of all connected servers.\n" );
+
     System.out.println( sb.toString() );
   }
 

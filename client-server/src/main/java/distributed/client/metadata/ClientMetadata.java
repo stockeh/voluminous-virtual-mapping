@@ -9,21 +9,22 @@ package distributed.client.metadata;
  */
 public class ClientMetadata {
 
-  private final String host;
-
-  private final int port;
+  private final String connection;
 
   /**
    * Default Constructor -
    * 
    */
   public ClientMetadata(String host, int port) {
-    this.host = host;
-    this.port = port;
+    this.connection = host + ":" + port;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getConnection() {
-    return host + ":" + port;
+    return connection;
   }
 
 }
