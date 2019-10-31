@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 public class MessageMarshaller {
@@ -45,6 +46,13 @@ public class MessageMarshaller {
       dout.write(arr);
     }
 
+    private void writeStringArr(String[] arr) throws IOException {
+      writeInt(arr.length);
+      for(String s : arr) {
+        writeString(s);
+      }
+    }
+
     public void writeStringList(Collection<String> list) throws IOException {
      writeInt(list.size());
      for(String s : list) {
@@ -57,20 +65,43 @@ public class MessageMarshaller {
       try {
         for (Field field : fields) {
           String type = field.getAnnotatedType().getType().getTypeName();
-          if(type.equals("int") || type.equals("java.lang.Integer")) {
-            writeInt(field.getInt(event));
-          }else if(type.equals("String")) {
-            writeString((String) field.get(event));
-          }else if(type.equals("double") || type.equals("java.lang.Double")) {
-            writeDouble(field.getDouble(event));
-          }else if(type.equals("long") || type.equals("java.lang.Long")) {
-            writeLong(field.getLong(event));
-          }else if(type.equals("byte[]") || type.equals("java.lang.Byte[]")) {
-            writeByteArr((byte[]) field.get(event));
-          }else if(type.equals("boolean") || type.equals("java.lang.Boolean")) {
-            writeBoolean(field.getBoolean(event));
-          }else if(type.equals("java.util.List<java.lang.String>") || type.equals("java.util.Set<java.lang.String>") || type.equals("java.util.HashSet<java.lang.String>")) {
-            writeStringList((Collection<String>) field.get(event));
+          switch (type) {
+            case "int":
+            case "java.lang.Integer":
+              writeInt(field.getInt(event));
+              break;
+            case "java.lang.String":
+              writeString((String) field.get(event));
+              break;
+            case "double":
+            case "java.lang.Double":
+              writeDouble(field.getDouble(event));
+              break;
+            case "long":
+            case "java.lang.Long":
+              writeLong(field.getLong(event));
+              break;
+            case "boolean":
+            case "java.lang.Boolean":
+              writeBoolean(field.getBoolean(event));
+              break;
+            case "byte[]":
+            case "java.lang.Byte[]":
+              writeByteArr((byte[]) field.get(event));
+              break;
+            case "java.lang.String[]":
+              writeStringArr((String[])field.get(event));
+              break;
+            case "java.util.Collection<java.lang.String>":
+            case "java.util.HashSet<java.lang.String>":
+            case "java.util.List<java.lang.String>":
+            case "java.util.ArrayList<java.lang.String>":
+            case "java.util.LinkedList<java.lang.String>":
+            case "java.util.Set<java.lang.String>":
+              HashSet<String> set = new HashSet<>();
+              writeStringList((Collection<String>) field.get(event));
+              field.set(event, set);
+              break;
           }
         }
       }catch(IllegalAccessException iae) {
