@@ -6,17 +6,19 @@ import java.net.ServerSocket;
 import java.util.Date;
 import java.util.Map;
 import java.util.Scanner;
+import distributed.application.metadata.ServerInformation;
 import distributed.application.metadata.SwitchMetadata;
 import distributed.application.util.Constants;
 import distributed.application.util.Properties;
+import distributed.application.wireformats.ApplicationHeartbeat;
 import distributed.application.wireformats.EventFactory;
 import distributed.application.wireformats.GenericMessage;
-import distributed.common.wireformats.Protocol;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.wireformats.Event;
+import distributed.common.wireformats.Protocol;
 
 /**
  *
@@ -63,7 +65,7 @@ public class Switch implements Node {
           serverSocket.getLocalPort() );
 
       LOG.info( "Switch node starting up at: " + new Date() + ", on "
-          + node.metadata.getConnection() );
+          + node.metadata.getIdentifier() );
 
       ( new Thread(
           new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
@@ -116,7 +118,7 @@ public class Switch implements Node {
       }
     }
     LOG.info(
-        metadata.getConnection() + " has unregistered and is terminating." );
+        metadata.getIdentifier() + " has unregistered and is terminating." );
     System.exit( 0 );
   }
 
@@ -125,7 +127,7 @@ public class Switch implements Node {
    * 
    */
   private synchronized void displayServerConnections() {
-    Map<String, TCPConnection> serverConnections =
+    Map<String, ServerInformation> serverConnections =
         metadata.getServerConnections();
     if ( serverConnections.size() == 0 )
     {
@@ -150,6 +152,10 @@ public class Switch implements Node {
     {
       case Protocol.REGISTER_SERVER_REQUEST :
         register( event, connection );
+        break;
+
+      case Protocol.APPLICATION_HEATBEAT :
+        metadata.processApplicationHeatbeat( ( ApplicationHeartbeat ) event );
         break;
     }
   }
