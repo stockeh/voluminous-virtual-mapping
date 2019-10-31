@@ -24,7 +24,6 @@ public final class Configurations {
     this.properties = new Properties();
     try
     {
-      System.out.println(confName);
       properties
           .load( getClass().getClassLoader().getResourceAsStream( confName ) );
     } catch ( Exception e )
