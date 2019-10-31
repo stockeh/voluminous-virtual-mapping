@@ -50,12 +50,13 @@ public class TCPConnection {
     return this.socket;
   }
 
+  public String getEndHost() { return this.socket.getInetAddress().getCanonicalHostName(); }
   /**
    * Get the TCPSender so the server or server can send a message over
    * the socket
    * 
    * @return the TCPSender instance that was instantiated during the
-   *         {@link #run()} method of the new thread.
+   *         {@link ()} method of the new thread.
    */
   public TCPSender getTCPSender() {
     return this.sender;

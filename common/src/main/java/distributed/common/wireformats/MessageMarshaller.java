@@ -1,13 +1,11 @@
-package distributed.common.util;
+package distributed.common.wireformats;
 
-import distributed.common.wireformats.Event;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.time.Instant;
 
 public class MessageMarshaller {
     private final ByteArrayOutputStream baOutStream;
@@ -45,12 +43,12 @@ public class MessageMarshaller {
       dout.write(arr);
     }
 
-    public void writeObject(Class c, Event event) {
-      System.out.println("CLASS: " + c.getName());
+    public void writeEvent(Class c, Event event) {
       Field[] fields = c.getDeclaredFields();
       try {
         for (Field field : fields) {
           String type = field.getAnnotatedType().getType().getTypeName();
+
           if(type.equals("int") || type.equals("Integer")) {
             writeInt(field.getInt(event));
           }else if(type.equals("String")) {

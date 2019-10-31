@@ -68,7 +68,6 @@ public class TCPReceiverThread implements Runnable {
 
         byte[] data = new byte[ len ];
         din.readFully( data, 0, len );
-
         Event event = factory.createEvent( data );
         node.onEvent( event, connection );
 

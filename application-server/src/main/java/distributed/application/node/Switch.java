@@ -11,6 +11,7 @@ import distributed.application.util.Constants;
 import distributed.application.util.Properties;
 import distributed.application.wireformats.EventFactory;
 import distributed.application.wireformats.GenericMessage;
+import distributed.common.wireformats.GenericPortMessage;
 import distributed.common.wireformats.Protocol;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
@@ -151,7 +152,16 @@ public class Switch implements Node {
       case Protocol.REGISTER_SERVER_REQUEST :
         register( event, connection );
         break;
+      case Protocol.DISCOVER_REQUEST:
+        GenericPortMessage gpe = (GenericPortMessage) event;
+        LOG.info("RECEIVED REGISTER REQUEST FROM CLIENT WITH PORT: " + gpe.port);
+        break;
+
     }
+  }
+
+  private void handleClientConnection() {
+
   }
 
   /**
