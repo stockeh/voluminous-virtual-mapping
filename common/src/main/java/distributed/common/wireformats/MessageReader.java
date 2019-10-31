@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.HashSet;
 
 public class MessageReader {
   private final DataInputStream din;
@@ -40,6 +42,13 @@ public class MessageReader {
     return bytes;
   }
 
+  private void readStringList(Collection<String> list) throws IOException {
+    int size = readInt();
+    for(int i = 0; i < size; i++) {
+      list.add(readString());
+    }
+  }
+
   public void readEvent(Class c, Event event) {
     Field[] fields = c.getDeclaredFields();
     try {
@@ -48,7 +57,6 @@ public class MessageReader {
         String type = field.getAnnotatedType().getType().getTypeName();
         if(type.equals("int") || type.equals("Integer")) {
           int reading = readInt();
-          System.out.println("READING INT: " + reading);
          field.setInt(event, reading);
         }else if(type.equals("String")) {
           field.set(event, readString());
@@ -60,6 +68,10 @@ public class MessageReader {
           field.set(event, readByteArr());
         }else if(type.equals("boolean") || type.equals("Boolean")) {
           field.set(event, readBoolean());
+        }else if(type.equals("java.util.Set<java.lang.String>") || type.equals("java.util.HashSet<java.lang.String>")) {
+          HashSet<String> set = new HashSet<>();
+          readStringList(set);
+          field.set(event, set);
         }
       }
     }catch(IllegalAccessException iae) {

@@ -1,7 +1,7 @@
 package distributed.common.wireformats;
 
-import java.io.DataInputStream;
 import java.io.IOException;
+
 
 public class GenericPortMessage implements Event{
 
