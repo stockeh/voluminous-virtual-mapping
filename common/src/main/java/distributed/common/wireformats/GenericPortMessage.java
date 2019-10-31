@@ -25,7 +25,7 @@ public class GenericPortMessage implements Event{
 
   @Override
   public byte[] getBytes() throws IOException {
-    MessageMarshaller messageMarshaller = new MessageMarshaller();
+    MessageUnMarshaller messageMarshaller = new MessageUnMarshaller();
     messageMarshaller.writeEvent(getClass(), this);
     return messageMarshaller.getMarshalledData();
   }

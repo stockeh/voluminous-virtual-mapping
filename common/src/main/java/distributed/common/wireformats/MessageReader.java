@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -42,6 +43,15 @@ public class MessageReader {
     return bytes;
   }
 
+  private String[] readStringArray() throws IOException {
+    int length = readInt();
+    String[] arr = new String[length];
+    for(int i = 0; i < length; i++) {
+      arr[i] = readString();
+    }
+    return arr;
+  }
+
   private void readStringList(Collection<String> list) throws IOException {
     int size = readInt();
     for(int i = 0; i < size; i++) {
@@ -52,26 +62,47 @@ public class MessageReader {
   public void readEvent(Class c, Event event) {
     Field[] fields = c.getDeclaredFields();
     try {
-      for (int i = 0; i < fields.length; i++) {
-        Field field = fields[i];
+      for (Field field : fields) {
         String type = field.getAnnotatedType().getType().getTypeName();
-        if(type.equals("int") || type.equals("Integer")) {
-          int reading = readInt();
-         field.setInt(event, reading);
-        }else if(type.equals("String")) {
-          field.set(event, readString());
-        }else if(type.equals("double") || type.equals("Double")) {
-          field.setDouble(event, readDouble());
-        }else if(type.equals("long") || type.equals("Long")) {
-          field.setLong(event, readLong());
-        }else if(type.equals("byte[]") || type.equals("Byte[]")) {
-          field.set(event, readByteArr());
-        }else if(type.equals("boolean") || type.equals("Boolean")) {
-          field.set(event, readBoolean());
-        }else if(type.equals("java.util.Set<java.lang.String>") || type.equals("java.util.HashSet<java.lang.String>")) {
-          HashSet<String> set = new HashSet<>();
-          readStringList(set);
-          field.set(event, set);
+        switch (type) {
+          case "int":
+          case "java.lang.Integer":
+            field.setInt(event, readInt());
+            break;
+          case "java.lang.String":
+            field.set(event, readString());
+            break;
+          case "double":
+          case "java.lang.Double":
+            field.set(event, readDouble());
+            break;
+          case "long":
+          case "java.lang.Long":
+            field.set(event, readLong());
+            break;
+          case "boolean":
+          case "java.lang.Boolean":
+            field.set(event, readBoolean());
+            break;
+          case "byte[]":
+          case "java.lang.Byte[]":
+            field.set(event, readByteArr());
+            break;
+          case "java.lang.String[]":
+            field.set(event, readStringArray());
+            break;
+          case "java.util.HashSet<java.lang.String>":
+          case "java.util.Set<java.lang.String>":
+            HashSet<String> set = new HashSet<>();
+            readStringList(set);
+            field.set(event, set);
+            break;
+          case "java.util.List<java.lang.String>":
+          case "java.util.ArrayList<java.lang.String>":
+            ArrayList<String> list = new ArrayList<>();
+            readStringList(list);
+            field.set(event, list);
+            break;
         }
       }
     }catch(IllegalAccessException iae) {
