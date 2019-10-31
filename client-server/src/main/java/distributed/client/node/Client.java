@@ -3,11 +3,15 @@ package distributed.client.node;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Date;
 import java.util.Scanner;
 import distributed.client.metadata.ClientMetadata;
 import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
+import distributed.client.wireformats.GenericMessage;
+import distributed.common.transport.TCPSender;
+import distributed.common.wireformats.GenericPortMessage;
 import distributed.common.wireformats.Protocol;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
@@ -28,6 +32,7 @@ public class Client implements Node {
   private static final String EXIT = "exit";
 
   private static final String HELP = "help";
+  private static final String CONNECT = "connect";
 
   private final ClientMetadata metadata;
 
@@ -72,6 +77,15 @@ public class Client implements Node {
     }
   }
 
+  public void connectToServer() {
+    try {
+      TCPSender sender = new TCPSender(new Socket(Properties.SWITCH_HOST, Properties.SWITCH_PORT));
+      sender.sendData(new GenericPortMessage(Protocol.DISCOVER_REQUEST, metadata.getPort()).getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   /**
    * Allow support for commands to be specified while the processes are
    * running.
@@ -96,6 +110,10 @@ public class Client implements Node {
 
         case HELP :
           displayHelp();
+          break;
+
+	  		case CONNECT :
+          connectToServer();
           break;
 
         default :
