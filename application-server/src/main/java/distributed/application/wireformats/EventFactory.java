@@ -63,6 +63,9 @@ public class EventFactory implements Factory {
       case Protocol.DISCOVER_REQUEST :
         return new GenericPortMessage( marshalledBytes );
 
+      case Protocol.APPLICATION_HEATBEAT :
+        return new ApplicationHeartbeat( marshalledBytes );
+
       default :
         LOG.error( "Event could not be created. "
             + ByteBuffer.wrap( marshalledBytes ).getInt() );
