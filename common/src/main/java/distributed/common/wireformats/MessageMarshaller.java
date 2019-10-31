@@ -57,7 +57,6 @@ public class MessageMarshaller {
       try {
         for (Field field : fields) {
           String type = field.getAnnotatedType().getType().getTypeName();
-          System.out.println("TYPE: " + type);
           if(type.equals("int") || type.equals("java.lang.Integer")) {
             writeInt(field.getInt(event));
           }else if(type.equals("String")) {
