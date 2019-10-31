@@ -9,7 +9,6 @@ import java.util.Scanner;
 import distributed.client.metadata.ClientMetadata;
 import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
-import distributed.client.wireformats.GenericMessage;
 import distributed.common.transport.TCPSender;
 import distributed.common.wireformats.GenericPortMessage;
 import distributed.common.wireformats.Protocol;
@@ -32,7 +31,6 @@ public class Client implements Node {
   private static final String EXIT = "exit";
 
   private static final String HELP = "help";
-  private static final String CONNECT = "connect";
 
   private final ClientMetadata metadata;
 
@@ -68,6 +66,7 @@ public class Client implements Node {
           new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
           "Client Thread" ) ).start();
 
+      node.connectToServer();
       node.interact();
     } catch ( IOException e )
     {
@@ -110,10 +109,6 @@ public class Client implements Node {
 
         case HELP :
           displayHelp();
-          break;
-
-	  		case CONNECT :
-          connectToServer();
           break;
 
         default :
