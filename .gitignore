@@ -1,8 +1,9 @@
 # Ignore Gradle project-specific cache directory
-*.gradle
+*gradlew*
+*gradle/
 
 # Ignore Gradle build output directory
-*/build
+*build
 
 # Ignore Mac Defaults
 .DS_Store
@@ -12,6 +13,6 @@
 *.project
 *.settings/
 *.class
-*/bin
+*bin
 
 *.idea/
