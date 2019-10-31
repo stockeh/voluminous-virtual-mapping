@@ -8,6 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import distributed.common.wireformats.Event;
+import distributed.common.wireformats.Protocol;
 
 /**
  * 

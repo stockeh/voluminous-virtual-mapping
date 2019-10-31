@@ -8,7 +8,7 @@ import java.util.Scanner;
 import distributed.client.metadata.ClientMetadata;
 import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
-import distributed.client.wireformats.Protocol;
+import distributed.common.wireformats.Protocol;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;
@@ -118,7 +118,7 @@ public class Client implements Node {
     LOG.debug( event.toString() );
     switch ( event.getType() )
     {
-      case Protocol.REGISTER_REQUEST :
+      case Protocol.DISCOVER_RESPONSE :
         break;
     }
   }

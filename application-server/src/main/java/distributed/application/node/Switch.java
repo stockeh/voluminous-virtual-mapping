@@ -11,7 +11,7 @@ import distributed.application.util.Constants;
 import distributed.application.util.Properties;
 import distributed.application.wireformats.EventFactory;
 import distributed.application.wireformats.GenericMessage;
-import distributed.application.wireformats.Protocol;
+import distributed.common.wireformats.Protocol;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;
