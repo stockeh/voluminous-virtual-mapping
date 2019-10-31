@@ -10,11 +10,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-public class MessageMarshaller {
+public class MessageUnMarshaller {
     private final ByteArrayOutputStream baOutStream;
     private final DataOutputStream dout;
 
-    public MessageMarshaller() {
+    public MessageUnMarshaller() {
       baOutStream = new ByteArrayOutputStream();
       dout = new DataOutputStream(new BufferedOutputStream(baOutStream));
     }
