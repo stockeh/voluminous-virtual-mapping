@@ -12,5 +12,6 @@ public interface Protocol {
   int DISCOVER_RESPONSE = 1;
   int REGISTER_SERVER_REQUEST = 2;
   int REGISTER_SERVER_RESPONSE = 3;
+  int APPLICATION_HEATBEAT = 4;
 
 }

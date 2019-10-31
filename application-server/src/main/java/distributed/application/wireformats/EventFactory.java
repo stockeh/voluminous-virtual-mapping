@@ -60,6 +60,9 @@ public class EventFactory implements Factory {
       case Protocol.REGISTER_SERVER_RESPONSE :
         return new GenericMessage( marshalledBytes );
 
+      case Protocol.APPLICATION_HEATBEAT :
+        return new ApplicationHeartbeat( marshalledBytes );
+
       default :
         LOG.error( "Event could not be created. "
             + ByteBuffer.wrap( marshalledBytes ).getInt() );
