@@ -9,7 +9,7 @@ import distributed.common.util.Configurations;
  */
 public interface Properties {
 
-  final String CONF_NAME = "application.properties";
+  final String CONF_NAME = "client.properties";
 
   final String SWITCH_HOST =
       Configurations.getInstance(CONF_NAME).getProperty( "switch.host" );

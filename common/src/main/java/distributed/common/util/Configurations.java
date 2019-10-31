@@ -1,7 +1,7 @@
 package distributed.common.util;
 
-import java.util.Properties;
 
+import java.util.Properties;
 
 /**
  * Singleton class to load properties file for configuration.
@@ -24,6 +24,7 @@ public final class Configurations {
     this.properties = new Properties();
     try
     {
+      System.out.println(confName);
       properties
           .load( getClass().getClassLoader().getResourceAsStream( confName ) );
     } catch ( Exception e )

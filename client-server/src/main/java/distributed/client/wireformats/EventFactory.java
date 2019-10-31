@@ -6,6 +6,7 @@ import distributed.client.util.Properties;
 import distributed.common.util.Logger;
 import distributed.common.wireformats.Event;
 import distributed.common.wireformats.Factory;
+import distributed.common.wireformats.GenericPortMessage;
 import distributed.common.wireformats.Protocol;
 
 /**
@@ -56,8 +57,6 @@ public class EventFactory implements Factory {
   public Event createEvent(byte[] marshalledBytes) throws IOException {
     switch ( ByteBuffer.wrap( marshalledBytes ).getInt() )
     {
-      case Protocol.DISCOVER_REQUEST :
-        return new GenericMessage( marshalledBytes );
 
       default :
         LOG.error( "Event could not be created. "

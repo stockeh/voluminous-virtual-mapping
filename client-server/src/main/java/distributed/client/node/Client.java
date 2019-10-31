@@ -3,11 +3,14 @@ package distributed.client.node;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Date;
 import java.util.Scanner;
 import distributed.client.metadata.ClientMetadata;
 import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
+import distributed.common.transport.TCPSender;
+import distributed.common.wireformats.GenericPortMessage;
 import distributed.common.wireformats.Protocol;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
@@ -63,12 +66,22 @@ public class Client implements Node {
           new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
           "Client Thread" ) ).start();
 
+      node.connectToServer();
       node.interact();
     } catch ( IOException e )
     {
       LOG.error(
           "Unable to successfully start server. Exiting. " + e.toString() );
       System.exit( 1 );
+    }
+  }
+
+  public void connectToServer() {
+    try {
+      TCPSender sender = new TCPSender(new Socket(Properties.SWITCH_HOST, Properties.SWITCH_PORT));
+      sender.sendData(new GenericPortMessage(Protocol.DISCOVER_REQUEST, metadata.getPort()).getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
