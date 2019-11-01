@@ -9,41 +9,36 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class MessageUnMarshaller {
-  private final DataInputStream din;
+  private static DataInputStream din;
 
-  MessageUnMarshaller(byte[] bytes) {
-    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
-    this.din = new DataInputStream(byteArrayInputStream);
-
-  }
-  private int readInt() throws IOException {
+  private static int readInt() throws IOException {
     return din.readInt();
   }
 
-  private boolean readBoolean() throws IOException {
+  private static boolean readBoolean() throws IOException {
     return din.readBoolean();
   }
 
-  private long readLong() throws IOException {
+  private static long readLong() throws IOException {
     return din.readLong();
   }
 
-  private double readDouble() throws IOException {
+  private static double readDouble() throws IOException {
     return din.readDouble();
   }
 
 
-  private String readString() throws IOException{
+  private static String readString() throws IOException{
     return new String(readByteArr());
   }
 
-  private byte[] readByteArr() throws IOException {
+  private static byte[] readByteArr() throws IOException {
     byte[] bytes = new byte[din.readInt()];
     din.readFully(bytes);
     return bytes;
   }
 
-  private String[] readStringArray() throws IOException {
+  private static String[] readStringArray() throws IOException {
     int length = readInt();
     String[] arr = new String[length];
     for(int i = 0; i < length; i++) {
@@ -52,14 +47,20 @@ public class MessageUnMarshaller {
     return arr;
   }
 
-  private void readStringList(Collection<String> list) throws IOException {
+  private static void readStringList(Collection<String> list) throws IOException {
     int size = readInt();
     for(int i = 0; i < size; i++) {
       list.add(readString());
     }
   }
 
-  public void readEvent(Class c, Event event) {
+  public static void readEvent(Class c, Event event, byte[] bytes) {
+    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+    din = new DataInputStream(byteArrayInputStream);
+    read(c, event);
+  }
+
+  private static void read(Class c, Event event) {
     Field[] fields = c.getDeclaredFields();
     try {
       for (Field field : fields) {

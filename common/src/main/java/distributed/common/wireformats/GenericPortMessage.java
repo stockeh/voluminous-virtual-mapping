@@ -14,8 +14,7 @@ public class GenericPortMessage implements Event{
   }
 
   public GenericPortMessage(byte[] bytes) {
-    MessageUnMarshaller messageReader = new MessageUnMarshaller(bytes);
-    messageReader.readEvent(getClass(), this);
+    MessageUnMarshaller.readEvent(getClass(), this, bytes);
   }
 
   @Override
@@ -25,6 +24,6 @@ public class GenericPortMessage implements Event{
 
   @Override
   public byte[] getBytes() throws IOException {
-    return MessageMarshaller.getMarshalledData(getClass(), this);
+    return MessageMarshaller.writeEvent(getClass(), this);
   }
 }

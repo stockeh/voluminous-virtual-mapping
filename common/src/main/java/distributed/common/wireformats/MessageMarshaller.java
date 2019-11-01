@@ -10,57 +10,58 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class MessageMarshaller {
-    private final ByteArrayOutputStream baOutStream;
-    private final DataOutputStream dout;
+    private static  ByteArrayOutputStream baOutStream;
+    private static DataOutputStream dout;
 
-    public MessageMarshaller() {
-      baOutStream = new ByteArrayOutputStream();
-      dout = new DataOutputStream(new BufferedOutputStream(baOutStream));
-    }
-
-
-    public void writeInt(int value) throws IOException {
+    private static void writeInt(int value) throws IOException {
       dout.writeInt(value);
     }
 
-    public void writeBoolean(boolean value) throws IOException {
+    private static void writeBoolean(boolean value) throws IOException {
       dout.writeBoolean(value);
     }
 
-    public void writeLong(long value) throws IOException {
+    private static void writeLong(long value) throws IOException {
       dout.writeLong(value);
     }
 
-    public void writeDouble(double value) throws IOException {
+    private static void writeDouble(double value) throws IOException {
       dout.writeDouble(value);
     }
 
-    public void writeString(String str) throws IOException {
+    private static void writeString(String str) throws IOException {
       byte[] strBytes = str.getBytes();
       dout.writeInt(strBytes.length);
       dout.write(strBytes);
     }
 
-    public void writeByteArr(byte[] arr) throws IOException {
+    private static void writeByteArr(byte[] arr) throws IOException {
       dout.writeInt(arr.length);
       dout.write(arr);
     }
 
-    private void writeStringArr(String[] arr) throws IOException {
+    private static void writeStringArr(String[] arr) throws IOException {
       writeInt(arr.length);
       for(String s : arr) {
         writeString(s);
       }
     }
 
-    public void writeStringList(Collection<String> list) throws IOException {
+    private static void writeStringList(Collection<String> list) throws IOException {
      writeInt(list.size());
      for(String s : list) {
        writeString(s);
      }
     }
 
-    public void writeEvent(Class c, Event event) {
+    public static byte[] writeEvent(Class c, Event event) throws IOException {
+      baOutStream = new ByteArrayOutputStream();
+      dout = new DataOutputStream(new BufferedOutputStream(baOutStream));
+      write(c, event);
+      return getMarshalledData();
+    }
+
+    private static void write(Class c, Event event) {
       Field[] fields = c.getDeclaredFields();
       try {
         for (Field field : fields) {
@@ -111,13 +112,8 @@ public class MessageMarshaller {
       }
     }
 
-    public static byte[] getMarshalledData(Class c, Event event) throws IOException {
-      MessageMarshaller messageMarshaller = new MessageMarshaller();
-      messageMarshaller.writeEvent(c, event);
-      return messageMarshaller.getMarshalledData();
-    }
 
-    public byte[] getMarshalledData() throws IOException {
+    private static byte[] getMarshalledData() throws IOException {
       dout.flush();
       byte[] marshalledData = baOutStream.toByteArray();
       baOutStream.close();
