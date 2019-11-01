@@ -1,122 +1,115 @@
 package distributed.common.wireformats;
 
-
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 public class MessageUnMarshaller {
-    private final ByteArrayOutputStream baOutStream;
-    private final DataOutputStream dout;
+  private final DataInputStream din;
 
-    public MessageUnMarshaller() {
-      baOutStream = new ByteArrayOutputStream();
-      dout = new DataOutputStream(new BufferedOutputStream(baOutStream));
+  MessageUnMarshaller(byte[] bytes) {
+    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+    this.din = new DataInputStream(byteArrayInputStream);
+
+  }
+  private int readInt() throws IOException {
+    return din.readInt();
+  }
+
+  private boolean readBoolean() throws IOException {
+    return din.readBoolean();
+  }
+
+  private long readLong() throws IOException {
+    return din.readLong();
+  }
+
+  private double readDouble() throws IOException {
+    return din.readDouble();
+  }
+
+
+  private String readString() throws IOException{
+    return new String(readByteArr());
+  }
+
+  private byte[] readByteArr() throws IOException {
+    byte[] bytes = new byte[din.readInt()];
+    din.readFully(bytes);
+    return bytes;
+  }
+
+  private String[] readStringArray() throws IOException {
+    int length = readInt();
+    String[] arr = new String[length];
+    for(int i = 0; i < length; i++) {
+      arr[i] = readString();
     }
+    return arr;
+  }
 
-    public void writeInt(int value) throws IOException {
-      dout.writeInt(value);
+  private void readStringList(Collection<String> list) throws IOException {
+    int size = readInt();
+    for(int i = 0; i < size; i++) {
+      list.add(readString());
     }
+  }
 
-    public void writeBoolean(boolean value) throws IOException {
-      dout.writeBoolean(value);
-    }
-
-    public void writeLong(long value) throws IOException {
-      dout.writeLong(value);
-    }
-
-    public void writeDouble(double value) throws IOException {
-      dout.writeDouble(value);
-    }
-
-    public void writeString(String str) throws IOException {
-      byte[] strBytes = str.getBytes();
-      dout.writeInt(strBytes.length);
-      dout.write(strBytes);
-    }
-
-    public void writeByteArr(byte[] arr) throws IOException {
-      dout.writeInt(arr.length);
-      dout.write(arr);
-    }
-
-    private void writeStringArr(String[] arr) throws IOException {
-      writeInt(arr.length);
-      for(String s : arr) {
-        writeString(s);
-      }
-    }
-
-    public void writeStringList(Collection<String> list) throws IOException {
-     writeInt(list.size());
-     for(String s : list) {
-       writeString(s);
-     }
-    }
-
-    public void writeEvent(Class c, Event event) {
-      Field[] fields = c.getDeclaredFields();
-      try {
-        for (Field field : fields) {
-          String type = field.getAnnotatedType().getType().getTypeName();
-          switch (type) {
-            case "int":
-            case "java.lang.Integer":
-              writeInt(field.getInt(event));
-              break;
-            case "java.lang.String":
-              writeString((String) field.get(event));
-              break;
-            case "double":
-            case "java.lang.Double":
-              writeDouble(field.getDouble(event));
-              break;
-            case "long":
-            case "java.lang.Long":
-              writeLong(field.getLong(event));
-              break;
-            case "boolean":
-            case "java.lang.Boolean":
-              writeBoolean(field.getBoolean(event));
-              break;
-            case "byte[]":
-            case "java.lang.Byte[]":
-              writeByteArr((byte[]) field.get(event));
-              break;
-            case "java.lang.String[]":
-              writeStringArr((String[])field.get(event));
-              break;
-            case "java.util.Collection<java.lang.String>":
-            case "java.util.HashSet<java.lang.String>":
-            case "java.util.List<java.lang.String>":
-            case "java.util.ArrayList<java.lang.String>":
-            case "java.util.LinkedList<java.lang.String>":
-            case "java.util.Set<java.lang.String>":
-              HashSet<String> set = new HashSet<>();
-              writeStringList((Collection<String>) field.get(event));
-              field.set(event, set);
-              break;
-          }
+  public void readEvent(Class c, Event event) {
+    Field[] fields = c.getDeclaredFields();
+    try {
+      for (Field field : fields) {
+        String type = field.getAnnotatedType().getType().getTypeName();
+        switch (type) {
+          case "int":
+          case "java.lang.Integer":
+            field.setInt(event, readInt());
+            break;
+          case "java.lang.String":
+            field.set(event, readString());
+            break;
+          case "double":
+          case "java.lang.Double":
+            field.set(event, readDouble());
+            break;
+          case "long":
+          case "java.lang.Long":
+            field.set(event, readLong());
+            break;
+          case "boolean":
+          case "java.lang.Boolean":
+            field.set(event, readBoolean());
+            break;
+          case "byte[]":
+          case "java.lang.Byte[]":
+            field.set(event, readByteArr());
+            break;
+          case "java.lang.String[]":
+            field.set(event, readStringArray());
+            break;
+          case "java.util.HashSet<java.lang.String>":
+          case "java.util.Set<java.lang.String>":
+            HashSet<String> set = new HashSet<>();
+            readStringList(set);
+            field.set(event, set);
+            break;
+          case "java.util.List<java.lang.String>":
+          case "java.util.ArrayList<java.lang.String>":
+            ArrayList<String> list = new ArrayList<>();
+            readStringList(list);
+            field.set(event, list);
+            break;
         }
-      }catch(IllegalAccessException iae) {
-        iae.printStackTrace();
-      } catch (IOException e) {
-        e.printStackTrace();
       }
+    }catch(IllegalAccessException iae) {
+      iae.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-
-    public byte[] getMarshalledData() throws IOException {
-      dout.flush();
-      byte[] marshalledData = baOutStream.toByteArray();
-      baOutStream.close();
-      dout.close();
-      return marshalledData;
-    }
+  }
 
 }
