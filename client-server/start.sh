@@ -37,7 +37,7 @@ do
 
     echo 'logging into '$machine
     
-    OPTION='--tab -t "'$machine $n'" -e "ssh -t '$machine' cd '$DIR'; sleep '$k'; echo '$SCRIPT'; '$SCRIPT'"'
+    OPTION='--tab -t "'$machine'" -e "ssh -t '$machine' cd '$DIR'; sleep '$k'; echo '$SCRIPT'; '$SCRIPT'"'
     COMMAND+=" $OPTION"
     
     k=`echo $k + 1.50 | bc`
