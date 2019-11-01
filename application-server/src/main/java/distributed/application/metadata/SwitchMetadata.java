@@ -14,6 +14,7 @@ import distributed.common.transport.TCPConnection;
  */
 public class SwitchMetadata {
 
+  // server identifier, server information
   private final Map<String, ServerInformation> serverConnections;
 
   private final String identifier;

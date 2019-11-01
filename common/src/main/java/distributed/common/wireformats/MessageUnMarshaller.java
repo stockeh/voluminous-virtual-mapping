@@ -54,13 +54,13 @@ public class MessageUnMarshaller {
     }
   }
 
-  public static void readEvent(Class c, Event event, byte[] bytes) {
+  public static void readEvent(Class<?> c, Event event, byte[] bytes) {
     ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
     din = new DataInputStream(byteArrayInputStream);
     read(c, event);
   }
 
-  private static void read(Class c, Event event) {
+  private static void read(Class<?> c, Event event) {
     Field[] fields = c.getDeclaredFields();
     try {
       for (Field field : fields) {

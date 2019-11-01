@@ -54,14 +54,15 @@ public class MessageMarshaller {
      }
     }
 
-    public static byte[] writeEvent(Class c, Event event) throws IOException {
+    public static byte[] writeEvent(Class<?> c, Event event) throws IOException {
       baOutStream = new ByteArrayOutputStream();
       dout = new DataOutputStream(new BufferedOutputStream(baOutStream));
       write(c, event);
       return getMarshalledData();
     }
 
-    private static void write(Class c, Event event) {
+    @SuppressWarnings( "unchecked" )
+    private static void write(Class<?> c, Event event) {
       Field[] fields = c.getDeclaredFields();
       try {
         for (Field field : fields) {

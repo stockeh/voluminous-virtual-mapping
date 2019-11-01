@@ -30,8 +30,6 @@ public class ServerHeartbeatManager extends TimerTask {
 
   private final ApplicationHeartbeat heartbeat;
 
-  private final StringBuilder sb;
-
   /**
    * Default constructor -
    * 
@@ -44,18 +42,15 @@ public class ServerHeartbeatManager extends TimerTask {
     this.metadata = metadata;
     this.heartbeat = new ApplicationHeartbeat( Protocol.APPLICATION_HEATBEAT,
         metadata.getIdentifier() );
-    this.sb = new StringBuilder();
   }
 
   @Override
   public void run() {
     try
     {
-      int threadCount = ManagementFactory.getThreadMXBean().getThreadCount();
-
-      sb.setLength( 0 );
-      sb.append( "Heartbeat from: " ).append( metadata.getIdentifier() )
-          .append( ", threads: " ).append( threadCount );
+      heartbeat.setThreadCount(
+          ManagementFactory.getThreadMXBean().getThreadCount() );
+      heartbeat.setSectorIdentifiers( metadata.getSectorIdentifiers() );
 
       switchConnection.getTCPSender().sendData( heartbeat.getBytes() );
     } catch ( IOException e )
@@ -64,6 +59,5 @@ public class ServerHeartbeatManager extends TimerTask {
           "Unable to send heartbeat message to switch. " + e.getMessage() );
       e.printStackTrace();
     }
-    LOG.info( sb.toString() );
   }
 }
