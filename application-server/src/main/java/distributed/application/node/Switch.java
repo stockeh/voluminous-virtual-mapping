@@ -13,12 +13,12 @@ import distributed.application.util.Properties;
 import distributed.application.wireformats.ApplicationHeartbeat;
 import distributed.application.wireformats.EventFactory;
 import distributed.application.wireformats.GenericMessage;
-import distributed.common.wireformats.GenericPortMessage;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.wireformats.Event;
+import distributed.common.wireformats.GenericPortMessage;
 import distributed.common.wireformats.Protocol;
 
 /**
@@ -164,7 +164,11 @@ public class Switch implements Node {
     }
   }
 
-  private void handleClientConnection() {
+  /**
+   * Handle the connection message from the client.
+   * 
+   */
+  private void clientConnectionHandler() {
 
   }
 

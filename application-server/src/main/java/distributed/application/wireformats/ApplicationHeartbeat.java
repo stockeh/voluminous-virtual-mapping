@@ -1,13 +1,10 @@
 package distributed.application.wireformats;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Set;
 import distributed.common.wireformats.Event;
+import distributed.common.wireformats.MessageMarshaller;
+import distributed.common.wireformats.MessageUnMarshaller;
 import distributed.common.wireformats.Protocol;
 
 /**
@@ -17,11 +14,13 @@ import distributed.common.wireformats.Protocol;
  */
 public class ApplicationHeartbeat implements Event {
 
-  private int type;
+  public int type;
 
-  private String identifier;
+  public String identifier;
 
-  private int threadCount;
+  public int threadCount;
+  
+  public Set<String> sectorIdentifiers;
 
   /**
    * Constructor with assigned message
@@ -40,22 +39,7 @@ public class ApplicationHeartbeat implements Event {
    * @throws IOException
    */
   public ApplicationHeartbeat(byte[] marshalledBytes) throws IOException {
-    ByteArrayInputStream inputStream =
-        new ByteArrayInputStream( marshalledBytes );
-    DataInputStream din =
-        new DataInputStream( new BufferedInputStream( inputStream ) );
-
-    this.type = din.readInt();
-
-    int len = din.readInt();
-    byte[] msg = new byte[ len ];
-    din.readFully( msg );
-    this.identifier = new String( msg );
-
-    this.threadCount = din.readInt();
-
-    inputStream.close();
-    din.close();
+    MessageUnMarshaller.readEvent(getClass(), this, marshalledBytes);
   }
 
   /**
@@ -81,31 +65,19 @@ public class ApplicationHeartbeat implements Event {
   public void setThreadCount(int threadCount) {
     this.threadCount = threadCount;
   }
+  
+  public Set<String> getSectorIdentifiers() {
+    return sectorIdentifiers;
+  }
 
-  /**
-   * {@inheritDoc}
-   */
+  public void setSectorIdentifiers(Set<String> sectorIdentifiers) {
+    this.sectorIdentifiers = sectorIdentifiers;
+  }
+
+
   @Override
   public byte[] getBytes() throws IOException {
-    byte[] marshalledBytes = null;
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    DataOutputStream dout =
-        new DataOutputStream( new BufferedOutputStream( outputStream ) );
-
-    dout.writeInt( type );
-
-    byte[] msg = identifier.getBytes();
-    dout.writeInt( msg.length );
-    dout.write( msg );
-
-    dout.writeInt( threadCount );
-
-    dout.flush();
-    marshalledBytes = outputStream.toByteArray();
-
-    outputStream.close();
-    dout.close();
-    return marshalledBytes;
+    return MessageMarshaller.writeEvent(getClass(), this);
   }
 
   @Override

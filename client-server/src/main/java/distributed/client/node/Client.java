@@ -9,14 +9,14 @@ import java.util.Scanner;
 import distributed.client.metadata.ClientMetadata;
 import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
-import distributed.common.transport.TCPSender;
-import distributed.common.wireformats.GenericPortMessage;
-import distributed.common.wireformats.Protocol;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
+import distributed.common.transport.TCPSender;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.wireformats.Event;
+import distributed.common.wireformats.GenericPortMessage;
+import distributed.common.wireformats.Protocol;
 
 /**
  *

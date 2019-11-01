@@ -6,8 +6,6 @@ import distributed.client.util.Properties;
 import distributed.common.util.Logger;
 import distributed.common.wireformats.Event;
 import distributed.common.wireformats.Factory;
-import distributed.common.wireformats.GenericPortMessage;
-import distributed.common.wireformats.Protocol;
 
 /**
  * Singleton class in charge of creating objects, i.e., messaging
