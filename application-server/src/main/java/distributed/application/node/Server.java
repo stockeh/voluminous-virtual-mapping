@@ -12,12 +12,12 @@ import distributed.application.metadata.ServerMetadata;
 import distributed.application.util.Constants;
 import distributed.application.util.Properties;
 import distributed.application.wireformats.EventFactory;
-import distributed.application.wireformats.GenericMessage;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.wireformats.Event;
+import distributed.common.wireformats.GenericMessage;
 import distributed.common.wireformats.Protocol;
 
 /**
@@ -152,6 +152,41 @@ public class Server implements Node {
       case Protocol.REGISTER_SERVER_RESPONSE :
         registerServerResponseHandler( event, connection );
         break;
+
+      case Protocol.REGISTER_CLIENT_REQUEST :
+        handleIncomingClient( event, connection );
+        break;
+    }
+  }
+
+  /**
+   * 
+   * 
+   * @param event
+   * @param connection
+   */
+  private void handleIncomingClient(Event event, TCPConnection connection) {
+
+    GenericMessage request = ( GenericMessage ) event;
+
+    // TODO: maintain connection
+
+    LOG.info( new StringBuilder().append( "Client \'" )
+        .append(
+            connection.getSocket().getInetAddress().getCanonicalHostName() )
+        .append( "\' connected to server at sector " )
+        .append( request.getMessage() ).toString() );
+
+    GenericMessage response =
+        new GenericMessage( Protocol.REGISTER_CLIENT_RESPONSE,
+            Boolean.toString( Constants.SUCCESS ) );
+    try
+    {
+      connection.getTCPSender().sendData( response.getBytes() );
+    } catch ( IOException e )
+    {
+      LOG.error( "Unable to send response message to server. " + e.toString() );
+      e.printStackTrace();
     }
   }
 

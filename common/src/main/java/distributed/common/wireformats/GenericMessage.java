@@ -1,14 +1,6 @@
-package distributed.application.wireformats;
+package distributed.common.wireformats;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import distributed.common.wireformats.Event;
-import distributed.common.wireformats.Protocol;
 
 /**
  * 
@@ -17,19 +9,20 @@ import distributed.common.wireformats.Protocol;
  */
 public class GenericMessage implements Event {
 
-  private int type;
+  public int type;
 
-  private String message;
+  public String message;
+
 
   /**
-   * Constructor with no message
+   * Constructor without assigned message
    * 
    */
   public GenericMessage(int type) {
     this.type = type;
     this.message = "";
   }
-
+  
   /**
    * Constructor with assigned message
    * 
@@ -47,20 +40,7 @@ public class GenericMessage implements Event {
    * @throws IOException
    */
   public GenericMessage(byte[] marshalledBytes) throws IOException {
-    ByteArrayInputStream inputStream =
-        new ByteArrayInputStream( marshalledBytes );
-    DataInputStream din =
-        new DataInputStream( new BufferedInputStream( inputStream ) );
-
-    this.type = din.readInt();
-
-    int len = din.readInt();
-    byte[] pathname = new byte[ len ];
-    din.readFully( pathname );
-    this.message = new String( pathname );
-
-    inputStream.close();
-    din.close();
+    MessageUnMarshaller.readEvent( getClass(), this, marshalledBytes );
   }
 
   /**
@@ -84,23 +64,7 @@ public class GenericMessage implements Event {
    */
   @Override
   public byte[] getBytes() throws IOException {
-    byte[] marshalledBytes = null;
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    DataOutputStream dout =
-        new DataOutputStream( new BufferedOutputStream( outputStream ) );
-
-    dout.writeInt( type );
-
-    byte[] msg = message.getBytes();
-    dout.writeInt( msg.length );
-    dout.write( msg );
-    
-    dout.flush();
-    marshalledBytes = outputStream.toByteArray();
-
-    outputStream.close();
-    dout.close();
-    return marshalledBytes;
+    return MessageMarshaller.writeEvent( getClass(), this );
   }
 
   @Override
