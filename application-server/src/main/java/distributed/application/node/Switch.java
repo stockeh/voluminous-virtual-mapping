@@ -12,13 +12,12 @@ import distributed.application.util.Constants;
 import distributed.application.util.Properties;
 import distributed.application.wireformats.ApplicationHeartbeat;
 import distributed.application.wireformats.EventFactory;
-import distributed.application.wireformats.GenericMessage;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.wireformats.Event;
-import distributed.common.wireformats.GenericPortMessage;
+import distributed.common.wireformats.GenericMessage;
 import distributed.common.wireformats.Protocol;
 
 /**
@@ -154,10 +153,11 @@ public class Switch implements Node {
       case Protocol.REGISTER_SERVER_REQUEST :
         register( event, connection );
         break;
-      case Protocol.DISCOVER_REQUEST:
-        GenericPortMessage gpe = (GenericPortMessage) event;
-        LOG.info("RECEIVED REGISTER REQUEST FROM CLIENT WITH PORT: " + gpe.port);
+
+      case Protocol.DISCOVER_REQUEST :
+        clientConnectionHandler( event, connection );
         break;
+
       case Protocol.APPLICATION_HEATBEAT :
         metadata.processApplicationHeatbeat( ( ApplicationHeartbeat ) event );
         break;
@@ -167,9 +167,26 @@ public class Switch implements Node {
   /**
    * Handle the connection message from the client.
    * 
+   * @param connection to the client
+   * @param event
+   * 
    */
-  private void clientConnectionHandler() {
-
+  private void clientConnectionHandler(Event event, TCPConnection connection) {
+    String sectorIdentifier = ( ( GenericMessage ) event ).getMessage();
+    String serverToConnect = metadata.getServer( sectorIdentifier );
+    try
+    {
+      connection.getTCPSender().sendData(
+          new GenericMessage( Protocol.DISCOVER_RESPONSE, serverToConnect )
+              .getBytes() );
+    } catch ( IOException e )
+    {
+      LOG.error( "Unable to connect respond to the Client. " + e.toString() );
+      e.printStackTrace();
+    }
+    LOG.info( "The Client \'"
+        + connection.getSocket().getInetAddress().getCanonicalHostName()
+        + "\' is directed to connect to " + serverToConnect );
   }
 
   /**

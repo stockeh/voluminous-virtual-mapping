@@ -3,7 +3,7 @@ package distributed.common.wireformats;
 import java.io.IOException;
 
 
-public class GenericPortMessage implements Event{
+public class GenericPortMessage implements Event {
 
   public int type;
   public int port;
@@ -14,7 +14,7 @@ public class GenericPortMessage implements Event{
   }
 
   public GenericPortMessage(byte[] bytes) {
-    MessageUnMarshaller.readEvent(getClass(), this, bytes);
+    MessageUnMarshaller.readEvent( getClass(), this, bytes );
   }
 
   @Override
@@ -22,11 +22,19 @@ public class GenericPortMessage implements Event{
     return type;
   }
 
+  /**
+   * 
+   * @return the port added to the message
+   */
+  public int getPort() {
+    return port;
+  }
+
   @Override
   public byte[] getBytes() throws IOException {
-    return MessageMarshaller.writeEvent(getClass(), this);
+    return MessageMarshaller.writeEvent( getClass(), this );
   }
-  
+
   @Override
   public String toString() {
     return Protocol.class.getFields()[ type ].getName().toString();

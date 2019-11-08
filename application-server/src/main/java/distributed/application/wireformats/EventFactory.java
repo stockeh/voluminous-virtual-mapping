@@ -6,6 +6,7 @@ import distributed.application.util.Properties;
 import distributed.common.util.Logger;
 import distributed.common.wireformats.Event;
 import distributed.common.wireformats.Factory;
+import distributed.common.wireformats.GenericMessage;
 import distributed.common.wireformats.GenericPortMessage;
 import distributed.common.wireformats.Protocol;
 
@@ -59,10 +60,10 @@ public class EventFactory implements Factory {
     {
       case Protocol.REGISTER_SERVER_REQUEST :
       case Protocol.REGISTER_SERVER_RESPONSE :
-        return new GenericMessage( marshalledBytes );
+      case Protocol.REGISTER_CLIENT_REQUEST :
       case Protocol.DISCOVER_REQUEST :
-        return new GenericPortMessage( marshalledBytes );
-
+        return new GenericMessage( marshalledBytes );
+        
       case Protocol.APPLICATION_HEATBEAT :
         return new ApplicationHeartbeat( marshalledBytes );
 
