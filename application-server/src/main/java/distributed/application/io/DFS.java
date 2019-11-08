@@ -26,9 +26,19 @@ public class DFS {
     FSDataInputStream dataInputStream = fileSystem.open(path);
 
     int size = dataInputStream.available();
-    LOG.info("Reading file: " + filename + " with size" + size);
+    LOG.info("Reading file: " + filename + " with size " + size);
     byte[] fileBytes = new byte[size];
     dataInputStream.readFully(fileBytes);
     return fileBytes;
+  }
+
+  public static byte[][] reshape(byte[] bytes) {
+    int size = (int)Math.sqrt(bytes.length);
+    byte[][] reshapedBytes = new byte[size][size];
+
+    for(int i = 0,j = 0; i < bytes.length; i+=size,j++) {
+      System.arraycopy(bytes, i, reshapedBytes[j], 0, size);
+    }
+    return reshapedBytes;
   }
 }
