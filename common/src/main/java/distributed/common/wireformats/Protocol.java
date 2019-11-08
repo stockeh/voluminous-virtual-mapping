@@ -17,6 +17,7 @@ public interface Protocol {
   int REGISTER_SERVER_RESPONSE = 3;
 
   int APPLICATION_HEATBEAT = 4;
+  int GET_SECTOR_REQUEST = 5;
 
   int REGISTER_CLIENT_REQUEST = 5;
 

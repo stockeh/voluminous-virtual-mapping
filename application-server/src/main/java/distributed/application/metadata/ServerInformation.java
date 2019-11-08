@@ -10,22 +10,26 @@ import distributed.common.transport.TCPConnection;
  */
 public class ServerInformation {
 
-  private final TCPConnection connection;
+	private final TCPConnection connection;
 
-  private int threadCount;
+	private int threadCount;
 
-  /**
-   * Set final server information for newly connected server.
-   * 
-   * @param connection
-   */
-  public ServerInformation(TCPConnection connection) {
-    this.connection = connection;
-  }
+	/**
+	 * Set final server information for newly connected server.
+	 * 
+	 * @param connection
+	 */
+	public ServerInformation(TCPConnection connection) {
+		this.connection = connection;
+	}
 
-  public void updateServerInformation(ApplicationHeartbeat message) {
-    this.threadCount = message.getThreadCount();
-  }
+	public void updateServerInformation(ApplicationHeartbeat message) {
+		this.threadCount = message.getThreadCount();
+	}
 
+	public int getThreadCount() { return threadCount; }
 
+	public void setThreadCount(int threadCount) { this.threadCount = threadCount; }
+
+	public TCPConnection getConnection() { return connection; }
 }
