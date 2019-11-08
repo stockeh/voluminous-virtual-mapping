@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.Timer;
 import distributed.application.heartbeat.ServerHeartbeatManager;
+import distributed.application.io.DFS;
 import distributed.application.metadata.ServerMetadata;
 import distributed.application.util.Constants;
 import distributed.application.util.Properties;
@@ -33,6 +34,8 @@ public class Server implements Node {
   private static final String EXIT = "exit";
 
   private static final String HELP = "help";
+
+  private static final String LOAD = "load";
 
   private final ServerMetadata metadata;
 
@@ -76,6 +79,14 @@ public class Server implements Node {
       LOG.error(
           "Unable to successfully start server. Exiting. " + e.toString() );
       System.exit( 1 );
+    }
+  }
+
+  private void loadFile(String filename) {
+    try {
+      DFS.readFile(filename);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
@@ -129,6 +140,9 @@ public class Server implements Node {
           displayHelp();
           break;
 
+        case LOAD :
+          loadFile(input[1]);
+          break;
         default :
           LOG.error(
               "Unable to process. Please enter a valid command! Input 'help'"

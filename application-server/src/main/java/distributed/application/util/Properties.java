@@ -20,4 +20,9 @@ public interface Properties {
   final String SYSTEM_LOG_LEVEL =
       Configurations.getInstance(CONF_NAME).getProperty( "system.log.level", "INFO" );
 
+  final String CORE_SITE_LOCATION= Configurations.getInstance(CONF_NAME).getProperty("core.site.conf.location");
+
+  final String HDFS_SITE_LOCATION= Configurations.getInstance(CONF_NAME).getProperty("hdfs.site.conf.location");
+
+
 }
