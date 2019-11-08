@@ -6,6 +6,8 @@ import distributed.client.util.Properties;
 import distributed.common.util.Logger;
 import distributed.common.wireformats.Event;
 import distributed.common.wireformats.Factory;
+import distributed.common.wireformats.GenericMessage;
+import distributed.common.wireformats.Protocol;
 
 /**
  * Singleton class in charge of creating objects, i.e., messaging
@@ -56,6 +58,10 @@ public class EventFactory implements Factory {
     switch ( ByteBuffer.wrap( marshalledBytes ).getInt() )
     {
 
+      case Protocol.DISCOVER_RESPONSE :
+      case Protocol.REGISTER_CLIENT_RESPONSE :
+        return new GenericMessage( marshalledBytes );
+      
       default :
         LOG.error( "Event could not be created. "
             + ByteBuffer.wrap( marshalledBytes ).getInt() );

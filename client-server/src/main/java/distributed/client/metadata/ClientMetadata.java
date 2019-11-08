@@ -10,8 +10,13 @@ package distributed.client.metadata;
 public class ClientMetadata {
 
   private final String connection;
+
   private final String host;
+  
   private final int port;
+  
+  private final String initialSector;
+  
 
   public String getHost() {
     return host;
@@ -25,10 +30,11 @@ public class ClientMetadata {
    * Default Constructor -
    * 
    */
-  public ClientMetadata(String host, int port) {
+  public ClientMetadata(String host, int port, String initialSector) {
     this.host = host;
     this.port = port;
     this.connection = host + ":" + port;
+    this.initialSector = initialSector;
   }
 
   /**
@@ -37,6 +43,14 @@ public class ClientMetadata {
    */
   public String getConnection() {
     return connection;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public String getInitialSector() {
+    return initialSector;
   }
 
 }

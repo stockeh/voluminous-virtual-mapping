@@ -15,7 +15,7 @@ import distributed.common.transport.TCPSender;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.wireformats.Event;
-import distributed.common.wireformats.GenericPortMessage;
+import distributed.common.wireformats.GenericMessage;
 import distributed.common.wireformats.Protocol;
 
 /**
@@ -34,6 +34,7 @@ public class Client implements Node {
 
   private final ClientMetadata metadata;
 
+  private TCPConnection server;
 
   /**
    * Default constructor - creates a new server tying the
@@ -42,9 +43,10 @@ public class Client implements Node {
    * 
    * @param host
    * @param port
+   * @param initialSector
    */
-  private Client(String host, int port) {
-    this.metadata = new ClientMetadata( host, port );
+  private Client(String host, int port, String initialSector) {
+    this.metadata = new ClientMetadata( host, port, initialSector );
   }
 
   /**
@@ -56,8 +58,14 @@ public class Client implements Node {
   public static void main(String[] args) {
     try ( ServerSocket serverSocket = new ServerSocket( 0 ) )
     {
+      String sectorIdentifier = "0,0";
+      if ( args.length > 0 )
+      {
+        sectorIdentifier = args[ 0 ];
+      }
+
       Client node = new Client( InetAddress.getLocalHost().getHostName(),
-          serverSocket.getLocalPort() );
+          serverSocket.getLocalPort(), sectorIdentifier );
 
       LOG.info( "Client node starting up at: " + new Date() + ", on "
           + node.metadata.getConnection() );
@@ -66,7 +74,7 @@ public class Client implements Node {
           new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
           "Client Thread" ) ).start();
 
-      node.connectToServer();
+      node.connectToSwitch( args );
       node.interact();
     } catch ( IOException e )
     {
@@ -76,13 +84,32 @@ public class Client implements Node {
     }
   }
 
-  public void connectToServer() {
-    try {
-      TCPSender sender = new TCPSender(new Socket(Properties.SWITCH_HOST, Properties.SWITCH_PORT));
-      sender.sendData(new GenericPortMessage(Protocol.DISCOVER_REQUEST, metadata.getPort()).getBytes());
-    } catch (IOException e) {
+  /**
+   * Send connection message to switch to request a server
+   * 
+   * @param args contains the sector location
+   * 
+   */
+  public void connectToSwitch(String[] args) {
+    try
+    {
+      TCPConnection switchConnection = new TCPConnection( this,
+          new Socket( Properties.SWITCH_HOST, Properties.SWITCH_PORT ),
+          EventFactory.getInstance() );
+
+      switchConnection.startReceiver();
+
+      TCPSender sender = switchConnection.getTCPSender();
+
+      sender.sendData( new GenericMessage( Protocol.DISCOVER_REQUEST,
+          metadata.getInitialSector() ).getBytes() );
+
+    } catch ( IOException e )
+    {
+      LOG.error( "Unable to connect to the Switch. " + e.toString() );
       e.printStackTrace();
     }
+    return;
   }
 
   /**
@@ -132,8 +159,46 @@ public class Client implements Node {
     switch ( event.getType() )
     {
       case Protocol.DISCOVER_RESPONSE :
+        connectToServer( event, connection );
+        break;
+
+      case Protocol.REGISTER_CLIENT_RESPONSE :
+        // TODO: Start moving the client about the environment
+        LOG.info( "Client successfully connected to the server!" );
         break;
     }
+  }
+
+  /**
+   * Initiate a connection with the server and close the connection to
+   * the connection.
+   * 
+   * @param event
+   * @param connection
+   */
+  private void connectToServer(Event event, TCPConnection connection) {
+    String[] connectionIdentifier =
+        ( ( GenericMessage ) event ).getMessage().split( ":" );
+    try
+    {
+      server = new TCPConnection( this,
+          new Socket( connectionIdentifier[ 0 ],
+              Integer.parseInt( connectionIdentifier[ 1 ] ) ),
+          EventFactory.getInstance() );
+
+      server.startReceiver();
+
+      server.getTCPSender()
+          .sendData( new GenericMessage( Protocol.REGISTER_CLIENT_REQUEST,
+              metadata.getInitialSector() ).getBytes() );
+
+    } catch ( IOException e )
+    {
+      LOG.error( "Unable to connect client to Server " + e.toString() );
+      e.printStackTrace();
+      System.exit( 1 );
+    }
+    connection.close();
   }
 
   /**
