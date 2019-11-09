@@ -1,11 +1,9 @@
 package distributed.application.metadata;
 
-import distributed.application.util.Properties;
 import distributed.common.transport.TCPConnection;
 import distributed.common.util.Sector;
 
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
