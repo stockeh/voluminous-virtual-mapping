@@ -1,15 +1,11 @@
 package distributed.common.util;
 
-import distributed.common.wireformats.MessageMarshaller;
-import distributed.common.wireformats.MessageUnMarshaller;
-
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
 public class Sector {
-  private int x;
-  private int y;
+  public int x;
+  public int y;
 
   public int getX() {
     return x;
@@ -24,10 +20,10 @@ public class Sector {
     this.y = y;
   }
 
-  public Sector(byte[] bytes) {
-    MessageUnMarshaller.readEvent(this.getClass(), this, bytes);
-  }
-
+//  public Sector(byte[] bytes) {
+//    MessageUnMarshaller.readEvent(this.getClass(), this, bytes);
+//  }
+  public Sector(){}
   public String toString() {
     return x+ "," + y;
   }

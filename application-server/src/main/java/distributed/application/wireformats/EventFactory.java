@@ -60,6 +60,8 @@ public class EventFactory implements Factory {
         return new SectorWindowResponse(marshalledBytes);
       case Protocol.SECTOR_WINDOW_REQUEST:
         return new SectorWindowRequest(marshalledBytes);
+      case Protocol.CLIENT_ENTRY_RESPONSE:
+        return new ClientEntryResponse(marshalledBytes);
       case Protocol.REGISTER_SERVER_REQUEST :
       case Protocol.REGISTER_SERVER_RESPONSE :
       case Protocol.REGISTER_CLIENT_REQUEST :

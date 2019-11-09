@@ -18,6 +18,7 @@ import distributed.common.transport.TCPSender;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
+import distributed.common.wireformats.ClientEntryResponse;
 import distributed.common.wireformats.Event;
 import distributed.common.wireformats.GenericMessage;
 import distributed.common.wireformats.Protocol;
@@ -184,7 +185,7 @@ public class Switch implements Node {
 	    try
 	    {
 	      connection.getTCPSender().sendData(
-	          new GenericMessage( Protocol.DISCOVER_RESPONSE, serverToConnect )
+	          new ClientEntryResponse( Protocol.CLIENT_ENTRY_RESPONSE, Properties.SECTOR_MAP_SIZE, Properties.SECTOR_BOUNDARY_SIZE, serverToConnect )
 	              .getBytes() );
 	    } catch ( IOException e )
 	    {
