@@ -93,6 +93,20 @@ public class Server implements Node {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    notifyWaitingClients(sectorID);
+  }
+
+
+  private void notifyWaitingClients(Sector sectorID) {
+    GenericMessage message = new GenericMessage(Protocol.SERVER_INITIALIZED);
+    for(TCPConnection connection : metadata.getWaitingClients(sectorID)) {
+      try {
+        connection.getTCPSender().sendData(message.getBytes());
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    metadata.clearWaitingClients(sectorID);
   }
 
   /**
@@ -187,6 +201,9 @@ public class Server implements Node {
   private void handleSectorWindowRequest(Event event, TCPConnection connection) {
     SectorWindowRequest request = (SectorWindowRequest) event;
     Set<Sector> matchingSectors = metadata.getMatchingSectors(request.getSectors());
+    for(Sector sector : request.getSectors()) {
+      metadata.addWaitingClient(sector, connection);
+    }
     byte[][] window = metadata.getWindow(matchingSectors, request.currentSector,request.position[0],
             request.position[1], request.windowSize);
     try {

@@ -1,12 +1,11 @@
 package distributed.application.metadata;
 
 import distributed.application.util.Properties;
+import distributed.common.transport.TCPConnection;
 import distributed.common.util.Sector;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -22,6 +21,7 @@ public class ServerMetadata {
 
   // sector identifier , sector information
   private ConcurrentHashMap<Sector, SectorInformation> sectors = new ConcurrentHashMap<>();
+  private ConcurrentHashMap<Sector, List<TCPConnection>> waitingClients;
 //  private ConcurrentHashMap<String, SectorInformation> sectors;
 
   public void addSector(Sector sectorID, byte[][] sector) {
@@ -30,6 +30,19 @@ public class ServerMetadata {
 
   public boolean containsSector(Sector sectorID) {
     return sectors.containsKey(sectorID);
+  }
+
+  public final List<TCPConnection> getWaitingClients(Sector sectorID) {
+    return waitingClients.get(sectorID);
+  }
+
+  public final void addWaitingClient(Sector sectorID, TCPConnection client) {
+    waitingClients.putIfAbsent(sectorID, Collections.synchronizedList(new ArrayList<>()));
+    waitingClients.get(sectorID).add(client);
+  }
+
+  public final void clearWaitingClients(Sector sectorID) {
+    sectors.remove(sectorID);
   }
 
   public Set<Sector> getMatchingSectors(Set<Sector> requested) {
