@@ -1,5 +1,7 @@
 package distributed.client.metadata;
 
+import distributed.client.util.Navigator;
+
 /**
  * Class to maintain the information needed for a given server. This
  * includes...
@@ -12,11 +14,10 @@ public class ClientMetadata {
   private final String connection;
 
   private final String host;
-  
+
   private final int port;
-  
-  private final String initialSector;
-  
+
+  private Navigator navigator;
 
   public String getHost() {
     return host;
@@ -30,11 +31,10 @@ public class ClientMetadata {
    * Default Constructor -
    * 
    */
-  public ClientMetadata(String host, int port, String initialSector) {
+  public ClientMetadata(String host, int port) {
     this.host = host;
     this.port = port;
     this.connection = host + ":" + port;
-    this.initialSector = initialSector;
   }
 
   /**
@@ -45,12 +45,11 @@ public class ClientMetadata {
     return connection;
   }
   
-  /**
-   * 
-   * @return
-   */
-  public String getInitialSector() {
-    return initialSector;
+  public Navigator getNavigator() {
+    return navigator;
   }
 
+  public void setNavigation(String initialSector, String initialLocation) {
+    navigator = new Navigator( initialSector, initialLocation );
+  }
 }

@@ -1,0 +1,79 @@
+package distributed.common.wireformats;
+
+import java.io.IOException;
+import java.util.Set;
+
+/**
+ * 
+ * @author stock
+ *
+ */
+public class SectorWindowRequest implements Event {
+
+  public int type;
+
+  public long initialTimestamp;
+
+  public Set<String> sectors;
+
+  public int windowSize;
+
+  public int[] position;
+
+  /**
+   * Constructor without assigned message
+   * 
+   */
+  public SectorWindowRequest(int type) {
+    this.type = type;
+  }
+
+  /**
+   * Constructor - Unmarshall the <code>byte[]</code> to the respective
+   * class elements.
+   * 
+   * @param marshalledBytes is the byte array of the class.
+   * @throws IOException
+   */
+  public SectorWindowRequest(byte[] marshalledBytes) throws IOException {
+    MessageUnMarshaller.readEvent( getClass(), this, marshalledBytes );
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int getType() {
+    return type;
+  }
+
+  public long getInitialTimestamp() {
+    return initialTimestamp;
+  }
+
+  public Set<String> getSectors() {
+    return sectors;
+  }
+
+  public int getWindowSize() {
+    return windowSize;
+  }
+
+  public int[] getPosition() {
+    return position;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public byte[] getBytes() throws IOException {
+    return MessageMarshaller.writeEvent( getClass(), this );
+  }
+
+  @Override
+  public String toString() {
+    return Protocol.class.getFields()[ type ].getName().toString();
+  }
+
+}

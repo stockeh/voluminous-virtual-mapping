@@ -43,10 +43,22 @@ public class Client implements Node {
    * 
    * @param host
    * @param port
-   * @param initialSector
+   * @param args
    */
-  private Client(String host, int port, String initialSector) {
-    this.metadata = new ClientMetadata( host, port, initialSector );
+  private Client(String host, int port, String[] args) {
+    String initialSector = "0,0";
+    if ( args.length > 0 )
+    {
+      initialSector = args[ 0 ];
+    }
+
+    String initialLocation = "0,0";
+    if ( args.length > 1 )
+    {
+      initialLocation = args[ 1 ];
+    }
+    this.metadata = new ClientMetadata( host, port );
+    this.metadata.setNavigation( initialSector, initialLocation );
   }
 
   /**
@@ -58,14 +70,8 @@ public class Client implements Node {
   public static void main(String[] args) {
     try ( ServerSocket serverSocket = new ServerSocket( 0 ) )
     {
-      String sectorIdentifier = "0,0";
-      if ( args.length > 0 )
-      {
-        sectorIdentifier = args[ 0 ];
-      }
-
       Client node = new Client( InetAddress.getLocalHost().getHostName(),
-          serverSocket.getLocalPort(), sectorIdentifier );
+          serverSocket.getLocalPort(), args );
 
       LOG.info( "Client node starting up at: " + new Date() + ", on "
           + node.metadata.getConnection() );
@@ -102,7 +108,7 @@ public class Client implements Node {
       TCPSender sender = switchConnection.getTCPSender();
 
       sender.sendData( new GenericMessage( Protocol.DISCOVER_REQUEST,
-          metadata.getInitialSector() ).getBytes() );
+          metadata.getNavigator().getInitialSector() ).getBytes() );
 
     } catch ( IOException e )
     {
@@ -190,7 +196,7 @@ public class Client implements Node {
 
       server.getTCPSender()
           .sendData( new GenericMessage( Protocol.REGISTER_CLIENT_REQUEST,
-              metadata.getInitialSector() ).getBytes() );
+              metadata.getNavigator().getInitialSector() ).getBytes() );
 
     } catch ( IOException e )
     {
