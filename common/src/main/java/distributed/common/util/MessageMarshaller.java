@@ -1,7 +1,8 @@
-package distributed.common.wireformats;
+package distributed.common.util;
 
 
 import distributed.common.util.Sector;
+import distributed.common.wireformats.Event;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,8 +40,7 @@ public class MessageMarshaller {
   }
 
    private static void writeSector(Sector sector) throws IOException {
-      writeInt(sector.getX());
-      writeInt(sector.getY());
+      write(sector.getClass(), sector);
     }
 
     private static void writeSectorSet(Set<Sector> sectors) throws IOException {

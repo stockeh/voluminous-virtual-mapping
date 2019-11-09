@@ -1,15 +1,12 @@
 package distributed.common.util;
 
-import java.io.IOException;
 import java.util.Objects;
-import distributed.common.wireformats.MessageMarshaller;
-import distributed.common.wireformats.MessageUnMarshaller;
 
 public class Sector {
 
-  private int x;
+  public int x;
 
-  private int y;
+  public int y;
 
   public Sector() {
     this.x = 0;
@@ -19,14 +16,6 @@ public class Sector {
   public Sector(int x, int y) {
     this.x = x;
     this.y = y;
-  }
-
-  public Sector(byte[] bytes) {
-    MessageUnMarshaller.readEvent( this.getClass(), this, bytes );
-  }
-
-  public void writeSector() throws IOException {
-    MessageMarshaller.writeEvent( this.getClass(), this );
   }
 
   public int getX() {

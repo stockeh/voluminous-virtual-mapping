@@ -1,4 +1,4 @@
-package distributed.common.wireformats;
+package distributed.common.util;
 
 import distributed.common.util.Sector;
 
@@ -36,7 +36,9 @@ public class MessageUnMarshaller {
   }
 
   private static Sector readSector() throws IOException {
-    return new Sector(readInt(), readInt());
+   Sector sector = new Sector();
+   read(sector.getClass(), sector);
+   return sector;
   }
 
   private static Set<Sector> readSectorSet() throws IOException {

@@ -55,17 +55,20 @@ public class EventFactory implements Factory {
     switch ( ByteBuffer.wrap( marshalledBytes ).getInt() )
     {
       case Protocol.GET_SECTOR_REQUEST :
-        return new GetSectorRequest(marshalledBytes);
-      case Protocol.SECTOR_WINDOW_RESPONSE:
-        return new SectorWindowResponse(marshalledBytes);
-      case Protocol.SECTOR_WINDOW_REQUEST:
-        return new SectorWindowRequest(marshalledBytes);
+        return new GetSectorRequest( marshalledBytes );
+        
+      case Protocol.SECTOR_WINDOW_RESPONSE :
+        return new SectorWindowResponse( marshalledBytes );
+        
+      case Protocol.SECTOR_WINDOW_REQUEST :
+        return new SectorWindowRequest( marshalledBytes );
+
       case Protocol.REGISTER_SERVER_REQUEST :
       case Protocol.REGISTER_SERVER_RESPONSE :
       case Protocol.REGISTER_CLIENT_REQUEST :
       case Protocol.DISCOVER_REQUEST :
         return new GenericMessage( marshalledBytes );
-        
+
       case Protocol.APPLICATION_HEATBEAT :
         return new ApplicationHeartbeat( marshalledBytes );
 

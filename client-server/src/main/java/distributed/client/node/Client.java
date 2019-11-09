@@ -15,6 +15,7 @@ import distributed.common.transport.TCPSender;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
+import distributed.common.wireformats.DiscoverResponse;
 import distributed.common.wireformats.Event;
 import distributed.common.wireformats.GenericMessage;
 import distributed.common.wireformats.Protocol;
@@ -194,8 +195,12 @@ public class Client implements Node {
    * @param connection
    */
   private void connectToServer(Event event, TCPConnection connection) {
-    String[] connectionIdentifier =
-        ( ( GenericMessage ) event ).getMessage().split( ":" );
+    DiscoverResponse response = ( DiscoverResponse ) event;
+
+    String[] connectionIdentifier = response.serverToConnect.split( ":" );
+    metadata.getNavigator().setSectorMapSize( response.mapSize );
+    metadata.getNavigator().setSectorBoundarySize( response.sectorSize );
+
     try
     {
       server = new TCPConnection( this,

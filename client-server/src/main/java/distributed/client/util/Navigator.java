@@ -22,11 +22,9 @@ public class Navigator {
   private static final Logger LOG =
       Logger.getInstance( Properties.SYSTEM_LOG_LEVEL );
 
-  // TODO: Load this value from the request of the switch
-  private int sectorBoundarySize = 100;
+  private int sectorBoundarySize;
 
-  // TODO: Load this value from the request of the switch
-  private int sectorMapSize = 4;
+  private int sectorMapSize;
 
   private TCPConnection primaryServer;
 
@@ -47,6 +45,14 @@ public class Navigator {
     position = new double[] { initialPosition[ 0 ], initialPosition[ 1 ] };
 
     velocity = new double[] { 0, 0 };
+  }
+
+  public void setSectorMapSize(int sectorMapSize) {
+    this.sectorMapSize = sectorMapSize;
+  }
+
+  public void setSectorBoundarySize(int sectorBoundarySize) {
+    this.sectorBoundarySize = sectorBoundarySize;
   }
 
   /**
