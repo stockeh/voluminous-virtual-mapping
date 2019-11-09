@@ -154,6 +154,7 @@ public class Server implements Node {
         break;
       case Protocol.GET_SECTOR_REQUEST :
     	  getSectorRequestHandler(event, connection);
+    	  break;
 
       case Protocol.REGISTER_CLIENT_REQUEST :
         handleIncomingClient( event, connection );
