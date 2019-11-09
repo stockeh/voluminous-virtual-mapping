@@ -59,7 +59,8 @@ public class EventFactory implements Factory {
 
       case Protocol.REGISTER_CLIENT_RESPONSE :
         return new GenericMessage( marshalledBytes );
-      
+      case Protocol.SERVER_INITIALIZED :
+        return new GenericMessage( marshalledBytes );
       default :
         LOG.error( "Event could not be created. "
             + ByteBuffer.wrap( marshalledBytes ).getInt() );
