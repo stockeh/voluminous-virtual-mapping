@@ -26,4 +26,5 @@ public interface Protocol {
   int SECTOR_WINDOW_REQUEST = 8;
   int SECTOR_WINDOW_RESPONSE = 9;
 
+  int SERVER_INITIALIZED = 10;
 }

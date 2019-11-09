@@ -19,6 +19,7 @@ import distributed.common.wireformats.DiscoverResponse;
 import distributed.common.wireformats.Event;
 import distributed.common.wireformats.GenericMessage;
 import distributed.common.wireformats.Protocol;
+import distributed.common.wireformats.SectorWindowResponse;
 
 /**
  *
@@ -184,7 +185,33 @@ public class Client implements Node {
         metadata.getNavigator().setInitialServerConnection( connection );
         LOG.info( "Client successfully connected to the server!" );
         break;
+
+      case Protocol.SERVER_INITIALIZED :
+        LOG.info( "The initial server has successfully loaded the file. "
+            + "Initializing Client." );
+        metadata.getNavigator().init();
+        break;
+
+      case Protocol.SECTOR_WINDOW_RESPONSE :
+        handelSectorWindowResponse( event );
+        break;
     }
+  }
+
+  /**
+   * Manage the response from the server(s) containing the bytes of the
+   * requested window.
+   * 
+   * @param event
+   */
+  private void handelSectorWindowResponse(Event event) {
+    SectorWindowResponse response = ( SectorWindowResponse ) event;
+
+    // TODO: wait for all responses to come in before constructing the
+    // window and then write to file?
+
+    LOG.debug( response.numSectors + " " + response.sectorWindow.length + " x "
+        + response.sectorWindow[ 0 ].length );
   }
 
   /**

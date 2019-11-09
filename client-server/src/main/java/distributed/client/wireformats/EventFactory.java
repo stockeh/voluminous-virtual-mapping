@@ -54,12 +54,15 @@ public class EventFactory implements Factory {
   public Event createEvent(byte[] marshalledBytes) throws IOException {
     switch ( ByteBuffer.wrap( marshalledBytes ).getInt() )
     {
-      case Protocol.DISCOVER_RESPONSE:
-        return new DiscoverResponse(marshalledBytes);
+      case Protocol.DISCOVER_RESPONSE :
+        return new DiscoverResponse( marshalledBytes );
 
       case Protocol.REGISTER_CLIENT_RESPONSE :
         return new GenericMessage( marshalledBytes );
-      
+
+      case Protocol.SECTOR_WINDOW_RESPONSE :
+        return new SectorWindowResponse( marshalledBytes );
+
       default :
         LOG.error( "Event could not be created. "
             + ByteBuffer.wrap( marshalledBytes ).getInt() );
