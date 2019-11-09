@@ -1,5 +1,7 @@
 package distributed.common.wireformats;
 
+import distributed.common.util.Sector;
+
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -32,9 +34,21 @@ public class MessageUnMarshaller {
     return new String(readByteArr());
   }
 
+  private static Sector readSector() throws IOException {
+    return new Sector(readInt(), readInt());
+  }
+
   private static byte[] readByteArr() throws IOException {
     byte[] bytes = new byte[din.readInt()];
     din.readFully(bytes);
+    return bytes;
+  }
+
+  private static byte[][] readByteArrArr() throws IOException {
+    byte[][] bytes = new byte[din.readInt()][];
+    for(int i = 0; i < bytes.length; i++) {
+      bytes[i] = readByteArr();
+    }
     return bytes;
   }
 
@@ -54,13 +68,13 @@ public class MessageUnMarshaller {
     }
   }
 
-  public static void readEvent(Class<?> c, Event event, byte[] bytes) {
+  public static void readEvent(Class<?> c, Object event, byte[] bytes) {
     ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
     din = new DataInputStream(byteArrayInputStream);
     read(c, event);
   }
 
-  private static void read(Class<?> c, Event event) {
+  private static void read(Class<?> c, Object event) {
     Field[] fields = c.getDeclaredFields();
     try {
       for (Field field : fields) {
@@ -85,9 +99,16 @@ public class MessageUnMarshaller {
           case "java.lang.Boolean":
             field.set(event, readBoolean());
             break;
+          case "Sector":
+            field.set(event, readSector());
+            break;
           case "byte[]":
           case "java.lang.Byte[]":
             field.set(event, readByteArr());
+            break;
+          case "byte[][]":
+          case "java.lang.Byte[][]":
+            field.set(event, readByteArrArr());
             break;
           case "java.lang.String[]":
             field.set(event, readStringArray());

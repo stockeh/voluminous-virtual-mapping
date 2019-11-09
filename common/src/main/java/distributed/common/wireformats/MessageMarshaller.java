@@ -1,6 +1,8 @@
 package distributed.common.wireformats;
 
 
+import distributed.common.util.Sector;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -35,10 +37,21 @@ public class MessageMarshaller {
       dout.write(strBytes);
     }
 
+    private static void writeSector(Sector sector) throws IOException {
+      sector.writeSector();
+    }
+
     private static void writeByteArr(byte[] arr) throws IOException {
       dout.writeInt(arr.length);
       dout.write(arr);
     }
+
+  private static void writeByteArrArr(byte[][] arr) throws IOException {
+    dout.writeInt(arr.length);
+    for(byte[] bytes : arr) {
+      writeByteArr(bytes);
+    }
+  }
 
     private static void writeStringArr(String[] arr) throws IOException {
       writeInt(arr.length);
@@ -54,7 +67,7 @@ public class MessageMarshaller {
      }
     }
 
-    public static byte[] writeEvent(Class<?> c, Event event) throws IOException {
+    public static byte[] writeEvent(Class<?> c, Object event) throws IOException {
       baOutStream = new ByteArrayOutputStream();
       dout = new DataOutputStream(new BufferedOutputStream(baOutStream));
       write(c, event);
@@ -62,7 +75,7 @@ public class MessageMarshaller {
     }
 
     @SuppressWarnings( "unchecked" )
-    private static void write(Class<?> c, Event event) {
+    private static void write(Class<?> c, Object event) {
       Field[] fields = c.getDeclaredFields();
       try {
         for (Field field : fields) {
@@ -87,9 +100,16 @@ public class MessageMarshaller {
             case "java.lang.Boolean":
               writeBoolean(field.getBoolean(event));
               break;
+            case "Sector":
+              writeSector((Sector) field.get(event));
+              break;
             case "byte[]":
             case "java.lang.Byte[]":
               writeByteArr((byte[]) field.get(event));
+              break;
+            case "byte[][]":
+            case "java.lang.Byte[][]":
+              writeByteArrArr((byte[][]) field.get(event));
               break;
             case "java.lang.String[]":
               writeStringArr((String[])field.get(event));
