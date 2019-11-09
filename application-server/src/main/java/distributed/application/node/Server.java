@@ -168,6 +168,9 @@ public class Server implements Node {
       case Protocol.REGISTER_SERVER_RESPONSE :
         registerServerResponseHandler( event, connection );
         break;
+      case Protocol.GET_SECTOR_REQUEST :
+    	  getSectorRequestHandler(event, connection);
+    	  break;
 
       case Protocol.REGISTER_CLIENT_REQUEST :
         handleIncomingClient( event, connection );
@@ -206,7 +209,12 @@ public class Server implements Node {
     }
   }
 
-  /**
+  private void getSectorRequestHandler(Event event, TCPConnection connection) {
+	// TODO Auto-generated method stub
+	
+  }
+
+/**
    * Display the response status from the switch.
    * 
    * @param event
