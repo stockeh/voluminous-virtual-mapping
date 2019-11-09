@@ -2,6 +2,8 @@ package distributed.application.wireformats;
 
 import java.io.IOException;
 import java.util.Set;
+
+import distributed.common.util.Sector;
 import distributed.common.wireformats.Event;
 import distributed.common.wireformats.MessageMarshaller;
 import distributed.common.wireformats.MessageUnMarshaller;
@@ -20,7 +22,7 @@ public class ApplicationHeartbeat implements Event {
 
   public int threadCount;
   
-  public Set<String> sectorIdentifiers;
+  public Set<Sector> sectorIdentifiers;
 
   /**
    * Constructor with assigned message
@@ -66,11 +68,11 @@ public class ApplicationHeartbeat implements Event {
     this.threadCount = threadCount;
   }
   
-  public Set<String> getSectorIdentifiers() {
+  public Set<Sector> getSectorIdentifiers() {
     return sectorIdentifiers;
   }
 
-  public void setSectorIdentifiers(Set<String> sectorIdentifiers) {
+  public void setSectorIdentifiers(Set<Sector> sectorIdentifiers) {
     this.sectorIdentifiers = sectorIdentifiers;
   }
 

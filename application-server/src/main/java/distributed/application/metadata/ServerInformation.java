@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import distributed.application.wireformats.ApplicationHeartbeat;
 import distributed.common.transport.TCPConnection;
+import distributed.common.util.Sector;
 
 /**
  * 
@@ -16,7 +17,7 @@ public class ServerInformation {
 
   private int threadCount;
 
-  private Set<String> sectorIdentifiers = new HashSet<>();
+  private Set<Sector> sectorIdentifiers = new HashSet<>();
 
   /**
    * Set final server information for newly connected server.
@@ -44,11 +45,11 @@ public class ServerInformation {
     return connection;
   }
 
-  public Set<String> getSectorIdentifiers() {
+  public Set<Sector> getSectorIdentifiers() {
     return sectorIdentifiers;
   }
 
-  public void setSectorIdentifiers(Set<String> sectorIdentifiers) {
+  public void setSectorIdentifiers(Set<Sector> sectorIdentifiers) {
     this.sectorIdentifiers = sectorIdentifiers;
   }
 }

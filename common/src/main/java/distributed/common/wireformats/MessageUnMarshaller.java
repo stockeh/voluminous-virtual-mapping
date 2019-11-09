@@ -1,5 +1,7 @@
 package distributed.common.wireformats;
 
+import distributed.common.util.Sector;
+
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -7,6 +9,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 public class MessageUnMarshaller {
   private static DataInputStream din;
@@ -32,9 +35,30 @@ public class MessageUnMarshaller {
     return new String(readByteArr());
   }
 
+  private static Sector readSector() throws IOException {
+    return new Sector(readInt(), readInt());
+  }
+
+  private static Set<Sector> readSectorSet() throws IOException {
+    int size = readInt();
+    Set<Sector> set = new HashSet<>();
+    for(int i = 0; i < size; i++) {
+      set.add(readSector());
+    }
+    return set;
+  }
+
   private static byte[] readByteArr() throws IOException {
     byte[] bytes = new byte[din.readInt()];
     din.readFully(bytes);
+    return bytes;
+  }
+
+  private static byte[][] readByteArrArr() throws IOException {
+    byte[][] bytes = new byte[din.readInt()][];
+    for(int i = 0; i < bytes.length; i++) {
+      bytes[i] = readByteArr();
+    }
     return bytes;
   }
 
@@ -54,7 +78,7 @@ public class MessageUnMarshaller {
     }
   }
 
-  public static void readEvent(Class<?> c, Event event, byte[] bytes) {
+  public static void readEvent(Class<?> c, Object event, byte[] bytes) {
     ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
     din = new DataInputStream(byteArrayInputStream);
     read(c, event);
@@ -71,7 +95,7 @@ public class MessageUnMarshaller {
     return ints;
   }
 
-  private static void read(Class<?> c, Event event) {
+  private static void read(Class<?> c, Object event) {
     Field[] fields = c.getDeclaredFields();
     try {
       for (Field field : fields) {
@@ -96,9 +120,20 @@ public class MessageUnMarshaller {
           case "java.lang.Boolean":
             field.set(event, readBoolean());
             break;
+          case "distributed.common.util.Sector":
+            field.set(event, readSector());
+            break;
+          case "java.util.Set<distributed.common.util.Sector>":
+          case "java.util.HashSet<distributed.common.util.Sector>":
+            field.set(event, readSectorSet());
+            break;
           case "byte[]":
           case "java.lang.Byte[]":
             field.set(event, readByteArr());
+            break;
+          case "byte[][]":
+          case "java.lang.Byte[][]":
+            field.set(event, readByteArrArr());
             break;
           case "java.lang.String[]":
             field.set(event, readStringArray());
