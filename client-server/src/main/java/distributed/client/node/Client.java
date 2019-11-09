@@ -14,6 +14,7 @@ import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPSender;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
+import distributed.common.util.Sector;
 import distributed.common.wireformats.Event;
 import distributed.common.wireformats.GenericMessage;
 import distributed.common.wireformats.Protocol;
@@ -44,21 +45,30 @@ public class Client implements Node {
    * @param host
    * @param port
    * @param args
+   * 
+   * @throws NumberFormatException
+   * @throws IndexOutOfBoundsException
    */
-  private Client(String host, int port, String[] args) {
-    String initialSector = "0,0";
+  private Client(String host, int port, String[] args)
+      throws NumberFormatException, IndexOutOfBoundsException {
+
+    Sector initialSector = new Sector();
     if ( args.length > 0 )
     {
-      initialSector = args[ 0 ];
+      String[] s = args[ 0 ].split( "," );
+      initialSector.update( Integer.parseInt( s[ 0 ] ),
+          Integer.parseInt( s[ 1 ] ) );
     }
-
-    String initialLocation = "0,0";
+    int[] initialPosition = new int[] { 0, 0 };
     if ( args.length > 1 )
     {
-      initialLocation = args[ 1 ];
+      String[] s = args[ 1 ].split( "," );
+      initialPosition[ 0 ] = Integer.parseInt( s[ 0 ] );
+      initialPosition[ 1 ] = Integer.parseInt( s[ 1 ] );
     }
+
     this.metadata = new ClientMetadata( host, port );
-    this.metadata.setNavigation( initialSector, initialLocation );
+    this.metadata.setNavigation( initialSector, initialPosition );
   }
 
   /**
@@ -82,7 +92,8 @@ public class Client implements Node {
 
       node.connectToSwitch( args );
       node.interact();
-    } catch ( IOException e )
+    } catch ( IOException | NumberFormatException
+        | IndexOutOfBoundsException e )
     {
       LOG.error(
           "Unable to successfully start server. Exiting. " + e.toString() );
@@ -108,7 +119,7 @@ public class Client implements Node {
       TCPSender sender = switchConnection.getTCPSender();
 
       sender.sendData( new GenericMessage( Protocol.DISCOVER_REQUEST,
-          metadata.getNavigator().getInitialSector() ).getBytes() );
+          metadata.getNavigator().getInitialSector().toString() ).getBytes() );
 
     } catch ( IOException e )
     {
@@ -169,7 +180,7 @@ public class Client implements Node {
         break;
 
       case Protocol.REGISTER_CLIENT_RESPONSE :
-        // TODO: Start moving the client about the environment
+        metadata.getNavigator().setInitialServerConnection( connection );
         LOG.info( "Client successfully connected to the server!" );
         break;
     }
@@ -196,7 +207,8 @@ public class Client implements Node {
 
       server.getTCPSender()
           .sendData( new GenericMessage( Protocol.REGISTER_CLIENT_REQUEST,
-              metadata.getNavigator().getInitialSector() ).getBytes() );
+              metadata.getNavigator().getInitialSector().toString() )
+                  .getBytes() );
 
     } catch ( IOException e )
     {

@@ -1,7 +1,6 @@
 package distributed.application.util;
 
 import distributed.common.util.Configurations;
-import org.apache.kerby.config.Conf;
 
 /**
  * 
