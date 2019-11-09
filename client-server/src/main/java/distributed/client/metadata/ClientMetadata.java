@@ -1,6 +1,7 @@
 package distributed.client.metadata;
 
 import distributed.client.util.Navigator;
+import distributed.common.util.Sector;
 
 /**
  * Class to maintain the information needed for a given server. This
@@ -49,7 +50,7 @@ public class ClientMetadata {
     return navigator;
   }
 
-  public void setNavigation(String initialSector, String initialLocation) {
-    navigator = new Navigator( initialSector, initialLocation );
+  public void setNavigation(Sector initialSector, int[] initialPosition) {
+    navigator = new Navigator( initialSector, initialPosition );
   }
 }

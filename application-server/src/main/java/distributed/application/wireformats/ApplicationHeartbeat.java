@@ -5,8 +5,8 @@ import java.util.Set;
 
 import distributed.common.util.Sector;
 import distributed.common.wireformats.Event;
-import distributed.common.wireformats.MessageMarshaller;
-import distributed.common.wireformats.MessageUnMarshaller;
+import distributed.common.util.MessageMarshaller;
+import distributed.common.util.MessageUnMarshaller;
 import distributed.common.wireformats.Protocol;
 
 /**

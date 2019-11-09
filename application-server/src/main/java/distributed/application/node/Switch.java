@@ -14,10 +14,10 @@ import distributed.application.wireformats.ApplicationHeartbeat;
 import distributed.application.wireformats.EventFactory;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
-import distributed.common.transport.TCPSender;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
+import distributed.common.wireformats.DiscoverResponse;
 import distributed.common.wireformats.Event;
 import distributed.common.wireformats.GenericMessage;
 import distributed.common.wireformats.Protocol;
@@ -175,29 +175,34 @@ public class Switch implements Node {
    */
   private void clientConnectionHandler(Event event, TCPConnection connection) {
     String sectorIdentifier = ( ( GenericMessage ) event ).getMessage();
-    int row = Integer.parseInt(sectorIdentifier.substring(0,sectorIdentifier.indexOf(',')));
-    int col = Integer.parseInt(sectorIdentifier.substring(sectorIdentifier.indexOf(',')+1));
-    Sector sector = new Sector(row, col);
-    LOG.info("Connecting Client to Sector: " + sector.toString());
-    try {
-	    String serverToConnect = metadata.getServer( sector );
-	    try
-	    {
-	      connection.getTCPSender().sendData(
-	          new GenericMessage( Protocol.DISCOVER_RESPONSE, serverToConnect )
-	              .getBytes() );
-	    } catch ( IOException e )
-	    {
-	      LOG.error( "Unable to connect respond to the Client. " + e.toString() );
-	      e.printStackTrace();
-	    }
-	    LOG.info( "The Client \'"
-	        + connection.getSocket().getInetAddress().getCanonicalHostName()
-	        + "\' is directed to connect to " + serverToConnect );
-    } catch (Exception e) {
-    	LOG.error( "Unable to select application server. " + e.toString() );
-	      e.printStackTrace();
-	}
+    int row = Integer.parseInt(
+        sectorIdentifier.substring( 0, sectorIdentifier.indexOf( ',' ) ) );
+    int col = Integer.parseInt(
+        sectorIdentifier.substring( sectorIdentifier.indexOf( ',' ) + 1 ) );
+    Sector sector = new Sector( row, col );
+    LOG.info( "Connecting Client to Sector: " + sector.toString() );
+    try
+    {
+      String serverToConnect = metadata.getServer( sector );
+      try
+      {
+        connection.getTCPSender()
+            .sendData( new DiscoverResponse( Protocol.DISCOVER_RESPONSE,
+                Properties.SECTOR_MAP_SIZE, Properties.SECTOR_BOUNDARY_SIZE,
+                serverToConnect ).getBytes() );
+      } catch ( IOException e )
+      {
+        LOG.error( "Unable to connect respond to the Client. " + e.toString() );
+        e.printStackTrace();
+      }
+      LOG.info( "The Client \'"
+          + connection.getSocket().getInetAddress().getCanonicalHostName()
+          + "\' is directed to connect to " + serverToConnect );
+    } catch ( Exception e )
+    {
+      LOG.error( "Unable to select application server. " + e.toString() );
+      e.printStackTrace();
+    }
   }
 
   /**

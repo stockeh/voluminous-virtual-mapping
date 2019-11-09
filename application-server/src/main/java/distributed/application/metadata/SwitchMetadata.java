@@ -9,10 +9,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import distributed.application.util.Properties;
 import distributed.application.wireformats.ApplicationHeartbeat;
 import distributed.common.transport.TCPConnection;
+import distributed.common.util.Logger;
 import distributed.common.util.Sector;
-import distributed.common.wireformats.GenericMessage;
 import distributed.common.wireformats.GetSectorRequest;
 import distributed.common.wireformats.Protocol;
 
@@ -24,6 +25,9 @@ import distributed.common.wireformats.Protocol;
  *
  */
 public class SwitchMetadata {
+
+  private static final Logger LOG =
+      Logger.getInstance( Properties.SYSTEM_LOG_LEVEL );
 
   // server identifier, server information
   private final Map<String, ServerInformation> serverConnections;
@@ -51,43 +55,43 @@ public class SwitchMetadata {
   }
 
   public String getServer(Sector sector) throws IOException {
-    if (availableSectors.containsKey(sector)) {
+    if ( availableSectors.containsKey( sector ) )
+    {
       // TODO load balance servers
-      Set<String> servers = availableSectors.get(sector);
+      Set<String> servers = availableSectors.get( sector );
       return servers.iterator().next();
-    } else {
+    } else
+    {
       // return random server
       // TODO load balance servers
-      List<String> servers = new ArrayList<>(serverConnections.keySet());
-      Collections.shuffle(servers);
-      String server = servers.get(0);
+      List<String> servers = new ArrayList<>( serverConnections.keySet() );
+      Collections.shuffle( servers );
+      String server = servers.get( 0 );
+
+      LOG.info( "Instruct " + server + " to pull new sector ( "
+          + sector.toString() + " )." );
 
       // Instruct server to pull new sector
-      GetSectorRequest request = new GetSectorRequest(Protocol.GET_SECTOR_REQUEST, sector);
-      serverConnections.get(server).getConnection().getTCPSender().sendData(request.getBytes());
+      GetSectorRequest request =
+          new GetSectorRequest( Protocol.GET_SECTOR_REQUEST, sector );
+      serverConnections.get( server ).getConnection().getTCPSender()
+          .sendData( request.getBytes() );
 
-      return (server);
+      return ( server );
     }
   }
 
   private synchronized String getServerFewestThreads() {
-    return serverConnections
-        .entrySet()
-        .stream()
-        .sorted( (e1, e2) -> e1.getValue().getThreadCount() - e2.getValue().getThreadCount() )
-        .findFirst()
-        .get()
-        .getKey();
+    return serverConnections.entrySet().stream().sorted( (e1,
+        e2) -> e1.getValue().getThreadCount() - e2.getValue().getThreadCount() )
+        .findFirst().get().getKey();
   }
 
   private synchronized String getServerFewestSectors() {
-    return serverConnections
-        .entrySet()
-        .stream()
-        .sorted( (e1, e2) -> e1.getValue().getSectorIdentifiers().size() - e2.getValue().getSectorIdentifiers().size() )
-        .findFirst()
-        .get()
-        .getKey();
+    return serverConnections.entrySet().stream()
+        .sorted( (e1, e2) -> e1.getValue().getSectorIdentifiers().size()
+            - e2.getValue().getSectorIdentifiers().size() )
+        .findFirst().get().getKey();
   }
 
 
@@ -105,15 +109,18 @@ public class SwitchMetadata {
    * @param connection
    * @return
    */
-  public synchronized ServerInformation addServerConnection(String identifier, TCPConnection connection) {
-    return serverConnections.put( identifier, new ServerInformation( connection ) );
+  public synchronized ServerInformation addServerConnection(String identifier,
+      TCPConnection connection) {
+    return serverConnections.put( identifier,
+        new ServerInformation( connection ) );
   }
 
   /**
    * 
    * @param message
    */
-  public synchronized void processApplicationHeatbeat(ApplicationHeartbeat message) {
+  public synchronized void processApplicationHeatbeat(
+      ApplicationHeartbeat message) {
     ServerInformation info = serverConnections.get( message.getIdentifier() );
     info.updateServerInformation( message );
 
@@ -125,7 +132,8 @@ public class SwitchMetadata {
         availableSectors.get( sector ).add( message.getIdentifier() );
       } else
       {
-        availableSectors.put( sector, new HashSet<>( Arrays.asList( message.getIdentifier() ) ) );
+        availableSectors.put( sector,
+            new HashSet<>( Arrays.asList( message.getIdentifier() ) ) );
       }
     }
 

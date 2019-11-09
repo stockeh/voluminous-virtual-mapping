@@ -1,11 +1,16 @@
 package distributed.client.util;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import distributed.common.transport.TCPConnection;
 import distributed.common.util.Logger;
+import distributed.common.util.Sector;
+import distributed.common.wireformats.Protocol;
+import distributed.common.wireformats.SectorWindowRequest;
 
 /**
  * 
@@ -17,18 +22,13 @@ public class Navigator {
   private static final Logger LOG =
       Logger.getInstance( Properties.SYSTEM_LOG_LEVEL );
 
-  // server identifiers, connection
-  private final Map<String, TCPConnection> servers;
+  private int sectorBoundarySize;
 
-  // TODO: Load this value from the request of the switch
-  private int sectorBoundarySize = 100;
+  private int sectorMapSize;
 
-  // TODO: Load this value from the request of the switch
-  private int sectorMapSize = 4;
+  private TCPConnection primaryServer;
 
-  private String sectorIdentifier;
-
-  private int[] sector;
+  private Sector sector;
 
   private double[] position;
 
@@ -37,29 +37,30 @@ public class Navigator {
   /**
    * 
    * @param initialSector
-   * @param initialLocation
+   * @param initialPosition
    */
-  public Navigator(String initialSector, String initialLocation) {
-    this.sectorIdentifier = initialSector;
-    this.servers = new HashMap<>();
+  public Navigator(Sector initialSector, int[] initialPosition) {
+    this.sector = initialSector;
 
-    String[] temp = initialSector.split( "," );
-    sector = new int[] { Integer.parseInt( temp[ 0 ] ),
-        Integer.parseInt( temp[ 1 ] ) };
-
-    temp = initialLocation.split( "," );
-    position = new double[] { Double.parseDouble( temp[ 0 ] ),
-        Double.parseDouble( temp[ 1 ] ) };
+    position = new double[] { initialPosition[ 0 ], initialPosition[ 1 ] };
 
     velocity = new double[] { 0, 0 };
+  }
+
+  public void setSectorMapSize(int sectorMapSize) {
+    this.sectorMapSize = sectorMapSize;
+  }
+
+  public void setSectorBoundarySize(int sectorBoundarySize) {
+    this.sectorBoundarySize = sectorBoundarySize;
   }
 
   /**
    * 
    * @return the sector that was originally specified by the client
    */
-  public String getInitialSector() {
-    return sectorIdentifier;
+  public Sector getInitialSector() {
+    return sector;
   }
 
   /**
@@ -67,29 +68,33 @@ public class Navigator {
    * @param connection to the initial Server
    */
   public void setInitialServerConnection(TCPConnection connection) {
-    servers.put( sectorIdentifier, connection );
+    primaryServer = connection;
   }
 
   /**
    * 
-   * 
+   * @throws IOException
    */
-  public void deliver() {
+  public void deliver() throws IOException {
+    int[] pos = new int[] { ( int ) position[ 0 ], ( int ) position[ 1 ] };
 
-    int Xpos = ( int ) position[ 0 ];
-
-    if ( Xpos + Properties.SECTOR_WINDOW_SIZE > sectorBoundarySize )
-    {
-
-    }
+    primaryServer.getTCPSender()
+        .sendData( new SectorWindowRequest( Protocol.SECTOR_WINDOW_REQUEST,
+            Instant.now().toEpochMilli(), getSectorContributions( pos ), sector,
+            Properties.SECTOR_WINDOW_SIZE, pos ).getBytes() );
   }
 
   /**
+   * @param pos
    * 
    * 
    */
-  public void getSectorContributions() {
+  public Set<Sector> getSectorContributions(int[] pos) {
+    Set<Sector> sectors = new HashSet<>();
 
+
+    sectors.add( sector );
+    return sectors;
   }
 
   /**
@@ -99,18 +104,30 @@ public class Navigator {
    * @param cord
    */
   public void checkBoundaries(int cord) {
+
+    int sectorLocation;
+    if ( cord == 0 )
+    {
+      sectorLocation = sector.getX();
+    } else
+    {
+      sectorLocation = sector.getY();
+    }
+
+    int temp = sectorLocation;
+
     if ( position[ cord ] < 0 )
     {
       double n = sectorBoundarySize + position[ cord ];
       position[ cord ] =
           n > sectorBoundarySize - 1 ? sectorBoundarySize - 1 : n;
 
-      if ( sector[ cord ] == 0 )
+      if ( sectorLocation == 0 )
       {
-        sector[ cord ] = sectorMapSize - 1;
+        temp = sectorMapSize - 1;
       } else
       {
-        sector[ cord ] -= 1;
+        temp -= 1;
       }
 
     } else if ( position[ cord ] > sectorBoundarySize - 1 )
@@ -118,14 +135,23 @@ public class Navigator {
       double n = position[ cord ] - sectorBoundarySize - 1;
       position[ cord ] = n < 0 ? 0 : n;
 
-      if ( sector[ cord ] == sectorMapSize - 1 )
+      if ( sectorLocation == sectorMapSize - 1 )
       {
-        sector[ cord ] = 0;
+        temp = 0;
       } else
       {
-        sector[ cord ] += 1;
+        temp += 1;
       }
     }
+
+    if ( cord == 0 )
+    {
+      sector.setX( temp );
+    } else
+    {
+      sector.setY( temp );
+    }
+
   }
 
   /**
@@ -168,7 +194,7 @@ public class Navigator {
         deliver();
         TimeUnit.MILLISECONDS.sleep( 250 );
       }
-    } catch ( InterruptedException e )
+    } catch ( InterruptedException | IOException e )
     {
       LOG.error( "Client stopped moving. " + e.toString() );
       e.printStackTrace();
@@ -177,7 +203,7 @@ public class Navigator {
   }
 
   public static void main(String[] args) {
-    Navigator n = new Navigator( "0,0", "0,0" );
+    Navigator n = new Navigator( new Sector(), new int[] { 0, 0 } );
     n.init();
   }
 
