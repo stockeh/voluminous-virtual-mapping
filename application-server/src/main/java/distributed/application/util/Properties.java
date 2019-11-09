@@ -26,4 +26,6 @@ public interface Properties {
   final String HDFS_SITE_LOCATION= Configurations.getInstance(CONF_NAME).getProperty("hdfs.site.conf.location");
 
   final String HDFS_FILE_LOCATION= Configurations.getInstance(CONF_NAME).getProperty("hdfs.file.location");
+
+  final int SECTOR_BOUNDARY_SIZE = Integer.parseInt(Configurations.getInstance(CONF_NAME).getProperty("sector.boundary.size"));
 }

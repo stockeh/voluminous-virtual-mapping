@@ -12,7 +12,9 @@ import java.util.Set;
 
 import distributed.application.wireformats.ApplicationHeartbeat;
 import distributed.common.transport.TCPConnection;
+import distributed.common.util.Sector;
 import distributed.common.wireformats.GenericMessage;
+import distributed.common.wireformats.GetSectorRequest;
 import distributed.common.wireformats.Protocol;
 
 /**
@@ -48,7 +50,7 @@ public class SwitchMetadata {
     return identifier;
   }
   
-  public String getServer(String sector) throws IOException {
+  public String getServer(Sector sector) throws IOException {
 	  if(availableSectors.containsKey(sector)) {
 		  // TODO load balance servers
 		  Set<String> servers = availableSectors.get(sector);
@@ -61,7 +63,7 @@ public class SwitchMetadata {
 		  String server = servers.get(0);
 		  
 		  // Instruct server to pull new sector
-		  GenericMessage request = new GenericMessage(Protocol.GET_SECTOR_REQUEST, sector);
+		  GetSectorRequest request = new GetSectorRequest(Protocol.GET_SECTOR_REQUEST, sector);
 		  serverConnections.get(server).getConnection().getTCPSender().sendData( request.getBytes() );
 		 
 		  return (server);

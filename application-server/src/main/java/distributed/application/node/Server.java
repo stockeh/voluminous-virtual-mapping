@@ -17,9 +17,8 @@ import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
-import distributed.common.wireformats.Event;
-import distributed.common.wireformats.GenericMessage;
-import distributed.common.wireformats.Protocol;
+import distributed.common.util.Sector;
+import distributed.common.wireformats.*;
 
 /**
  *
@@ -82,7 +81,7 @@ public class Server implements Node {
     }
   }
 
-  private void loadFile(String sectorID) {
+  private void loadFile(Sector sectorID) {
     if(metadata.containsSector(sectorID)) {
       LOG.info("Server already contains sector, not reloading");
       return;
@@ -179,7 +178,20 @@ public class Server implements Node {
       case Protocol.REGISTER_CLIENT_REQUEST :
         handleIncomingClient( event, connection );
         break;
+      case Protocol.SECTOR_WINDOW_REQUEST :
+        handleSectorWindowRequest(event, connection);
+        break;
     }
+  }
+
+  private void handleSectorWindowRequest(Event event, TCPConnection connection) {
+    Set<Sector> matchingSectors = metadata.getMatchingSectors(new HashSet<>());
+    byte[][] window = metadata.getWindow(matchingSectors, new Sector(1,1),0, 0, 10);
+    try {
+      connection.getTCPSender().sendData(new SectorWindowResponse(Protocol.SECTOR_WINDOW_RESPONSE, window, 2).getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+//    }
   }
 
   /**
@@ -215,9 +227,8 @@ public class Server implements Node {
 
   private void getSectorRequestHandler(Event event, TCPConnection connection) {
 	// TODO Auto-generated method stub
-	  GenericMessage message = (GenericMessage) event;
-	  String sectorID = message.getMessage();
-	  loadFile(sectorID);
+	  GetSectorRequest message = (GetSectorRequest) event;
+	  loadFile(message.sector);
   }
 
 /**

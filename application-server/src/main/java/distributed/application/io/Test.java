@@ -1,9 +1,15 @@
 package distributed.application.io;
 
+import distributed.common.util.Sector;
+
 import java.io.IOException;
 
 public class Test {
   public static void main(String[] args) throws IOException {
-    DFS.readFile("/transport/delays/part-r-00000");
+    Sector sector = new Sector(10, 1);
+    Sector sector1 = new Sector(10, 1);
+
+    System.out.println(sector.hashCode());
+    System.out.println(sector1.hashCode());
   }
 }

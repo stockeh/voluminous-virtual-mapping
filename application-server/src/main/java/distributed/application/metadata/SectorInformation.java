@@ -8,4 +8,6 @@ public class SectorInformation {
     sector = bytes;
   }
 
+  public final byte[][] getSector() { return sector; }
+
 }
