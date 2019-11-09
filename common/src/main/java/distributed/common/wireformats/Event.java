@@ -28,4 +28,9 @@ public interface Event {
    */
   public byte[] getBytes() throws IOException;
 
+  /**
+   * 
+   * @return
+   */
+  public String toString();
 }

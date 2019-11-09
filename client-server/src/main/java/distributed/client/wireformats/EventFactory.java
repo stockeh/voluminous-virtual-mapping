@@ -58,6 +58,7 @@ public class EventFactory implements Factory {
         return new DiscoverResponse( marshalledBytes );
 
       case Protocol.REGISTER_CLIENT_RESPONSE :
+      case Protocol.SERVER_INITIALIZED :
         return new GenericMessage( marshalledBytes );
 
       case Protocol.SECTOR_WINDOW_RESPONSE :

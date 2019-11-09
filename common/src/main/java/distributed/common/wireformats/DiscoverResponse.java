@@ -32,4 +32,9 @@ public class DiscoverResponse implements Event{
   public byte[] getBytes() throws IOException {
     return MessageMarshaller.writeEvent( getClass(), this );
   }
+  
+  @Override
+  public String toString() {
+    return Protocol.class.getFields()[ type ].getName().toString();
+  }
 }

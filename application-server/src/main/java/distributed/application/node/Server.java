@@ -5,7 +5,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
-
 import distributed.application.heartbeat.ServerHeartbeatManager;
 import distributed.application.io.DFS;
 import distributed.application.metadata.ServerMetadata;
@@ -82,17 +81,37 @@ public class Server implements Node {
   }
 
   private void loadFile(Sector sectorID) {
-    if(metadata.containsSector(sectorID)) {
-      LOG.info("Server already contains sector, not reloading");
+    if ( metadata.containsSector( sectorID ) )
+    {
+      LOG.info( "Server already contains sector, not reloading" );
       return;
     }
-    try {
+    try
+    {
       String filename = Properties.HDFS_FILE_LOCATION;
-      byte[][] bytes = Functions.reshape(DFS.readFile(filename));
-      metadata.addSector(sectorID, bytes);
-    } catch (IOException e) {
+      byte[][] bytes = Functions.reshape( DFS.readFile( filename ) );
+      metadata.addSector( sectorID, bytes );
+    } catch ( IOException e )
+    {
       e.printStackTrace();
     }
+    notifyWaitingClients( sectorID );
+  }
+
+
+  private void notifyWaitingClients(Sector sectorID) {
+    GenericMessage message = new GenericMessage( Protocol.SERVER_INITIALIZED );
+    for ( TCPConnection connection : metadata.getWaitingClients( sectorID ) )
+    {
+      try
+      {
+        connection.getTCPSender().sendData( message.getBytes() );
+      } catch ( IOException e )
+      {
+        e.printStackTrace();
+      }
+    }
+    metadata.clearWaitingClients( sectorID );
   }
 
   /**
@@ -145,9 +164,9 @@ public class Server implements Node {
           displayHelp();
           break;
 
-//        case LOAD :
-//          loadFile(input[1]);
-//          break;
+        // case LOAD :
+        // loadFile(input[1]);
+        // break;
         default :
           LOG.error(
               "Unable to process. Please enter a valid command! Input 'help'"
@@ -171,27 +190,40 @@ public class Server implements Node {
       case Protocol.REGISTER_SERVER_RESPONSE :
         registerServerResponseHandler( event, connection );
         break;
+
       case Protocol.GET_SECTOR_REQUEST :
-    	  getSectorRequestHandler(event, connection);
-    	  break;
+        getSectorRequestHandler( event, connection );
+        break;
 
       case Protocol.REGISTER_CLIENT_REQUEST :
         handleIncomingClient( event, connection );
         break;
+
       case Protocol.SECTOR_WINDOW_REQUEST :
-        handleSectorWindowRequest(event, connection);
+        handleSectorWindowRequest( event, connection );
         break;
     }
   }
 
-  private void handleSectorWindowRequest(Event event, TCPConnection connection) {
-    SectorWindowRequest request = (SectorWindowRequest) event;
-    Set<Sector> matchingSectors = metadata.getMatchingSectors(request.getSectors());
-    byte[][] window = metadata.getWindow(matchingSectors, request.currentSector,request.position[0],
-            request.position[1], request.windowSize);
-    try {
-      connection.getTCPSender().sendData(new SectorWindowResponse(Protocol.SECTOR_WINDOW_RESPONSE, window, request.getSectors().size()).getBytes());
-    } catch (IOException e) {
+  private void handleSectorWindowRequest(Event event,
+      TCPConnection connection) {
+    SectorWindowRequest request = ( SectorWindowRequest ) event;
+    Set<Sector> matchingSectors =
+        metadata.getMatchingSectors( request.getSectors() );
+    for ( Sector sector : request.getSectors() )
+    {
+      metadata.addWaitingClient( sector, connection );
+    }
+    byte[][] window =
+        metadata.getWindow( matchingSectors, request.currentSector,
+            request.position[ 0 ], request.position[ 1 ], request.windowSize );
+    try
+    {
+      connection.getTCPSender()
+          .sendData( new SectorWindowResponse( Protocol.SECTOR_WINDOW_RESPONSE,
+              window, request.getSectors().size() ).getBytes() );
+    } catch ( IOException e )
+    {
       e.printStackTrace();
     }
   }
@@ -228,13 +260,13 @@ public class Server implements Node {
   }
 
   private void getSectorRequestHandler(Event event, TCPConnection connection) {
-	// TODO Auto-generated method stub
-	  GetSectorRequest message = (GetSectorRequest) event;
-	  LOG.info("Sector: " + message.sector);
-	  loadFile(message.sector);
+    // TODO Auto-generated method stub
+    GetSectorRequest message = ( GetSectorRequest ) event;
+    LOG.info( "Sector: " + message.sector );
+    loadFile( message.sector );
   }
 
-/**
+  /**
    * Display the response status from the switch.
    * 
    * @param event

@@ -17,6 +17,7 @@ public interface Protocol {
   int REGISTER_SERVER_RESPONSE = 3;
 
   int APPLICATION_HEATBEAT = 4;
+  
   int GET_SECTOR_REQUEST = 5;
 
   int REGISTER_CLIENT_REQUEST = 6;
@@ -24,6 +25,7 @@ public interface Protocol {
   int REGISTER_CLIENT_RESPONSE = 7;
 
   int SECTOR_WINDOW_REQUEST = 8;
+  
   int SECTOR_WINDOW_RESPONSE = 9;
 
   int SERVER_INITIALIZED = 10;

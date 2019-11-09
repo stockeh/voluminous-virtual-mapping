@@ -37,8 +37,6 @@ public class Client implements Node {
 
   private final ClientMetadata metadata;
 
-  private TCPConnection server;
-
   /**
    * Default constructor - creates a new server tying the
    * <b>host:port</b> combination for the node as the identifier for
@@ -182,14 +180,13 @@ public class Client implements Node {
         break;
 
       case Protocol.REGISTER_CLIENT_RESPONSE :
-        metadata.getNavigator().setInitialServerConnection( connection );
         LOG.info( "Client successfully connected to the server!" );
+        ( new Thread( metadata.getNavigator(), "Navigation Thread" ) ).start();
         break;
 
       case Protocol.SERVER_INITIALIZED :
         LOG.info( "The initial server has successfully loaded the file. "
             + "Initializing Client." );
-        metadata.getNavigator().init();
         break;
 
       case Protocol.SECTOR_WINDOW_RESPONSE :
@@ -210,13 +207,12 @@ public class Client implements Node {
     // TODO: wait for all responses to come in before constructing the
     // window and then write to file?
 
-    LOG.debug( response.numSectors + " " + response.sectorWindow.length + " x "
-        + response.sectorWindow[ 0 ].length );
+    LOG.debug( response.numSectors + " -- " );
   }
 
   /**
    * Initiate a connection with the server and close the connection to
-   * the connection.
+   * the switch.
    * 
    * @param event
    * @param connection
@@ -230,7 +226,7 @@ public class Client implements Node {
 
     try
     {
-      server = new TCPConnection( this,
+      TCPConnection server = new TCPConnection( this,
           new Socket( connectionIdentifier[ 0 ],
               Integer.parseInt( connectionIdentifier[ 1 ] ) ),
           EventFactory.getInstance() );
@@ -241,6 +237,8 @@ public class Client implements Node {
           .sendData( new GenericMessage( Protocol.REGISTER_CLIENT_REQUEST,
               metadata.getNavigator().getInitialSector().toString() )
                   .getBytes() );
+
+      metadata.getNavigator().setInitialServerConnection( server );
 
     } catch ( IOException e )
     {

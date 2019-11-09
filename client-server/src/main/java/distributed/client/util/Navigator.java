@@ -17,7 +17,7 @@ import distributed.common.wireformats.SectorWindowRequest;
  * @author stock
  *
  */
-public class Navigator {
+public class Navigator implements Runnable {
 
   private static final Logger LOG =
       Logger.getInstance( Properties.SYSTEM_LOG_LEVEL );
@@ -159,11 +159,11 @@ public class Navigator {
    * specified by it's location
    * 
    */
-  public void init() {
+  public void run() {
 
     double deltaT = 0.1; // Euler integration time step
 
-    int[] actions = new int[] { -1, 0, 1 };
+    int[] actions = new int[] { 0, 1 };
     int x = actions[ ThreadLocalRandom.current().nextInt( actions.length ) ];
     int y = actions[ ThreadLocalRandom.current().nextInt( actions.length ) ];
 
@@ -192,7 +192,7 @@ public class Navigator {
         checkBoundaries( 1 );
 
         deliver();
-        TimeUnit.MILLISECONDS.sleep( 250 );
+        TimeUnit.MILLISECONDS.sleep( 1000 );
       }
     } catch ( InterruptedException | IOException e )
     {
@@ -201,10 +201,4 @@ public class Navigator {
     }
 
   }
-
-  public static void main(String[] args) {
-    Navigator n = new Navigator( new Sector(), new int[] { 0, 0 } );
-    n.init();
-  }
-
 }
