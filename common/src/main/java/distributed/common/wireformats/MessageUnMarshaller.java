@@ -59,6 +59,17 @@ public class MessageUnMarshaller {
     din = new DataInputStream(byteArrayInputStream);
     read(c, event);
   }
+  
+  private static int[] readIntArr() throws IOException {
+    int s = din.readInt();
+    int[] ints = new int[ s ];
+    for ( int i = 0; i < s; ++i )
+    {
+      int temp = din.readInt();
+      ints[ i ] = temp;
+    }
+    return ints;
+  }
 
   private static void read(Class<?> c, Event event) {
     Field[] fields = c.getDeclaredFields();
@@ -91,6 +102,10 @@ public class MessageUnMarshaller {
             break;
           case "java.lang.String[]":
             field.set(event, readStringArray());
+            break;
+          case "int[]":
+          case "java.lang.Integer[]":
+            field.set(event, readIntArr());
             break;
           case "java.util.HashSet<java.lang.String>":
           case "java.util.Set<java.lang.String>":
