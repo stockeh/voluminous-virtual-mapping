@@ -14,6 +14,7 @@ import distributed.application.wireformats.ApplicationHeartbeat;
 import distributed.application.wireformats.EventFactory;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
+import distributed.common.transport.TCPSender;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.wireformats.Event;

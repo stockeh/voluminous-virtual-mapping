@@ -3,6 +3,7 @@ package distributed.application.metadata;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Class to maintain the information needed for a given server. This
@@ -16,11 +17,14 @@ public class ServerMetadata {
   private final String identifier;
 
   // sector identifier , sector information
-  private Map<String, SectorInformation> sectors;
+  private ConcurrentHashMap<String, SectorInformation> sectors;
 
-  public void addSector(int row, int col, byte[][] sector) {
-    String id = row + ":" + col;
-    sectors.put(id, new SectorInformation(sector));
+  public void addSector(String sectorID, byte[][] sector) {
+    sectors.put(sectorID, new SectorInformation(sector));
+  }
+
+  public boolean containsSector(String sectorID) {
+    return sectors.containsKey(sectorID);
   }
   
   /**
@@ -29,7 +33,7 @@ public class ServerMetadata {
    */
   public ServerMetadata(String host, int port) {
     this.identifier = host + ":" + port;
-    this.sectors = new HashMap<>();
+    this.sectors = new ConcurrentHashMap<>();
   }
 
   /**

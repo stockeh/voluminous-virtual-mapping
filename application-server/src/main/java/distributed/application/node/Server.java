@@ -82,11 +82,15 @@ public class Server implements Node {
     }
   }
 
-  private void loadFile(int row, int col) {
+  private void loadFile(String sectorID) {
+    if(metadata.containsSector(sectorID)) {
+      LOG.info("Server already contains sector, not reloading");
+      return;
+    }
     try {
       String filename = Properties.HDFS_FILE_LOCATION;
       byte[][] bytes = Functions.reshape(DFS.readFile(filename));
-      metadata.addSector(row, col, bytes);
+      metadata.addSector(sectorID, bytes);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -211,7 +215,9 @@ public class Server implements Node {
 
   private void getSectorRequestHandler(Event event, TCPConnection connection) {
 	// TODO Auto-generated method stub
-	
+	  GenericMessage message = (GenericMessage) event;
+	  String sectorID = message.getMessage();
+	  loadFile(sectorID);
   }
 
 /**
