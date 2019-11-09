@@ -57,9 +57,6 @@ public class EventFactory implements Factory {
       case Protocol.GET_SECTOR_REQUEST :
         return new GetSectorRequest( marshalledBytes );
         
-      case Protocol.SECTOR_WINDOW_RESPONSE :
-        return new SectorWindowResponse( marshalledBytes );
-        
       case Protocol.SECTOR_WINDOW_REQUEST :
         return new SectorWindowRequest( marshalledBytes );
 
