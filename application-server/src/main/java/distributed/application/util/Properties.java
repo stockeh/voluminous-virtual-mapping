@@ -1,6 +1,7 @@
 package distributed.application.util;
 
 import distributed.common.util.Configurations;
+import org.apache.kerby.config.Conf;
 
 /**
  * 
@@ -24,5 +25,5 @@ public interface Properties {
 
   final String HDFS_SITE_LOCATION= Configurations.getInstance(CONF_NAME).getProperty("hdfs.site.conf.location");
 
-
+  final String HDFS_FILE_LOCATION= Configurations.getInstance(CONF_NAME).getProperty("hdfs.file.location");
 }

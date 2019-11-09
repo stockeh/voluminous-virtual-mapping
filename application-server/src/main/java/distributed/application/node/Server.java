@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
-import java.util.Scanner;
-import java.util.Timer;
+import java.util.*;
+
 import distributed.application.heartbeat.ServerHeartbeatManager;
 import distributed.application.io.DFS;
 import distributed.application.metadata.ServerMetadata;
 import distributed.application.util.Constants;
+import distributed.application.util.Functions;
 import distributed.application.util.Properties;
 import distributed.application.wireformats.EventFactory;
 import distributed.common.node.Node;
@@ -39,6 +39,7 @@ public class Server implements Node {
 
   private final ServerMetadata metadata;
 
+  private final Map<Integer, Map<Integer, byte[][]>> sectorMapping = new HashMap<>();
 
   /**
    * Default constructor - creates a new server tying the
@@ -82,9 +83,12 @@ public class Server implements Node {
     }
   }
 
-  private void loadFile(String filename) {
+  private void loadFile(int row, int col) {
     try {
-      DFS.readFile(filename);
+      String filename = Properties.HDFS_FILE_LOCATION;
+      byte[][] bytes = Functions.reshape(DFS.readFile(filename));
+      sectorMapping.putIfAbsent(row, new HashMap<>());
+      sectorMapping.get(row).putIfAbsent(col, bytes);
     } catch (IOException e) {
       e.printStackTrace();
     }
