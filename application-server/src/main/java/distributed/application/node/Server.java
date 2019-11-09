@@ -39,7 +39,6 @@ public class Server implements Node {
 
   private final ServerMetadata metadata;
 
-  private final Map<Integer, Map<Integer, byte[][]>> sectorMapping = new HashMap<>();
 
   /**
    * Default constructor - creates a new server tying the
@@ -87,8 +86,7 @@ public class Server implements Node {
     try {
       String filename = Properties.HDFS_FILE_LOCATION;
       byte[][] bytes = Functions.reshape(DFS.readFile(filename));
-      sectorMapping.putIfAbsent(row, new HashMap<>());
-      sectorMapping.get(row).putIfAbsent(col, bytes);
+      metadata.addSector(row, col, bytes);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -144,9 +142,9 @@ public class Server implements Node {
           displayHelp();
           break;
 
-        case LOAD :
-          loadFile(input[1]);
-          break;
+//        case LOAD :
+//          loadFile(input[1]);
+//          break;
         default :
           LOG.error(
               "Unable to process. Please enter a valid command! Input 'help'"

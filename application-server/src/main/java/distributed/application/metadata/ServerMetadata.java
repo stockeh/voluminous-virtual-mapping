@@ -18,7 +18,10 @@ public class ServerMetadata {
   // sector identifier , sector information
   private Map<String, SectorInformation> sectors;
 
-  
+  public void addSector(int row, int col, byte[][] sector) {
+    String id = row + ":" + col;
+    sectors.put(id, new SectorInformation(sector));
+  }
   
   /**
    * Default Constructor -
