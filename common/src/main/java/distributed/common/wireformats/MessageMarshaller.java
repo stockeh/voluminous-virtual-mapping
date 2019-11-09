@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 public class MessageMarshaller {
     private static  ByteArrayOutputStream baOutStream;
@@ -39,6 +40,13 @@ public class MessageMarshaller {
 
     private static void writeSector(Sector sector) throws IOException {
       sector.writeSector();
+    }
+
+    private static void writeSectorSet(Set<Sector> sectors) throws IOException {
+      writeInt(sectors.size());
+      for(Sector sector : sectors) {
+        writeSector(sector);
+      }
     }
 
     private static void writeByteArr(byte[] arr) throws IOException {
@@ -102,6 +110,9 @@ public class MessageMarshaller {
               break;
             case "Sector":
               writeSector((Sector) field.get(event));
+              break;
+            case "java.lang.Set<Sector>":
+              writeSectorSet((Set<Sector>) field.get(event));
               break;
             case "byte[]":
             case "java.lang.Byte[]":

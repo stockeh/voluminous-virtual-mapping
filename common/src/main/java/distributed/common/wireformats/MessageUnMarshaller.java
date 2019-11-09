@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 public class MessageUnMarshaller {
   private static DataInputStream din;
@@ -36,6 +37,15 @@ public class MessageUnMarshaller {
 
   private static Sector readSector() throws IOException {
     return new Sector(readInt(), readInt());
+  }
+
+  private static Set<Sector> readSectorSet() throws IOException {
+    int size = readInt();
+    Set<Sector> set = new HashSet<>();
+    for(int i = 0; i < size; i++) {
+      set.add(readSector());
+    }
+    return set;
   }
 
   private static byte[] readByteArr() throws IOException {
@@ -101,6 +111,9 @@ public class MessageUnMarshaller {
             break;
           case "Sector":
             field.set(event, readSector());
+            break;
+          case "java.lang.Set<Sector>":
+            field.set(event, readSectorSet());
             break;
           case "byte[]":
           case "java.lang.Byte[]":

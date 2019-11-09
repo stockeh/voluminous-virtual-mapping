@@ -185,13 +185,14 @@ public class Server implements Node {
   }
 
   private void handleSectorWindowRequest(Event event, TCPConnection connection) {
+
     Set<Sector> matchingSectors = metadata.getMatchingSectors(new HashSet<>());
     byte[][] window = metadata.getWindow(matchingSectors, new Sector(1,1),0, 0, 10);
     try {
       connection.getTCPSender().sendData(new SectorWindowResponse(Protocol.SECTOR_WINDOW_RESPONSE, window, 2).getBytes());
     } catch (IOException e) {
       e.printStackTrace();
-//    }
+    }
   }
 
   /**
