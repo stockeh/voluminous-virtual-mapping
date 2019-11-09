@@ -173,20 +173,25 @@ public class Switch implements Node {
    */
   private void clientConnectionHandler(Event event, TCPConnection connection) {
     String sectorIdentifier = ( ( GenericMessage ) event ).getMessage();
-    String serverToConnect = metadata.getServer( sectorIdentifier );
-    try
-    {
-      connection.getTCPSender().sendData(
-          new GenericMessage( Protocol.DISCOVER_RESPONSE, serverToConnect )
-              .getBytes() );
-    } catch ( IOException e )
-    {
-      LOG.error( "Unable to connect respond to the Client. " + e.toString() );
-      e.printStackTrace();
-    }
-    LOG.info( "The Client \'"
-        + connection.getSocket().getInetAddress().getCanonicalHostName()
-        + "\' is directed to connect to " + serverToConnect );
+    try {
+	    String serverToConnect = metadata.getServer( sectorIdentifier );
+	    try
+	    {
+	      connection.getTCPSender().sendData(
+	          new GenericMessage( Protocol.DISCOVER_RESPONSE, serverToConnect )
+	              .getBytes() );
+	    } catch ( IOException e )
+	    {
+	      LOG.error( "Unable to connect respond to the Client. " + e.toString() );
+	      e.printStackTrace();
+	    }
+	    LOG.info( "The Client \'"
+	        + connection.getSocket().getInetAddress().getCanonicalHostName()
+	        + "\' is directed to connect to " + serverToConnect );
+    } catch (Exception e) {
+    	LOG.error( "Unable to select application server. " + e.toString() );
+	      e.printStackTrace();
+	}
   }
 
   /**

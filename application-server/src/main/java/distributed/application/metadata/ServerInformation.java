@@ -1,5 +1,7 @@
 package distributed.application.metadata;
 
+import java.util.HashSet;
+import java.util.Set;
 import distributed.application.wireformats.ApplicationHeartbeat;
 import distributed.common.transport.TCPConnection;
 
@@ -14,6 +16,8 @@ public class ServerInformation {
 
   private int threadCount;
 
+  private Set<String> sectorIdentifiers = new HashSet<>();
+
   /**
    * Set final server information for newly connected server.
    * 
@@ -25,7 +29,26 @@ public class ServerInformation {
 
   public void updateServerInformation(ApplicationHeartbeat message) {
     this.threadCount = message.getThreadCount();
+    this.sectorIdentifiers = message.sectorIdentifiers;
   }
 
+  public int getThreadCount() {
+    return threadCount;
+  }
 
+  public void setThreadCount(int threadCount) {
+    this.threadCount = threadCount;
+  }
+
+  public TCPConnection getConnection() {
+    return connection;
+  }
+
+  public Set<String> getSectorIdentifiers() {
+    return sectorIdentifiers;
+  }
+
+  public void setSectorIdentifiers(Set<String> sectorIdentifiers) {
+    this.sectorIdentifiers = sectorIdentifiers;
+  }
 }
