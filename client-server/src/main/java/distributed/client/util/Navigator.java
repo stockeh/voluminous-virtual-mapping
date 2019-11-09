@@ -78,9 +78,11 @@ public class Navigator {
 
     int Xpos = ( int ) position[ 0 ];
 
+    int Ypos = ( int ) position[ 1 ];
+    
     if ( Xpos + Properties.SECTOR_WINDOW_SIZE > sectorBoundarySize )
     {
-
+      
     }
   }
 
@@ -89,7 +91,7 @@ public class Navigator {
    * 
    */
   public void getSectorContributions() {
-
+    
   }
 
   /**
