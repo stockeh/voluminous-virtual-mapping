@@ -29,6 +29,7 @@ public class DFS {
     LOG.info("Reading file: " + filename + " with size " + size);
     byte[] fileBytes = new byte[size];
     dataInputStream.readFully(fileBytes);
+    LOG.info("Finished reading file: " + filename);
     return fileBytes;
   }
 

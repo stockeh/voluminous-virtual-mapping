@@ -13,33 +13,34 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MessageMarshaller {
-    private static  ByteArrayOutputStream baOutStream;
-    private static DataOutputStream dout;
+    private static ByteArrayOutputStream baOutStream;
+  private static DataOutputStream dout;
 
-    private static void writeInt(int value) throws IOException {
-      dout.writeInt(value);
-    }
+  private static void writeInt(int value) throws IOException {
+    dout.writeInt( value );
+  }
 
-    private static void writeBoolean(boolean value) throws IOException {
-      dout.writeBoolean(value);
-    }
+  private static void writeBoolean(boolean value) throws IOException {
+    dout.writeBoolean( value );
+  }
 
-    private static void writeLong(long value) throws IOException {
-      dout.writeLong(value);
-    }
+  private static void writeLong(long value) throws IOException {
+    dout.writeLong( value );
+  }
 
-    private static void writeDouble(double value) throws IOException {
-      dout.writeDouble(value);
-    }
+  private static void writeDouble(double value) throws IOException {
+    dout.writeDouble( value );
+  }
 
-    private static void writeString(String str) throws IOException {
-      byte[] strBytes = str.getBytes();
-      dout.writeInt(strBytes.length);
-      dout.write(strBytes);
-    }
+  private static void writeString(String str) throws IOException {
+    byte[] strBytes = str.getBytes();
+    dout.writeInt( strBytes.length );
+    dout.write( strBytes );
+  }
 
-    private static void writeSector(Sector sector) throws IOException {
-      sector.writeSector();
+   private static void writeSector(Sector sector) throws IOException {
+      writeInt(sector.getX());
+      writeInt(sector.getY());
     }
 
     private static void writeSectorSet(Set<Sector> sectors) throws IOException {
@@ -75,7 +76,16 @@ public class MessageMarshaller {
      }
     }
 
-    public static byte[] writeEvent(Class<?> c, Object event) throws IOException {
+  private static void writeIntArr(int[] arr) throws IOException {
+    dout.writeInt( arr.length );
+    for ( int i = 0; i < arr.length; ++i )
+    {
+      dout.writeInt( arr[ i ] );
+    }
+  }
+
+
+  public static byte[] writeEvent(Class<?> c, Object event) throws IOException {
       baOutStream = new ByteArrayOutputStream();
       dout = new DataOutputStream(new BufferedOutputStream(baOutStream));
       write(c, event);
@@ -108,22 +118,27 @@ public class MessageMarshaller {
             case "java.lang.Boolean":
               writeBoolean(field.getBoolean(event));
               break;
-            case "Sector":
+            case "distributed.common.util.Sector":
               writeSector((Sector) field.get(event));
               break;
-            case "java.lang.Set<Sector>":
+            case "java.util.Set<distributed.common.util.Sector>":
+            case "java.util.HashSet<distributed.common.util.Sector>":
               writeSectorSet((Set<Sector>) field.get(event));
               break;
             case "byte[]":
             case "java.lang.Byte[]":
               writeByteArr((byte[]) field.get(event));
               break;
+            case "int[]":
+            case "java.lang.Integer[]":
+              writeIntArr((int[]) field.get(event));
+              break;
             case "byte[][]":
             case "java.lang.Byte[][]":
               writeByteArrArr((byte[][]) field.get(event));
               break;
             case "java.lang.String[]":
-              writeStringArr((String[])field.get(event));
+              writeStringArr((String[]) field.get(event));
               break;
             case "java.util.Collection<java.lang.String>":
             case "java.util.HashSet<java.lang.String>":
@@ -137,20 +152,28 @@ public class MessageMarshaller {
               break;
           }
         }
-      }catch(IllegalAccessException iae) {
-        iae.printStackTrace();
+      } catch (IllegalAccessException e) {
+        e.printStackTrace();
       } catch (IOException e) {
         e.printStackTrace();
       }
     }
 
 
-    private static byte[] getMarshalledData() throws IOException {
-      dout.flush();
-      byte[] marshalledData = baOutStream.toByteArray();
-      baOutStream.close();
-      dout.close();
-      return marshalledData;
-    }
+  public static byte[] writeEvent(Class<?> c, Event event) throws IOException {
+    baOutStream = new ByteArrayOutputStream();
+    dout = new DataOutputStream( new BufferedOutputStream( baOutStream ) );
+    write( c, event );
+    return getMarshalledData();
+  }
+
+
+  private static byte[] getMarshalledData() throws IOException {
+    dout.flush();
+    byte[] marshalledData = baOutStream.toByteArray();
+    baOutStream.close();
+    dout.close();
+    return marshalledData;
+  }
 
 }

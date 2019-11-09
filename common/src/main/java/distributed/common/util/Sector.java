@@ -28,6 +28,10 @@ public class Sector {
     MessageUnMarshaller.readEvent(this.getClass(), this, bytes);
   }
 
+  public String toString() {
+    return x+ "," + y;
+  }
+
 
   @Override
   public int hashCode() {

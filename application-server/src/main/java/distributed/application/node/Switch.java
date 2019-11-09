@@ -176,8 +176,9 @@ public class Switch implements Node {
   private void clientConnectionHandler(Event event, TCPConnection connection) {
     String sectorIdentifier = ( ( GenericMessage ) event ).getMessage();
     int row = Integer.parseInt(sectorIdentifier.substring(0,sectorIdentifier.indexOf(',')));
-    int col = Integer.parseInt(sectorIdentifier.substring(sectorIdentifier.indexOf(',')));
+    int col = Integer.parseInt(sectorIdentifier.substring(sectorIdentifier.indexOf(',')+1));
     Sector sector = new Sector(row, col);
+    LOG.info("Connecting Client to Sector: " + sector.toString());
     try {
 	    String serverToConnect = metadata.getServer( sector );
 	    try

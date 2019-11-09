@@ -21,7 +21,7 @@ public class ServerMetadata {
   private final String identifier;
 
   // sector identifier , sector information
-  private ConcurrentHashMap<Sector, SectorInformation> sectors;
+  private ConcurrentHashMap<Sector, SectorInformation> sectors = new ConcurrentHashMap<>();
 //  private ConcurrentHashMap<String, SectorInformation> sectors;
 
   public void addSector(Sector sectorID, byte[][] sector) {

@@ -7,13 +7,11 @@ public class SectorWindowResponse implements Event{
   public int type;
   public byte[][] sectorWindow;
   public int numSectors;
-  Set<String> sectorIDs;
 
-  public SectorWindowResponse(int type, byte[][] sectorWindow, int numSectors, Set<String> sectorIDs) {
+  public SectorWindowResponse(int type, byte[][] sectorWindow, int numSectors) {
     this.type = type;
     this.sectorWindow = sectorWindow;
     this.numSectors = numSectors;
-    this.sectorIDs = sectorIDs;
   }
 
   public SectorWindowResponse(byte[] marshalledBytes) throws IOException {

@@ -185,11 +185,12 @@ public class Server implements Node {
   }
 
   private void handleSectorWindowRequest(Event event, TCPConnection connection) {
-
-    Set<Sector> matchingSectors = metadata.getMatchingSectors(new HashSet<>());
-    byte[][] window = metadata.getWindow(matchingSectors, new Sector(1,1),0, 0, 10);
+    SectorWindowRequest request = (SectorWindowRequest) event;
+    Set<Sector> matchingSectors = metadata.getMatchingSectors(request.getSectors());
+    byte[][] window = metadata.getWindow(matchingSectors, request.currentSector,request.position[0],
+            request.position[1], request.windowSize);
     try {
-      connection.getTCPSender().sendData(new SectorWindowResponse(Protocol.SECTOR_WINDOW_RESPONSE, window, 2).getBytes());
+      connection.getTCPSender().sendData(new SectorWindowResponse(Protocol.SECTOR_WINDOW_RESPONSE, window, request.getSectors().size()).getBytes());
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -229,6 +230,7 @@ public class Server implements Node {
   private void getSectorRequestHandler(Event event, TCPConnection connection) {
 	// TODO Auto-generated method stub
 	  GetSectorRequest message = (GetSectorRequest) event;
+	  LOG.info("Sector: " + message.sector);
 	  loadFile(message.sector);
   }
 
