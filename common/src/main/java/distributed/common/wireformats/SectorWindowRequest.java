@@ -1,5 +1,7 @@
 package distributed.common.wireformats;
 
+import distributed.common.util.Sector;
+
 import java.io.IOException;
 import java.util.Set;
 
@@ -14,7 +16,9 @@ public class SectorWindowRequest implements Event {
 
   public long initialTimestamp;
 
-  public Set<String> sectors;
+  public Set<Sector> sectors;
+
+  public Sector currentSector;
 
   public int windowSize;
 
@@ -51,7 +55,7 @@ public class SectorWindowRequest implements Event {
     return initialTimestamp;
   }
 
-  public Set<String> getSectors() {
+  public Set<Sector> getSectors() {
     return sectors;
   }
 

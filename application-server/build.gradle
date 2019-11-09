@@ -15,10 +15,17 @@ configurations {
 }
 
 dependencies {
+    libs (
+            [group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: '3.1.2'],
+            [group: 'org.apache.hadoop', name: 'hadoop-common', version: '3.1.2']
+    )
+
     testImplementation 'junit:junit:4.12'
     compile project(':common')
     libs files('../common/build/libs/common-1.0-SNAPSHOT.jar')
     configurations.compile.extendsFrom(configurations.libs)
+
+
 }
 
 jar {
@@ -26,3 +33,5 @@ jar {
             configurations.libs.collect { it.isDirectory() ? it : zipTree(it) }
         }
 }
+
+ext.hadoopVersion = "3.1.2"

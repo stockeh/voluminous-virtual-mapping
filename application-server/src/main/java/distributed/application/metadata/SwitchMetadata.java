@@ -11,7 +11,9 @@ import java.util.Map;
 import java.util.Set;
 import distributed.application.wireformats.ApplicationHeartbeat;
 import distributed.common.transport.TCPConnection;
+import distributed.common.util.Sector;
 import distributed.common.wireformats.GenericMessage;
+import distributed.common.wireformats.GetSectorRequest;
 import distributed.common.wireformats.Protocol;
 
 /**
@@ -25,7 +27,8 @@ public class SwitchMetadata {
 
   // server identifier, server information
   private final Map<String, ServerInformation> serverConnections;
-  private final Map<String, Set<String>> availableSectors;
+  // sector identifier, server identifier
+  private final Map<Sector, Set<String>> availableSectors;
 
   private final String identifier;
 
@@ -47,25 +50,23 @@ public class SwitchMetadata {
     return identifier;
   }
 
-  public synchronized String getServer(String sector) throws IOException {
-    if ( availableSectors.containsKey( sector ) )
-    {
+  public String getServer(Sector sector) throws IOException {
+    if (availableSectors.containsKey(sector)) {
       // TODO load balance servers
-      Set<String> servers = availableSectors.get( sector );
+      Set<String> servers = availableSectors.get(sector);
       return servers.iterator().next();
-    } else
-    {
+    } else {
       // return random server
       // TODO load balance servers
-      List<String> servers = new ArrayList<>( serverConnections.keySet() );
-      Collections.shuffle( servers );
-      String server = servers.get( 0 );
+      List<String> servers = new ArrayList<>(serverConnections.keySet());
+      Collections.shuffle(servers);
+      String server = servers.get(0);
 
       // Instruct server to pull new sector
-      GenericMessage request = new GenericMessage( Protocol.GET_SECTOR_REQUEST, sector );
-      serverConnections.get( server ).getConnection().getTCPSender().sendData( request.getBytes() );
+      GetSectorRequest request = new GetSectorRequest(Protocol.GET_SECTOR_REQUEST, sector);
+      serverConnections.get(server).getConnection().getTCPSender().sendData(request.getBytes());
 
-      return ( server );
+      return (server);
     }
   }
 
@@ -117,7 +118,7 @@ public class SwitchMetadata {
     info.updateServerInformation( message );
 
     // add sectors to map
-    for ( String sector : message.getSectorIdentifiers() )
+    for ( Sector sector : message.getSectorIdentifiers() )
     {
       if ( availableSectors.containsKey( sector ) )
       {

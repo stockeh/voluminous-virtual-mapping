@@ -4,21 +4,21 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
-import java.util.Scanner;
-import java.util.Timer;
+import java.util.*;
+
 import distributed.application.heartbeat.ServerHeartbeatManager;
+import distributed.application.io.DFS;
 import distributed.application.metadata.ServerMetadata;
 import distributed.application.util.Constants;
+import distributed.application.util.Functions;
 import distributed.application.util.Properties;
 import distributed.application.wireformats.EventFactory;
 import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
-import distributed.common.wireformats.Event;
-import distributed.common.wireformats.GenericMessage;
-import distributed.common.wireformats.Protocol;
+import distributed.common.util.Sector;
+import distributed.common.wireformats.*;
 
 /**
  *
@@ -33,6 +33,8 @@ public class Server implements Node {
   private static final String EXIT = "exit";
 
   private static final String HELP = "help";
+
+  private static final String LOAD = "load";
 
   private final ServerMetadata metadata;
 
@@ -76,6 +78,20 @@ public class Server implements Node {
       LOG.error(
           "Unable to successfully start server. Exiting. " + e.toString() );
       System.exit( 1 );
+    }
+  }
+
+  private void loadFile(Sector sectorID) {
+    if(metadata.containsSector(sectorID)) {
+      LOG.info("Server already contains sector, not reloading");
+      return;
+    }
+    try {
+      String filename = Properties.HDFS_FILE_LOCATION;
+      byte[][] bytes = Functions.reshape(DFS.readFile(filename));
+      metadata.addSector(sectorID, bytes);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
@@ -129,6 +145,9 @@ public class Server implements Node {
           displayHelp();
           break;
 
+//        case LOAD :
+//          loadFile(input[1]);
+//          break;
         default :
           LOG.error(
               "Unable to process. Please enter a valid command! Input 'help'"
@@ -159,6 +178,21 @@ public class Server implements Node {
       case Protocol.REGISTER_CLIENT_REQUEST :
         handleIncomingClient( event, connection );
         break;
+      case Protocol.SECTOR_WINDOW_REQUEST :
+        handleSectorWindowRequest(event, connection);
+        break;
+    }
+  }
+
+  private void handleSectorWindowRequest(Event event, TCPConnection connection) {
+    SectorWindowRequest request = (SectorWindowRequest) event;
+    Set<Sector> matchingSectors = metadata.getMatchingSectors(request.getSectors());
+    byte[][] window = metadata.getWindow(matchingSectors, request.currentSector,request.position[0],
+            request.position[1], request.windowSize);
+    try {
+      connection.getTCPSender().sendData(new SectorWindowResponse(Protocol.SECTOR_WINDOW_RESPONSE, window, request.getSectors().size()).getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
@@ -195,7 +229,9 @@ public class Server implements Node {
 
   private void getSectorRequestHandler(Event event, TCPConnection connection) {
 	// TODO Auto-generated method stub
-	
+	  GetSectorRequest message = (GetSectorRequest) event;
+	  LOG.info("Sector: " + message.sector);
+	  loadFile(message.sector);
   }
 
 /**

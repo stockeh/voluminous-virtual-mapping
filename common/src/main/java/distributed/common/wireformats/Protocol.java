@@ -22,4 +22,7 @@ public interface Protocol {
   int REGISTER_CLIENT_REQUEST = 6;
 
   int REGISTER_CLIENT_RESPONSE = 7;
+
+  int SECTOR_WINDOW_REQUEST = 8;
+  int SECTOR_WINDOW_RESPONSE = 9;
 }
