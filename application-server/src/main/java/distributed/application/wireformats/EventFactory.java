@@ -54,15 +54,15 @@ public class EventFactory implements Factory {
   public Event createEvent(byte[] marshalledBytes) throws IOException {
     switch ( ByteBuffer.wrap( marshalledBytes ).getInt() )
     {
+      case Protocol.REGISTER_CLIENT_REQUEST :
       case Protocol.GET_SECTOR_REQUEST :
-        return new GetSectorRequest( marshalledBytes );
-        
+        return new GenericSectorMessage( marshalledBytes );
+
       case Protocol.SECTOR_WINDOW_REQUEST :
         return new SectorWindowRequest( marshalledBytes );
 
       case Protocol.REGISTER_SERVER_REQUEST :
       case Protocol.REGISTER_SERVER_RESPONSE :
-      case Protocol.REGISTER_CLIENT_REQUEST :
       case Protocol.DISCOVER_REQUEST :
         return new GenericMessage( marshalledBytes );
 

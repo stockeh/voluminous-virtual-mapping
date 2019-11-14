@@ -18,6 +18,7 @@ import distributed.common.util.Sector;
 import distributed.common.wireformats.DiscoverResponse;
 import distributed.common.wireformats.Event;
 import distributed.common.wireformats.GenericMessage;
+import distributed.common.wireformats.GenericSectorMessage;
 import distributed.common.wireformats.Protocol;
 import distributed.common.wireformats.SectorWindowResponse;
 
@@ -184,11 +185,6 @@ public class Client implements Node {
         ( new Thread( metadata.getNavigator(), "Navigation Thread" ) ).start();
         break;
 
-      case Protocol.SERVER_INITIALIZED :
-        LOG.info( "The initial server has successfully loaded the file. "
-            + "Initializing Client." );
-        break;
-
       case Protocol.SECTOR_WINDOW_RESPONSE :
         handelSectorWindowResponse( event );
         break;
@@ -234,9 +230,8 @@ public class Client implements Node {
       server.startReceiver();
 
       server.getTCPSender()
-          .sendData( new GenericMessage( Protocol.REGISTER_CLIENT_REQUEST,
-              metadata.getNavigator().getInitialSector().toString() )
-                  .getBytes() );
+          .sendData( new GenericSectorMessage( Protocol.REGISTER_CLIENT_REQUEST,
+              metadata.getNavigator().getInitialSector() ).getBytes() );
 
       metadata.getNavigator().setInitialServerConnection( server );
 

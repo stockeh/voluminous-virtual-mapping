@@ -14,7 +14,7 @@ import distributed.application.wireformats.ApplicationHeartbeat;
 import distributed.common.transport.TCPConnection;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
-import distributed.common.wireformats.GetSectorRequest;
+import distributed.common.wireformats.GenericSectorMessage;
 import distributed.common.wireformats.Protocol;
 
 /**
@@ -72,8 +72,8 @@ public class SwitchMetadata {
           + sector.toString() + " )." );
 
       // Instruct server to pull new sector
-      GetSectorRequest request =
-          new GetSectorRequest( Protocol.GET_SECTOR_REQUEST, sector );
+      GenericSectorMessage request =
+          new GenericSectorMessage( Protocol.GET_SECTOR_REQUEST, sector );
       serverConnections.get( server ).getConnection().getTCPSender()
           .sendData( request.getBytes() );
 

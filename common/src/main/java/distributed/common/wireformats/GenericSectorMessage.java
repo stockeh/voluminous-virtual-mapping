@@ -6,17 +6,17 @@ import distributed.common.util.Sector;
 
 import java.io.IOException;
 
-public class GetSectorRequest implements Event{
+public class GenericSectorMessage implements Event{
 
   public int type;
   public Sector sector;
 
-  public GetSectorRequest(int type, Sector sector) {
+  public GenericSectorMessage(int type, Sector sector) {
     this.type = type;
     this.sector = sector;
   }
 
-  public GetSectorRequest(byte[] bytes) {
+  public GenericSectorMessage(byte[] bytes) {
     MessageUnMarshaller.readEvent( getClass(), this, bytes );
   }
 
