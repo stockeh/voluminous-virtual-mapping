@@ -38,7 +38,7 @@ gradle clean; gradle build
 gnome-terminal --geometry=170x50 -t "Switch" -e "ssh -t $(prop 'switch.host') cd '$DIR'; 'java -cp $JAR_PATH distributed.application.node.Switch; bash;'"
 
 # Launch servers
-
+sleep 3
 server:
 
 SCRIPT="java -cp $JAR_PATH distributed.application.node.Server"

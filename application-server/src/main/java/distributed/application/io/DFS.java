@@ -20,12 +20,20 @@ public class DFS {
   static
   {
     configuration = new Configuration();
-    configuration.addResource( new Path( Properties.CORE_SITE_LOCATION ) );
-    configuration.addResource( new Path( Properties.HDFS_SITE_LOCATION ) );
+    if(Properties.CORE_SITE_LOCATION.startsWith("~")) {
+      String userHome = System.getProperty("user.home");
+      configuration.addResource( new Path( userHome+Properties.CORE_SITE_LOCATION.substring(1) ) );
+      configuration.addResource( new Path( userHome+Properties.HDFS_SITE_LOCATION.substring(1) ) );
+    }else {
+      configuration.addResource( new Path( Properties.CORE_SITE_LOCATION ) );
+      configuration.addResource( new Path( Properties.HDFS_SITE_LOCATION ) );
+    }
+
   }
 
   public static byte[] readFile(String filename) throws IOException {
     Path path = new Path( filename );
+
     FileSystem fileSystem = path.getFileSystem( configuration );
     FSDataInputStream dataInputStream = fileSystem.open( path );
 
