@@ -1,11 +1,20 @@
 package distributed.client.node;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.*;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.Set;
+
 import distributed.client.metadata.ClientMetadata;
 import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
@@ -71,6 +80,33 @@ public class Client implements Node {
     this.metadata.setNavigation( initialSector, initialPosition );
   }
 
+  private void createLoggingDir() {
+
+    Set<PosixFilePermission> ownerWritable = PosixFilePermissions.fromString("rw-rw-rw-");
+    FileAttribute<?> permissions = PosixFilePermissions.asFileAttribute(ownerWritable);
+    try {
+      Path path = new File(Properties.SECTOR_LOGGING_DIR).toPath();
+      LOG.info("Setting up logging directory at " + path);
+      Files.deleteIfExists(path);
+      Files.createFile(path, permissions);
+    }catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void logToDir(String fileName, byte[] content) {
+    LOG.info("Logging to " + Properties.SECTOR_LOGGING_DIR + fileName);
+    if(fileName.startsWith("/")) fileName = fileName.substring(1);
+    try {
+      Files.write(
+              Paths.get(fileName),
+              content,
+              StandardOpenOption.APPEND);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   /**
    * Start listening for incoming connections and establish connection
    * into the server network.
@@ -82,7 +118,7 @@ public class Client implements Node {
     {
       Client node = new Client( InetAddress.getLocalHost().getHostName(),
           serverSocket.getLocalPort(), args );
-
+      node.createLoggingDir();
       LOG.info( "Client node starting up at: " + new Date() + ", on "
           + node.metadata.getConnection() );
 
@@ -207,7 +243,10 @@ public class Client implements Node {
     // TODO: wait for all responses to come in before constructing the
     // window and then write to file?
 
-    LOG.debug( response.numSectors + " -- " );
+//    LOG.debug( response.numSectors + " -- " );
+    for(byte[] row : response.sectorWindow) {
+      logToDir("sector.log", row);
+    }
   }
 
   /**

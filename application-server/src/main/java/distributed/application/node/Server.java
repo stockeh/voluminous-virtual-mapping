@@ -95,7 +95,7 @@ public class Server implements Node {
     {
       e.printStackTrace();
     }
-    notifyWaitingClients( sectorID );
+
   }
 
 
@@ -264,6 +264,7 @@ public class Server implements Node {
     GetSectorRequest message = ( GetSectorRequest ) event;
     LOG.info( "Sector: " + message.sector );
     loadFile( message.sector );
+    notifyWaitingClients( message.sector );
   }
 
   /**

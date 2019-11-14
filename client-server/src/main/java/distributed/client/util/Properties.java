@@ -23,4 +23,7 @@ public interface Properties {
   final String SYSTEM_LOG_LEVEL = Configurations.getInstance( CONF_NAME )
       .getProperty( "system.log.level", "INFO" );
 
+  final String SECTOR_LOGGING_DIR = Configurations.getInstance( CONF_NAME )
+          .getProperty("sector.logging.dir");
+
 }
