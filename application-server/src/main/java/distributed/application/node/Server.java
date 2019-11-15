@@ -214,6 +214,7 @@ public class Server implements Node {
     {
       metadata.addWaitingClient( sector, connection );
     }
+
     byte[][] window =
         metadata.getWindow( matchingSectors, request.currentSector,
             request.position[ 0 ], request.position[ 1 ], request.windowSize );

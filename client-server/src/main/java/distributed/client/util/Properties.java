@@ -18,7 +18,7 @@ public interface Properties {
       Configurations.getInstance( CONF_NAME ).getProperty( "switch.port" ) );
 
   final int SECTOR_WINDOW_SIZE = Integer.parseInt( Configurations
-      .getInstance( CONF_NAME ).getProperty( "switch.port", "10" ) );
+      .getInstance( CONF_NAME ).getProperty( "sector.window.size", "10" ) );
 
   final String SYSTEM_LOG_LEVEL = Configurations.getInstance( CONF_NAME )
       .getProperty( "system.log.level", "INFO" );
