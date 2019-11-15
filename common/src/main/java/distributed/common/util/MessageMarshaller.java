@@ -14,69 +14,69 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MessageMarshaller {
-    private static ByteArrayOutputStream baOutStream;
-  private static DataOutputStream dout;
+    private ByteArrayOutputStream baOutStream;
+  private DataOutputStream dout;
 
-  private static void writeInt(int value) throws IOException {
+  private void writeInt(int value) throws IOException {
     dout.writeInt( value );
   }
 
-  private static void writeBoolean(boolean value) throws IOException {
+  private void writeBoolean(boolean value) throws IOException {
     dout.writeBoolean( value );
   }
 
-  private static void writeLong(long value) throws IOException {
+  private void writeLong(long value) throws IOException {
     dout.writeLong( value );
   }
 
-  private static void writeDouble(double value) throws IOException {
+  private void writeDouble(double value) throws IOException {
     dout.writeDouble( value );
   }
 
-  private static void writeString(String str) throws IOException {
+  private void writeString(String str) throws IOException {
     byte[] strBytes = str.getBytes();
     dout.writeInt( strBytes.length );
     dout.write( strBytes );
   }
 
-   private static void writeSector(Sector sector) throws IOException {
+   private void writeSector(Sector sector) throws IOException {
       write(sector.getClass(), sector);
     }
 
-    private static void writeSectorSet(Set<Sector> sectors) throws IOException {
+    private void writeSectorSet(Set<Sector> sectors) throws IOException {
       writeInt(sectors.size());
       for(Sector sector : sectors) {
         writeSector(sector);
       }
     }
 
-    private static void writeByteArr(byte[] arr) throws IOException {
+    private void writeByteArr(byte[] arr) throws IOException {
       dout.writeInt(arr.length);
       dout.write(arr);
     }
 
-  private static void writeByteArrArr(byte[][] arr) throws IOException {
+  private void writeByteArrArr(byte[][] arr) throws IOException {
     dout.writeInt(arr.length);
     for(byte[] bytes : arr) {
       writeByteArr(bytes);
     }
   }
 
-    private static void writeStringArr(String[] arr) throws IOException {
+    private void writeStringArr(String[] arr) throws IOException {
       writeInt(arr.length);
       for(String s : arr) {
         writeString(s);
       }
     }
 
-    private static void writeStringList(Collection<String> list) throws IOException {
+    private void writeStringList(Collection<String> list) throws IOException {
      writeInt(list.size());
      for(String s : list) {
        writeString(s);
      }
     }
 
-  private static void writeIntArr(int[] arr) throws IOException {
+  private void writeIntArr(int[] arr) throws IOException {
     dout.writeInt( arr.length );
     for ( int i = 0; i < arr.length; ++i )
     {
@@ -86,14 +86,13 @@ public class MessageMarshaller {
 
 
   public static byte[] writeEvent(Class<?> c, Object event) throws IOException {
-      baOutStream = new ByteArrayOutputStream();
-      dout = new DataOutputStream(new BufferedOutputStream(baOutStream));
-      write(c, event);
-      return getMarshalledData();
+      MessageMarshaller messageMarshaller = new MessageMarshaller();
+      messageMarshaller.write(c, event);
+      return messageMarshaller.getMarshalledData();
     }
 
     @SuppressWarnings( "unchecked" )
-    private static void write(Class<?> c, Object event) {
+    private void write(Class<?> c, Object event) {
       Field[] fields = c.getDeclaredFields();
       try {
         for (Field field : fields) {
@@ -159,16 +158,19 @@ public class MessageMarshaller {
       }
     }
 
-
-  public static byte[] writeEvent(Class<?> c, Event event) throws IOException {
+  private MessageMarshaller() {
     baOutStream = new ByteArrayOutputStream();
     dout = new DataOutputStream( new BufferedOutputStream( baOutStream ) );
-    write( c, event );
-    return getMarshalledData();
+  }
+
+  public static byte[] writeEvent(Class<?> c, Event event) throws IOException {
+    MessageMarshaller messageMarshaller = new MessageMarshaller();
+    messageMarshaller.write( c, event );
+    return messageMarshaller.getMarshalledData();
   }
 
 
-  private static byte[] getMarshalledData() throws IOException {
+  private byte[] getMarshalledData() throws IOException {
     dout.flush();
     byte[] marshalledData = baOutStream.toByteArray();
     baOutStream.close();

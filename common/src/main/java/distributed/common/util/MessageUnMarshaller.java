@@ -12,36 +12,41 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MessageUnMarshaller {
-  private static DataInputStream din;
 
-  private static int readInt() throws IOException {
+  private MessageUnMarshaller(byte[] bytes) {
+    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+    din = new DataInputStream(byteArrayInputStream);
+  }
+  private DataInputStream din;
+
+  private int readInt() throws IOException {
     return din.readInt();
   }
 
-  private static boolean readBoolean() throws IOException {
+  private boolean readBoolean() throws IOException {
     return din.readBoolean();
   }
 
-  private static long readLong() throws IOException {
+  private long readLong() throws IOException {
     return din.readLong();
   }
 
-  private static double readDouble() throws IOException {
+  private double readDouble() throws IOException {
     return din.readDouble();
   }
 
 
-  private static String readString() throws IOException{
+  private String readString() throws IOException{
     return new String(readByteArr());
   }
 
-  private static Sector readSector() throws IOException {
+  private Sector readSector() throws IOException {
    Sector sector = new Sector();
    read(sector.getClass(), sector);
    return sector;
   }
 
-  private static Set<Sector> readSectorSet() throws IOException {
+  private Set<Sector> readSectorSet() throws IOException {
     int size = readInt();
     Set<Sector> set = new HashSet<>();
     for(int i = 0; i < size; i++) {
@@ -50,13 +55,13 @@ public class MessageUnMarshaller {
     return set;
   }
 
-  private static byte[] readByteArr() throws IOException {
+  private byte[] readByteArr() throws IOException {
     byte[] bytes = new byte[din.readInt()];
     din.readFully(bytes);
     return bytes;
   }
 
-  private static byte[][] readByteArrArr() throws IOException {
+  private byte[][] readByteArrArr() throws IOException {
     byte[][] bytes = new byte[din.readInt()][];
     for(int i = 0; i < bytes.length; i++) {
       bytes[i] = readByteArr();
@@ -64,7 +69,7 @@ public class MessageUnMarshaller {
     return bytes;
   }
 
-  private static String[] readStringArray() throws IOException {
+  private String[] readStringArray() throws IOException {
     int length = readInt();
     String[] arr = new String[length];
     for(int i = 0; i < length; i++) {
@@ -73,7 +78,7 @@ public class MessageUnMarshaller {
     return arr;
   }
 
-  private static void readStringList(Collection<String> list) throws IOException {
+  private void readStringList(Collection<String> list) throws IOException {
     int size = readInt();
     for(int i = 0; i < size; i++) {
       list.add(readString());
@@ -81,12 +86,11 @@ public class MessageUnMarshaller {
   }
 
   public static void readEvent(Class<?> c, Object event, byte[] bytes) {
-    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
-    din = new DataInputStream(byteArrayInputStream);
-    read(c, event);
+    MessageUnMarshaller messageUnMarshaller = new MessageUnMarshaller(bytes);
+    messageUnMarshaller.read(c, event);
   }
   
-  private static int[] readIntArr() throws IOException {
+  private int[] readIntArr() throws IOException {
     int s = din.readInt();
     int[] ints = new int[ s ];
     for ( int i = 0; i < s; ++i )
@@ -97,7 +101,7 @@ public class MessageUnMarshaller {
     return ints;
   }
 
-  private static void read(Class<?> c, Object event) {
+  private void read(Class<?> c, Object event) {
     Field[] fields = c.getDeclaredFields();
     try {
       for (Field field : fields) {
