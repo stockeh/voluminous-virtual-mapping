@@ -48,6 +48,7 @@ public class Client implements Node {
   private final ClientMetadata metadata;
 
   private final String logDirectory;
+  private final String logFile;
 
   /**
    * Default constructor - creates a new server tying the
@@ -81,7 +82,10 @@ public class Client implements Node {
 
     this.metadata = new ClientMetadata( host, port );
     this.metadata.setNavigation( initialSector, initialPosition );
-    logDirectory = metadata.getConnection()+".log";
+
+    String temp = System.getProperty("user.home");
+    logDirectory = Properties.SECTOR_LOGGING_DIR+"_"+temp.substring(temp.lastIndexOf('/')+1);
+    logFile = metadata.getConnection()+".log";
   }
 
 
@@ -90,7 +94,7 @@ public class Client implements Node {
     Set<PosixFilePermission> ownerWritable = PosixFilePermissions.fromString("rwxrwxrwx");
     FileAttribute<?> permissions = PosixFilePermissions.asFileAttribute(ownerWritable);
     try {
-      Path path = Paths.get(Properties.SECTOR_LOGGING_DIR);
+      Path path = Paths.get(logDirectory);
       LOG.info("Setting up logging directory at " + path);
       Functions.deleteDirectory(path);
       Files.createDirectory(path, permissions);
@@ -107,8 +111,8 @@ public class Client implements Node {
   private void logToDir(String fileName, byte[] content) {
     Set<PosixFilePermission> ownerWritable = PosixFilePermissions.fromString("rw-rw-rw-");
     FileAttribute<?> permissions = PosixFilePermissions.asFileAttribute(ownerWritable);
-    if(fileName.startsWith("/")) fileName = fileName.substring(1);
-    Path path = Paths.get(Properties.SECTOR_LOGGING_DIR + fileName);
+    if(!fileName.startsWith("/")) fileName = '/' + fileName;
+    Path path = Paths.get(logDirectory + fileName);
 
     try {
       if(Files.notExists(path)) Files.createFile(path, permissions);
@@ -261,9 +265,9 @@ public class Client implements Node {
 //    LOG.debug( response.numSectors + " -- " );
 //    LOG.info("Logging sector of size " + response.sectorWindow.length + " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
     for(byte[] row : response.sectorWindow) {
-      logToDir(logDirectory, row);
+      logToDir(logFile, row);
     }
-    logToDir(logDirectory, "\n");
+    logToDir(logFile, "\n");
   }
 
   /**
