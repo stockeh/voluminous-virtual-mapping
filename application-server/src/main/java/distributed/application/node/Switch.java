@@ -176,7 +176,7 @@ public class Switch implements Node {
    * 
    * @param keyForClientToConnect
    */
-  private void serverIsReadyForClient(String keyForClientToConnect) {
+  private  void serverIsReadyForClient(String keyForClientToConnect) {
 
     String serverToConnect =
         keyForClientToConnect.split( Constants.SEPERATOR )[ 0 ];
