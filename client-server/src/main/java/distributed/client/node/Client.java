@@ -22,6 +22,7 @@ import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPSender;
 import distributed.common.transport.TCPServerThread;
+import distributed.common.util.Functions;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
 import distributed.common.wireformats.DiscoverResponse;
@@ -45,6 +46,8 @@ public class Client implements Node {
   private static final String HELP = "help";
 
   private final ClientMetadata metadata;
+
+  private final String logDirectory;
 
   /**
    * Default constructor - creates a new server tying the
@@ -78,28 +81,40 @@ public class Client implements Node {
 
     this.metadata = new ClientMetadata( host, port );
     this.metadata.setNavigation( initialSector, initialPosition );
+    logDirectory = metadata.getConnection()+".log";
   }
+
 
   private void createLoggingDir() {
 
-    Set<PosixFilePermission> ownerWritable = PosixFilePermissions.fromString("rw-rw-rw-");
+    Set<PosixFilePermission> ownerWritable = PosixFilePermissions.fromString("rwxrwxrwx");
     FileAttribute<?> permissions = PosixFilePermissions.asFileAttribute(ownerWritable);
     try {
-      Path path = new File(Properties.SECTOR_LOGGING_DIR).toPath();
+      Path path = Paths.get(Properties.SECTOR_LOGGING_DIR);
       LOG.info("Setting up logging directory at " + path);
-      Files.deleteIfExists(path);
-      Files.createFile(path, permissions);
+      Functions.deleteDirectory(path);
+      Files.createDirectory(path, permissions);
+      Files.setPosixFilePermissions(path, ownerWritable);
     }catch (IOException e) {
       e.printStackTrace();
     }
   }
 
+  private void logToDir(String filename, String data) {
+    logToDir(filename, data.getBytes());
+  }
+
   private void logToDir(String fileName, byte[] content) {
-    LOG.info("Logging to " + Properties.SECTOR_LOGGING_DIR + fileName);
+    Set<PosixFilePermission> ownerWritable = PosixFilePermissions.fromString("rw-rw-rw-");
+    FileAttribute<?> permissions = PosixFilePermissions.asFileAttribute(ownerWritable);
     if(fileName.startsWith("/")) fileName = fileName.substring(1);
+    Path path = Paths.get(Properties.SECTOR_LOGGING_DIR + fileName);
+
     try {
+      if(Files.notExists(path)) Files.createFile(path, permissions);
+      Files.setPosixFilePermissions(path, ownerWritable);
       Files.write(
-              Paths.get(fileName),
+              path,
               content,
               StandardOpenOption.APPEND);
     } catch (IOException e) {
@@ -244,9 +259,11 @@ public class Client implements Node {
     // window and then write to file?
 
 //    LOG.debug( response.numSectors + " -- " );
+//    LOG.info("Logging sector of size " + response.sectorWindow.length + " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
     for(byte[] row : response.sectorWindow) {
-      logToDir("sector.log", row);
+      logToDir(logDirectory, row);
     }
+    logToDir(logDirectory, "\n");
   }
 
   /**
