@@ -12,4 +12,6 @@ public interface Constants {
 
   final boolean FAILURE = false;
 
+  final String SEPERATOR = "\t";
+  
 }

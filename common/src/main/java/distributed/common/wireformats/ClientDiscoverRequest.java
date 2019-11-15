@@ -2,25 +2,24 @@ package distributed.common.wireformats;
 
 import distributed.common.util.MessageMarshaller;
 import distributed.common.util.MessageUnMarshaller;
+import distributed.common.util.Sector;
 
 import java.io.IOException;
 
-public class DiscoverResponse implements Event{
+public class ClientDiscoverRequest implements Event{
 
   public int type;
-  public int mapSize;
-  public int sectorSize;
-  public String serverToConnect;
+  public Sector sector;
+  public String clientIdentifier;
 
-  public DiscoverResponse(int type, int mapSize, int sectorSize, String serverToConnect) {
+  public ClientDiscoverRequest(int type, Sector sector, String clientIdentifier) {
     this.type = type;
-    this.mapSize = mapSize;
-    this.sectorSize = sectorSize;
-    this.serverToConnect = serverToConnect;
+    this.sector = sector;
+    this.clientIdentifier = clientIdentifier;
   }
 
-  public DiscoverResponse(byte[] bytes) {
-      MessageUnMarshaller.readEvent( getClass(), this, bytes );
+  public ClientDiscoverRequest(byte[] bytes) {
+    MessageUnMarshaller.readEvent( getClass(), this, bytes );
   }
 
   @Override

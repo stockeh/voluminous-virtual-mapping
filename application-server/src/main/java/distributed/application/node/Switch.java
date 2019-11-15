@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import distributed.application.metadata.ServerInformation;
@@ -17,7 +18,8 @@ import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
-import distributed.common.wireformats.DiscoverResponse;
+import distributed.common.wireformats.ClientDiscoverRequest;
+import distributed.common.wireformats.ClientDiscoverResponse;
 import distributed.common.wireformats.Event;
 import distributed.common.wireformats.GenericMessage;
 import distributed.common.wireformats.Protocol;
@@ -156,13 +158,52 @@ public class Switch implements Node {
         register( event, connection );
         break;
 
-      case Protocol.DISCOVER_REQUEST :
+      case Protocol.CLIENT_DISCOVER_REQUEST :
         clientConnectionHandler( event, connection );
         break;
 
       case Protocol.APPLICATION_HEATBEAT :
         metadata.processApplicationHeatbeat( ( ApplicationHeartbeat ) event );
         break;
+
+      case Protocol.SERVER_INITIALIZED :
+        serverIsReadyForClient( (( GenericMessage ) event ).getMessage());
+        break;
+    }
+  }
+
+  /**
+   * 
+   * @param keyForClientToConnect
+   */
+  private void serverIsReadyForClient(String keyForClientToConnect) {
+
+    String serverToConnect =
+        keyForClientToConnect.split( Constants.SEPERATOR )[ 0 ];
+    List<TCPConnection> connections =
+        metadata.getClientConnections().remove( keyForClientToConnect );
+    if ( connections == null )
+    {
+      LOG.error( "Unable to send join request to client from switch for "
+          + keyForClientToConnect );
+      return;
+    }
+    for ( TCPConnection connection : connections )
+    {
+      try
+      {
+        connection.getTCPSender()
+            .sendData( new ClientDiscoverResponse(
+                Protocol.CLIENT_DISCOVER_RESPONSE, Properties.SECTOR_MAP_SIZE,
+                Properties.SECTOR_BOUNDARY_SIZE, serverToConnect ).getBytes() );
+      } catch ( IOException e )
+      {
+        LOG.error( "Unable to connect respond to the Client. " + e.toString() );
+        e.printStackTrace();
+      }
+      LOG.info( "The Client \'"
+          + connection.getSocket().getInetAddress().getCanonicalHostName()
+          + "\' is directed to connect to " + serverToConnect );
     }
   }
 
@@ -174,30 +215,19 @@ public class Switch implements Node {
    * 
    */
   private void clientConnectionHandler(Event event, TCPConnection connection) {
-    String sectorIdentifier = ( ( GenericMessage ) event ).getMessage();
-    int row = Integer.parseInt(
-        sectorIdentifier.substring( 0, sectorIdentifier.indexOf( ',' ) ) );
-    int col = Integer.parseInt(
-        sectorIdentifier.substring( sectorIdentifier.indexOf( ',' ) + 1 ) );
-    Sector sector = new Sector( row, col );
-    LOG.info( "Connecting Client to Sector: " + sector.toString() );
+    ClientDiscoverRequest request = ( ClientDiscoverRequest ) event;
+    Sector sector = request.sector;
+
+    LOG.info( "Connecting Client to Server with Sector: " + sector.toString() );
     try
     {
-      String serverToConnect = metadata.getServer( sector );
-      try
+      String keyForClientToConnect = metadata.getServer( sector, connection );
+
+      if ( keyForClientToConnect != null )
       {
-        connection.getTCPSender()
-            .sendData( new DiscoverResponse( Protocol.DISCOVER_RESPONSE,
-                Properties.SECTOR_MAP_SIZE, Properties.SECTOR_BOUNDARY_SIZE,
-                serverToConnect ).getBytes() );
-      } catch ( IOException e )
-      {
-        LOG.error( "Unable to connect respond to the Client. " + e.toString() );
-        e.printStackTrace();
+        serverIsReadyForClient( keyForClientToConnect );
       }
-      LOG.info( "The Client \'"
-          + connection.getSocket().getInetAddress().getCanonicalHostName()
-          + "\' is directed to connect to " + serverToConnect );
+
     } catch ( Exception e )
     {
       LOG.error( "Unable to select application server. " + e.toString() );
