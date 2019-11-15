@@ -180,8 +180,7 @@ public class Switch implements Node {
 
     String serverToConnect =
         keyForClientToConnect.split( Constants.SEPERATOR )[ 0 ];
-    List<TCPConnection> connections =
-        metadata.getClientConnections().remove( keyForClientToConnect );
+    List<TCPConnection> connections = metadata.removeServer(keyForClientToConnect);
     if ( connections == null )
     {
       LOG.error( "Unable to send join request to client from switch for "

@@ -75,6 +75,10 @@ public class SwitchMetadata {
     return key;
   }
 
+  public synchronized List<TCPConnection> removeServer(String keyForClientToConnect) {
+    return clientConnections.remove( keyForClientToConnect );
+  }
+
   public synchronized String getServer(Sector sector, TCPConnection clientConnection)
       throws IOException {
     String server;
@@ -84,11 +88,12 @@ public class SwitchMetadata {
       // TODO load balance servers
       Set<String> servers = availableSectors.get( sector );
       server = servers.iterator().next();
-      String tmp = addClientConnection( sector, server, clientConnection );
+
       if(clientConnections.containsKey(server+Constants.SEPERATOR+sector.toString())) {
+        addClientConnection( sector, server, clientConnection );
         return null;
       }
-      return tmp;
+      return addClientConnection( sector, server, clientConnection );
     } else
     {
       // return random server
