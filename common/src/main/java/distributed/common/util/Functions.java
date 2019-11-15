@@ -8,6 +8,7 @@ import java.util.Comparator;
 
 public class Functions {
   public static void deleteDirectory(Path directory) {
+    if(!Files.exists(directory)) return;
     try {
       Files.walk(directory)
               .sorted(Comparator.reverseOrder())

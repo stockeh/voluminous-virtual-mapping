@@ -37,6 +37,8 @@ public class SwitchMetadata {
   // server\tsector identifier, client connections
   private final Map<String, List<TCPConnection>> clientConnections;
 
+//  private final Set<String> requestedFiles;
+
   private final String identifier;
 
   /**
@@ -73,15 +75,20 @@ public class SwitchMetadata {
     return key;
   }
 
-  public String getServer(Sector sector, TCPConnection clientConnection)
+  public synchronized String getServer(Sector sector, TCPConnection clientConnection)
       throws IOException {
     String server;
     if ( availableSectors.containsKey( sector ) )
     {
+
       // TODO load balance servers
       Set<String> servers = availableSectors.get( sector );
       server = servers.iterator().next();
-      return addClientConnection( sector, server, clientConnection );
+      String tmp = addClientConnection( sector, server, clientConnection );
+      if(clientConnections.containsKey(server+Constants.SEPERATOR+sector.toString())) {
+        return null;
+      }
+      return tmp;
     } else
     {
       // return random server
@@ -89,7 +96,7 @@ public class SwitchMetadata {
       List<String> servers = new ArrayList<>( serverConnections.keySet() );
       Collections.shuffle( servers );
       server = servers.get( 0 );
-
+      availableSectors.put(sector, new HashSet<>(Arrays.asList( server )));
       LOG.info( "Instruct " + server + " to pull new sector ( "
           + sector.toString() + " )." );
 
@@ -98,6 +105,7 @@ public class SwitchMetadata {
           new GenericSectorMessage( Protocol.GET_SECTOR_REQUEST, sector );
       serverConnections.get( server ).getConnection().getTCPSender()
           .sendData( request.getBytes() );
+
       addClientConnection( sector, server, clientConnection );
       return null;
     }
