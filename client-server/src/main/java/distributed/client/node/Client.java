@@ -1,20 +1,20 @@
 package distributed.client.node;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.Set;
-
 import distributed.client.metadata.ClientMetadata;
 import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
@@ -25,9 +25,9 @@ import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Functions;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
-import distributed.common.wireformats.DiscoverResponse;
+import distributed.common.wireformats.ClientDiscoverRequest;
+import distributed.common.wireformats.ClientDiscoverResponse;
 import distributed.common.wireformats.Event;
-import distributed.common.wireformats.GenericMessage;
 import distributed.common.wireformats.Protocol;
 import distributed.common.wireformats.SectorWindowResponse;
 
@@ -84,44 +84,52 @@ public class Client implements Node {
     this.metadata.setNavigation( initialSector, initialPosition );
 
     String temp = System.getProperty("user.home");
-    logDirectory = Properties.SECTOR_LOGGING_DIR+"_"+temp.substring(temp.lastIndexOf('/')+1);
+    logDirectory = Properties.SECTOR_LOGGING_DIR+"_"+temp.substring(temp.lastIndexOf(File.separator)+1);
     logFile = metadata.getConnection()+".log";
   }
 
 
   private void createLoggingDir() {
 
-    Set<PosixFilePermission> ownerWritable = PosixFilePermissions.fromString("rwxrwxrwx");
-    FileAttribute<?> permissions = PosixFilePermissions.asFileAttribute(ownerWritable);
-    try {
-      Path path = Paths.get(logDirectory);
-      LOG.info("Setting up logging directory at " + path);
-      Functions.deleteDirectory(path);
-      Files.createDirectory(path, permissions);
-      Files.setPosixFilePermissions(path, ownerWritable);
-    }catch (IOException e) {
+    Set<PosixFilePermission> ownerWritable =
+        PosixFilePermissions.fromString( "rwxrwxrwx" );
+    FileAttribute<?> permissions =
+        PosixFilePermissions.asFileAttribute( ownerWritable );
+    try
+    {
+      Path path = Paths.get( logDirectory );
+      LOG.info( "Setting up logging directory at " + path );
+      Functions.deleteDirectory( path );
+      Files.createDirectory( path, permissions );
+      Files.setPosixFilePermissions( path, ownerWritable );
+    } catch ( IOException e )
+    {
       e.printStackTrace();
     }
   }
 
   private void logToDir(String filename, String data) {
-    logToDir(filename, data.getBytes());
+    logToDir( filename, data.getBytes() );
   }
 
   private void logToDir(String fileName, byte[] content) {
-    Set<PosixFilePermission> ownerWritable = PosixFilePermissions.fromString("rw-rw-rw-");
-    FileAttribute<?> permissions = PosixFilePermissions.asFileAttribute(ownerWritable);
-    if(!fileName.startsWith("/")) fileName = '/' + fileName;
-    Path path = Paths.get(logDirectory + fileName);
 
-    try {
-      if(Files.notExists(path)) Files.createFile(path, permissions);
-      Files.setPosixFilePermissions(path, ownerWritable);
-      Files.write(
-              path,
-              content,
-              StandardOpenOption.APPEND);
-    } catch (IOException e) {
+    Set<PosixFilePermission> ownerWritable =
+        PosixFilePermissions.fromString( "rw-rw-rw-" );
+    FileAttribute<?> permissions =
+        PosixFilePermissions.asFileAttribute( ownerWritable );
+    if ( !fileName.startsWith(File.separator) )
+      fileName = File.separator + fileName;
+    Path path = Paths.get( logDirectory + fileName );
+
+    try
+    {
+      if ( Files.notExists( path ) )
+        Files.createFile( path, permissions );
+      Files.setPosixFilePermissions( path, ownerWritable );
+      Files.write( path, content, StandardOpenOption.APPEND );
+    } catch ( IOException e )
+    {
       e.printStackTrace();
     }
   }
@@ -137,10 +145,10 @@ public class Client implements Node {
     {
       Client node = new Client( InetAddress.getLocalHost().getHostName(),
           serverSocket.getLocalPort(), args );
-      node.createLoggingDir();
+
       LOG.info( "Client node starting up at: " + new Date() + ", on "
           + node.metadata.getConnection() );
-
+      node.createLoggingDir();
       ( new Thread(
           new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
           "Client Thread" ) ).start();
@@ -173,8 +181,10 @@ public class Client implements Node {
 
       TCPSender sender = switchConnection.getTCPSender();
 
-      sender.sendData( new GenericMessage( Protocol.DISCOVER_REQUEST,
-          metadata.getNavigator().getInitialSector().toString() ).getBytes() );
+      sender.sendData(
+          new ClientDiscoverRequest( Protocol.CLIENT_DISCOVER_REQUEST,
+              metadata.getNavigator().getInitialSector(),
+              metadata.getConnection() ).getBytes() );
 
     } catch ( IOException e )
     {
@@ -230,18 +240,8 @@ public class Client implements Node {
     LOG.debug( event.toString() );
     switch ( event.getType() )
     {
-      case Protocol.DISCOVER_RESPONSE :
+      case Protocol.CLIENT_DISCOVER_RESPONSE :
         connectToServer( event, connection );
-        break;
-
-      case Protocol.REGISTER_CLIENT_RESPONSE :
-        LOG.info( "Client successfully connected to the server!" );
-        ( new Thread( metadata.getNavigator(), "Navigation Thread" ) ).start();
-        break;
-
-      case Protocol.SERVER_INITIALIZED :
-        LOG.info( "The initial server has successfully loaded the file. "
-            + "Initializing Client." );
         break;
 
       case Protocol.SECTOR_WINDOW_RESPONSE :
@@ -268,6 +268,9 @@ public class Client implements Node {
       logToDir(logFile, row);
     }
     logToDir(logFile, "\n");
+    // LOG.debug( response.numSectors + " -- " );
+    // LOG.info("Logging sector of size " + response.sectorWindow.length +
+    // " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
   }
 
   /**
@@ -278,7 +281,7 @@ public class Client implements Node {
    * @param connection
    */
   private void connectToServer(Event event, TCPConnection connection) {
-    DiscoverResponse response = ( DiscoverResponse ) event;
+    ClientDiscoverResponse response = ( ClientDiscoverResponse ) event;
 
     String[] connectionIdentifier = response.serverToConnect.split( ":" );
     metadata.getNavigator().setSectorMapSize( response.mapSize );
@@ -293,11 +296,6 @@ public class Client implements Node {
 
       server.startReceiver();
 
-      server.getTCPSender()
-          .sendData( new GenericMessage( Protocol.REGISTER_CLIENT_REQUEST,
-              metadata.getNavigator().getInitialSector().toString() )
-                  .getBytes() );
-
       metadata.getNavigator().setInitialServerConnection( server );
 
     } catch ( IOException e )
@@ -307,6 +305,9 @@ public class Client implements Node {
       System.exit( 1 );
     }
     connection.close();
+
+    LOG.info( "Client successfully connected to the server!" );
+    ( new Thread( metadata.getNavigator(), "Navigation Thread" ) ).start();
   }
 
   /**

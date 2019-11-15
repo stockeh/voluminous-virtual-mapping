@@ -1,11 +1,11 @@
 package distributed.application.metadata;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import distributed.application.util.Properties;
-import distributed.common.transport.TCPConnection;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Class to maintain the information needed for a given server. This
@@ -24,38 +24,6 @@ public class ServerMetadata {
   // sector identifier , sector information
   private ConcurrentHashMap<Sector, SectorInformation> sectors =
       new ConcurrentHashMap<>();
-  private ConcurrentHashMap<Sector, List<TCPConnection>> waitingClients =
-      new ConcurrentHashMap<>();
-
-  public void addSector(Sector sectorID, byte[][] sector) {
-    sectors.put( sectorID, new SectorInformation( sector ) );
-  }
-
-  public boolean containsSector(Sector sectorID) {
-    return sectors.containsKey( sectorID );
-  }
-
-  public final List<TCPConnection> getWaitingClients(Sector sectorID) {
-    return waitingClients.get( sectorID ) == null
-        ? new ArrayList<TCPConnection>()
-        : waitingClients.get( sectorID );
-  }
-
-  public final void addWaitingClient(Sector sectorID, TCPConnection client) {
-    waitingClients.putIfAbsent( sectorID,
-        Collections.synchronizedList( new ArrayList<>() ) );
-    waitingClients.get( sectorID ).add( client );
-  }
-
-  public final void clearWaitingClients(Sector sectorID) {
-    waitingClients.remove( sectorID );
-  }
-
-  public Set<Sector> getMatchingSectors(Set<Sector> requested) {
-    Set<Sector> copy = new HashSet<>( requested );
-    copy.retainAll( getSectorIdentifiers() );
-    return copy;
-  }
 
   /**
    * Default Constructor -
@@ -64,6 +32,24 @@ public class ServerMetadata {
   public ServerMetadata(String host, int port) {
     this.identifier = host + ":" + port;
     this.sectors = new ConcurrentHashMap<>();
+  }
+
+  public SectorInformation getSector(Sector sectorID) {
+    return sectors.get( sectorID );
+  }
+
+  public void addSector(Sector sectorID, byte[][] bytes) {
+    sectors.put( sectorID, new SectorInformation(bytes) );
+  }
+
+  public boolean containsSector(Sector sectorID) {
+    return sectors.containsKey( sectorID );
+  }
+
+  public Set<Sector> getMatchingSectors(Set<Sector> requested) {
+    Set<Sector> copy = new HashSet<>( requested );
+    copy.retainAll( getSectorIdentifiers() );
+    return copy;
   }
 
   public byte[][] getWindow(Set<Sector> sectorIDs, Sector currentSector,

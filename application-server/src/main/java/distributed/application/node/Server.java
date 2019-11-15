@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
+import java.util.Date;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.Timer;
 import distributed.application.heartbeat.ServerHeartbeatManager;
 import distributed.application.io.DFS;
 import distributed.application.metadata.ServerMetadata;
@@ -17,7 +20,12 @@ import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
-import distributed.common.wireformats.*;
+import distributed.common.wireformats.Event;
+import distributed.common.wireformats.GenericMessage;
+import distributed.common.wireformats.GenericSectorMessage;
+import distributed.common.wireformats.Protocol;
+import distributed.common.wireformats.SectorWindowRequest;
+import distributed.common.wireformats.SectorWindowResponse;
 
 /**
  *
@@ -32,8 +40,6 @@ public class Server implements Node {
   private static final String EXIT = "exit";
 
   private static final String HELP = "help";
-
-  private static final String LOAD = "load";
 
   private final ServerMetadata metadata;
 
@@ -78,40 +84,6 @@ public class Server implements Node {
           "Unable to successfully start server. Exiting. " + e.toString() );
       System.exit( 1 );
     }
-  }
-
-  private void loadFile(Sector sectorID) {
-    if ( metadata.containsSector( sectorID ) )
-    {
-      LOG.info( "Server already contains sector, not reloading" );
-      return;
-    }
-    try
-    {
-      String filename = Properties.HDFS_FILE_LOCATION;
-      byte[][] bytes = Functions.reshape( DFS.readFile( filename ) );
-      metadata.addSector( sectorID, bytes );
-    } catch ( IOException e )
-    {
-      e.printStackTrace();
-    }
-
-  }
-
-
-  private void notifyWaitingClients(Sector sectorID) {
-    GenericMessage message = new GenericMessage( Protocol.SERVER_INITIALIZED );
-    for ( TCPConnection connection : metadata.getWaitingClients( sectorID ) )
-    {
-      try
-      {
-        connection.getTCPSender().sendData( message.getBytes() );
-      } catch ( IOException e )
-      {
-        e.printStackTrace();
-      }
-    }
-    metadata.clearWaitingClients( sectorID );
   }
 
   /**
@@ -164,9 +136,6 @@ public class Server implements Node {
           displayHelp();
           break;
 
-        // case LOAD :
-        // loadFile(input[1]);
-        // break;
         default :
           LOG.error(
               "Unable to process. Please enter a valid command! Input 'help'"
@@ -195,10 +164,6 @@ public class Server implements Node {
         getSectorRequestHandler( event, connection );
         break;
 
-      case Protocol.REGISTER_CLIENT_REQUEST :
-        handleIncomingClient( event, connection );
-        break;
-
       case Protocol.SECTOR_WINDOW_REQUEST :
         handleSectorWindowRequest( event, connection );
         break;
@@ -210,11 +175,6 @@ public class Server implements Node {
     SectorWindowRequest request = ( SectorWindowRequest ) event;
     Set<Sector> matchingSectors =
         metadata.getMatchingSectors( request.getSectors() );
-    for ( Sector sector : request.getSectors() )
-    {
-      metadata.addWaitingClient( sector, connection );
-    }
-
     byte[][] window =
         metadata.getWindow( matchingSectors, request.currentSector,
             request.position[ 0 ], request.position[ 1 ], request.windowSize );
@@ -231,41 +191,47 @@ public class Server implements Node {
 
   /**
    * 
-   * 
-   * @param event
-   * @param connection
+   * @param sector
    */
-  private void handleIncomingClient(Event event, TCPConnection connection) {
-
-    GenericMessage request = ( GenericMessage ) event;
-
-    // TODO: maintain connection
-
-    LOG.info( new StringBuilder().append( "Client \'" )
-        .append(
-            connection.getSocket().getInetAddress().getCanonicalHostName() )
-        .append( "\' connected to server at sector " )
-        .append( request.getMessage() ).toString() );
-
-    GenericMessage response =
-        new GenericMessage( Protocol.REGISTER_CLIENT_RESPONSE,
-            Boolean.toString( Constants.SUCCESS ) );
+  private void loadFile(Sector sector) {
+    if ( metadata.containsSector( sector ) )
+    {
+      LOG.info( "Server already contains sector, not reloading" );
+      return;
+    }
     try
     {
-      connection.getTCPSender().sendData( response.getBytes() );
+      String filename = Properties.HDFS_FILE_LOCATION;
+      byte[][] bytes = Functions.reshape( DFS.readFile( filename ) );
+      metadata.addSector( sector, bytes );
     } catch ( IOException e )
     {
-      LOG.error( "Unable to send response message to server. " + e.toString() );
       e.printStackTrace();
     }
   }
 
+  /**
+   * 
+   * @param event
+   * @param connection
+   */
   private void getSectorRequestHandler(Event event, TCPConnection connection) {
-    // TODO Auto-generated method stub
-    GetSectorRequest message = ( GetSectorRequest ) event;
-    LOG.info( "Sector: " + message.sector );
-    loadFile( message.sector );
-    notifyWaitingClients( message.sector );
+    GenericSectorMessage request = ( GenericSectorMessage ) event;
+    LOG.info( "Loading Sector: " + request.sector );
+    loadFile( request.sector );
+
+    try
+    {
+      connection.getTCPSender()
+          .sendData( new GenericMessage( Protocol.SERVER_INITIALIZED,
+              metadata.getIdentifier() + Constants.SEPERATOR
+                  + request.sector.toString() ).getBytes() );
+    } catch ( IOException e )
+    {
+      LOG.error( "Unable to respond to Switch for load file request. "
+          + e.toString() );
+      e.printStackTrace();
+    }
   }
 
   /**

@@ -2,12 +2,13 @@ package distributed.application.metadata;
 
 public class SectorInformation {
 
-  private byte[][] sector;
+  private final byte[][] sector;
 
-  public SectorInformation(byte[][] bytes) {
-    sector = bytes;
+  public SectorInformation(byte[][] sector) {
+    this.sector = sector;
   }
-
-  public final byte[][] getSector() { return sector; }
-
+  
+  public final byte[][] getSector() {
+    return sector;
+  }
 }
