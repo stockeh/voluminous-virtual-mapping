@@ -47,6 +47,8 @@ public class Client implements Node {
 
   private final ClientMetadata metadata;
 
+  private final String logDirectory;
+
   /**
    * Default constructor - creates a new server tying the
    * <b>host:port</b> combination for the node as the identifier for
@@ -79,6 +81,7 @@ public class Client implements Node {
 
     this.metadata = new ClientMetadata( host, port );
     this.metadata.setNavigation( initialSector, initialPosition );
+    logDirectory = metadata.getConnection()+".log";
   }
 
 
@@ -95,6 +98,10 @@ public class Client implements Node {
     }catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  private void logToDir(String filename, String data) {
+    logToDir(filename, data.getBytes());
   }
 
   private void logToDir(String fileName, byte[] content) {
@@ -254,8 +261,9 @@ public class Client implements Node {
 //    LOG.debug( response.numSectors + " -- " );
 //    LOG.info("Logging sector of size " + response.sectorWindow.length + " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
     for(byte[] row : response.sectorWindow) {
-      logToDir("sector.log", row);
+      logToDir(logDirectory, row);
     }
+    logToDir(logDirectory, "\n");
   }
 
   /**
