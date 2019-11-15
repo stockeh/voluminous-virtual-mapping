@@ -94,9 +94,12 @@ public class Client implements Node {
     {
       Path path = Paths.get( Properties.SECTOR_LOGGING_DIR );
       LOG.info( "Setting up logging directory at " + path );
-      Functions.deleteDirectory( path );
-      Files.createDirectory( path, permissions );
-      Files.setPosixFilePermissions( path, ownerWritable );
+      // Functions.deleteDirectory( path );
+      if ( !Files.isDirectory( path ) )
+      {
+        Files.createDirectory( path, permissions );
+        Files.setPosixFilePermissions( path, ownerWritable );
+      }
     } catch ( IOException e )
     {
       e.printStackTrace();
@@ -118,8 +121,9 @@ public class Client implements Node {
 
     try
     {
-      if ( Files.notExists( path ) )
-        Files.createFile( path, permissions );
+      Files.deleteIfExists( path );
+      Files.createFile( path, permissions );
+
       Files.setPosixFilePermissions( path, ownerWritable );
       Files.write( path, content, StandardOpenOption.APPEND );
     } catch ( IOException e )
@@ -139,9 +143,12 @@ public class Client implements Node {
     {
       Client node = new Client( InetAddress.getLocalHost().getHostName(),
           serverSocket.getLocalPort(), args );
-      node.createLoggingDir();
+
       LOG.info( "Client node starting up at: " + new Date() + ", on "
-          + node.metadata.getConnection() );
+          + node.metadata.getConnection() + " in "
+          + node.metadata.getNavigator() );
+
+      node.createLoggingDir();
 
       ( new Thread(
           new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
@@ -299,7 +306,7 @@ public class Client implements Node {
     }
     connection.close();
 
-    LOG.info( "Client successfully connected to the server!" );
+    LOG.info( "Client successfully connected to the server: " + response.serverToConnect );
     ( new Thread( metadata.getNavigator(), "Navigation Thread" ) ).start();
   }
 

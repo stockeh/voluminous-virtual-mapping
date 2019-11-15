@@ -45,7 +45,7 @@ public class ClientMetadata {
   public String getConnection() {
     return connection;
   }
-  
+
   public Navigator getNavigator() {
     return navigator;
   }
@@ -53,4 +53,5 @@ public class ClientMetadata {
   public void setNavigation(Sector initialSector, int[] initialPosition) {
     navigator = new Navigator( initialSector, initialPosition );
   }
+
 }

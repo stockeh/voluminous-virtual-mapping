@@ -185,6 +185,7 @@ public class Server implements Node {
               window, request.getSectors().size() ).getBytes() );
     } catch ( IOException e )
     {
+      LOG.error( "Unable to reply to Client for window request. " + e.toString() );
       e.printStackTrace();
     }
   }
@@ -206,6 +207,7 @@ public class Server implements Node {
       metadata.addSector( sector, bytes );
     } catch ( IOException e )
     {
+      LOG.error( "Unable to load the sector file from the data store. " + e.toString() );
       e.printStackTrace();
     }
   }
