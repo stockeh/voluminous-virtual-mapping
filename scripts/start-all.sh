@@ -11,7 +11,7 @@ pushd "$DIR/../application-server/"
 bash start.sh
 popd
 
-sleep 1
+sleep 3
 
 echo 'STARTING CLIENTS'
 pushd "$DIR/../client-server/"

@@ -1,11 +1,20 @@
 package distributed.client.node;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.Set;
 import distributed.client.metadata.ClientMetadata;
 import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
@@ -15,10 +24,9 @@ import distributed.common.transport.TCPSender;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
-import distributed.common.wireformats.DiscoverResponse;
+import distributed.common.wireformats.ClientDiscoverRequest;
+import distributed.common.wireformats.ClientDiscoverResponse;
 import distributed.common.wireformats.Event;
-import distributed.common.wireformats.GenericMessage;
-import distributed.common.wireformats.GenericSectorMessage;
 import distributed.common.wireformats.Protocol;
 import distributed.common.wireformats.SectorWindowResponse;
 
@@ -72,6 +80,37 @@ public class Client implements Node {
     this.metadata.setNavigation( initialSector, initialPosition );
   }
 
+  private void createLoggingDir() {
+
+    Set<PosixFilePermission> ownerWritable =
+        PosixFilePermissions.fromString( "rwxrwxrwx" );
+    FileAttribute<?> permissions =
+        PosixFilePermissions.asFileAttribute( ownerWritable );
+    try
+    {
+      Path path = new File( Properties.SECTOR_LOGGING_DIR ).toPath();
+      LOG.info( "Setting up logging directory at " + path );
+      Files.deleteIfExists( path );
+      Files.createDirectory( path, permissions );
+    } catch ( IOException e )
+    {
+      e.printStackTrace();
+    }
+  }
+
+  private void logToDir(String fileName, byte[] content) {
+    LOG.info( "Logging to " + Properties.SECTOR_LOGGING_DIR + fileName );
+    if ( fileName.startsWith( "/" ) )
+      fileName = fileName.substring( 1 );
+    try
+    {
+      Files.write( Paths.get( fileName ), content, StandardOpenOption.APPEND );
+    } catch ( IOException e )
+    {
+      e.printStackTrace();
+    }
+  }
+
   /**
    * Start listening for incoming connections and establish connection
    * into the server network.
@@ -83,7 +122,7 @@ public class Client implements Node {
     {
       Client node = new Client( InetAddress.getLocalHost().getHostName(),
           serverSocket.getLocalPort(), args );
-
+      node.createLoggingDir();
       LOG.info( "Client node starting up at: " + new Date() + ", on "
           + node.metadata.getConnection() );
 
@@ -119,8 +158,9 @@ public class Client implements Node {
 
       TCPSender sender = switchConnection.getTCPSender();
 
-      sender.sendData( new GenericMessage( Protocol.DISCOVER_REQUEST,
-          metadata.getNavigator().getInitialSector().toString() ).getBytes() );
+      sender.sendData( new ClientDiscoverRequest( Protocol.CLIENT_DISCOVER_REQUEST,
+          metadata.getNavigator().getInitialSector(), metadata.getConnection() )
+              .getBytes() );
 
     } catch ( IOException e )
     {
@@ -176,13 +216,8 @@ public class Client implements Node {
     LOG.debug( event.toString() );
     switch ( event.getType() )
     {
-      case Protocol.DISCOVER_RESPONSE :
+      case Protocol.CLIENT_DISCOVER_RESPONSE :
         connectToServer( event, connection );
-        break;
-
-      case Protocol.REGISTER_CLIENT_RESPONSE :
-        LOG.info( "Client successfully connected to the server!" );
-        ( new Thread( metadata.getNavigator(), "Navigation Thread" ) ).start();
         break;
 
       case Protocol.SECTOR_WINDOW_RESPONSE :
@@ -203,7 +238,11 @@ public class Client implements Node {
     // TODO: wait for all responses to come in before constructing the
     // window and then write to file?
 
-    LOG.debug( response.numSectors + " -- " );
+    // LOG.debug( response.numSectors + " -- " );
+    for ( byte[] row : response.sectorWindow )
+    {
+      logToDir( "sector.log", row );
+    }
   }
 
   /**
@@ -214,7 +253,7 @@ public class Client implements Node {
    * @param connection
    */
   private void connectToServer(Event event, TCPConnection connection) {
-    DiscoverResponse response = ( DiscoverResponse ) event;
+    ClientDiscoverResponse response = ( ClientDiscoverResponse ) event;
 
     String[] connectionIdentifier = response.serverToConnect.split( ":" );
     metadata.getNavigator().setSectorMapSize( response.mapSize );
@@ -229,10 +268,6 @@ public class Client implements Node {
 
       server.startReceiver();
 
-      server.getTCPSender()
-          .sendData( new GenericSectorMessage( Protocol.REGISTER_CLIENT_REQUEST,
-              metadata.getNavigator().getInitialSector() ).getBytes() );
-
       metadata.getNavigator().setInitialServerConnection( server );
 
     } catch ( IOException e )
@@ -242,6 +277,9 @@ public class Client implements Node {
       System.exit( 1 );
     }
     connection.close();
+
+    LOG.info( "Client successfully connected to the server!" );
+    ( new Thread( metadata.getNavigator(), "Navigation Thread" ) ).start();
   }
 
   /**

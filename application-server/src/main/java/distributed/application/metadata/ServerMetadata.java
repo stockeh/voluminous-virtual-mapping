@@ -3,7 +3,6 @@ package distributed.application.metadata;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import distributed.application.metadata.SectorInformation.ConditionalLock;
 import distributed.common.util.Sector;
 
 /**
@@ -34,12 +33,8 @@ public class ServerMetadata {
     return sectors.get( sectorID );
   }
 
-  public ConditionalLock getConditionalLock(Sector sector) {
-    return sectors.get( sector ).getConditionalLock();
-  }
-
-  public void addSector(Sector sectorID) {
-    sectors.put( sectorID, new SectorInformation() );
+  public void addSector(Sector sectorID, byte[][] bytes) {
+    sectors.put( sectorID, new SectorInformation(bytes) );
   }
 
   public boolean containsSector(Sector sectorID) {

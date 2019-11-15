@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.Timer;
 import distributed.application.heartbeat.ServerHeartbeatManager;
 import distributed.application.io.DFS;
-import distributed.application.metadata.SectorInformation.ConditionalLock;
 import distributed.application.metadata.ServerMetadata;
 import distributed.application.util.Constants;
 import distributed.application.util.Functions;
@@ -165,10 +164,6 @@ public class Server implements Node {
         getSectorRequestHandler( event, connection );
         break;
 
-      case Protocol.REGISTER_CLIENT_REQUEST :
-        handleIncomingClient( event, connection );
-        break;
-
       case Protocol.SECTOR_WINDOW_REQUEST :
         handleSectorWindowRequest( event, connection );
         break;
@@ -196,56 +191,6 @@ public class Server implements Node {
 
   /**
    * 
-   * 
-   * @param event
-   * @param connection
-   */
-  private void handleIncomingClient(Event event, TCPConnection connection) {
-
-    GenericSectorMessage request = ( GenericSectorMessage ) event;
-    Sector sector = request.sector;
-    ConditionalLock conditionalLock = metadata.getConditionalLock( sector );
-
-    try
-    {
-      LOG.info( new StringBuilder().append( "Client \'" )
-          .append(
-              connection.getSocket().getInetAddress().getCanonicalHostName() )
-          .append( "\' connected to server at sector " )
-          .append( sector.toString() ).toString() );
-
-      LOG.info(
-          "Waiting/checking for sector to be loaded before responding to Client." );
-      conditionalLock.getLock().lock();
-      while ( !conditionalLock.isInitialized() )
-      {
-        conditionalLock.getCondition().await();
-      }
-      LOG.info( "Sector finished loading... replying to client." );
-
-      GenericMessage response =
-          new GenericMessage( Protocol.REGISTER_CLIENT_RESPONSE,
-              Boolean.toString( Constants.SUCCESS ) );
-      try
-      {
-        connection.getTCPSender().sendData( response.getBytes() );
-      } catch ( IOException e )
-      {
-        LOG.error(
-            "Unable to send response message to server. " + e.toString() );
-        e.printStackTrace();
-      }
-    } catch ( InterruptedException e )
-    {
-      e.printStackTrace();
-    } finally
-    {
-      conditionalLock.getLock().unlock();
-    }
-  }
-
-  /**
-   * 
    * @param sector
    */
   private void loadFile(Sector sector) {
@@ -258,13 +203,11 @@ public class Server implements Node {
     {
       String filename = Properties.HDFS_FILE_LOCATION;
       byte[][] bytes = Functions.reshape( DFS.readFile( filename ) );
-      metadata.getSector( sector ).setSector( bytes );
+      metadata.addSector( sector, bytes );
     } catch ( IOException e )
     {
       e.printStackTrace();
     }
-    ConditionalLock conditionalLock = metadata.getConditionalLock( sector );
-    conditionalLock.initialized();
   }
 
   /**
@@ -274,9 +217,21 @@ public class Server implements Node {
    */
   private void getSectorRequestHandler(Event event, TCPConnection connection) {
     GenericSectorMessage request = ( GenericSectorMessage ) event;
-    metadata.addSector( request.sector );
     LOG.info( "Loading Sector: " + request.sector );
     loadFile( request.sector );
+
+    try
+    {
+      connection.getTCPSender()
+          .sendData( new GenericMessage( Protocol.SERVER_INITIALIZED,
+              metadata.getIdentifier() + Constants.SEPERATOR
+                  + request.sector.toString() ).getBytes() );
+    } catch ( IOException e )
+    {
+      LOG.error( "Unable to respond to Switch for load file request. "
+          + e.toString() );
+      e.printStackTrace();
+    }
   }
 
   /**

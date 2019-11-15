@@ -8,9 +8,9 @@ package distributed.common.wireformats;
  */
 public interface Protocol {
 
-  int DISCOVER_REQUEST = 0;
+  int CLIENT_DISCOVER_REQUEST = 0;
 
-  int DISCOVER_RESPONSE = 1;
+  int CLIENT_DISCOVER_RESPONSE = 1;
 
   int REGISTER_SERVER_REQUEST = 2;
 
@@ -20,12 +20,9 @@ public interface Protocol {
   
   int GET_SECTOR_REQUEST = 5;
 
-  int REGISTER_CLIENT_REQUEST = 6;
-
-  int REGISTER_CLIENT_RESPONSE = 7;
-
   int SECTOR_WINDOW_REQUEST = 8;
   
   int SECTOR_WINDOW_RESPONSE = 9;
 
+  int SERVER_INITIALIZED = 10;
 }

@@ -54,12 +54,8 @@ public class EventFactory implements Factory {
   public Event createEvent(byte[] marshalledBytes) throws IOException {
     switch ( ByteBuffer.wrap( marshalledBytes ).getInt() )
     {
-      case Protocol.DISCOVER_RESPONSE :
-        return new DiscoverResponse( marshalledBytes );
-
-      case Protocol.REGISTER_CLIENT_RESPONSE :
-      case Protocol.SERVER_INITIALIZED :
-        return new GenericMessage( marshalledBytes );
+      case Protocol.CLIENT_DISCOVER_RESPONSE :
+        return new ClientDiscoverResponse( marshalledBytes );
 
       case Protocol.SECTOR_WINDOW_RESPONSE :
         return new SectorWindowResponse( marshalledBytes );

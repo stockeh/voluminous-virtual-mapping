@@ -5,21 +5,21 @@ import distributed.common.util.MessageUnMarshaller;
 
 import java.io.IOException;
 
-public class DiscoverResponse implements Event{
+public class ClientDiscoverResponse implements Event{
 
   public int type;
   public int mapSize;
   public int sectorSize;
   public String serverToConnect;
 
-  public DiscoverResponse(int type, int mapSize, int sectorSize, String serverToConnect) {
+  public ClientDiscoverResponse(int type, int mapSize, int sectorSize, String serverToConnect) {
     this.type = type;
     this.mapSize = mapSize;
     this.sectorSize = sectorSize;
     this.serverToConnect = serverToConnect;
   }
 
-  public DiscoverResponse(byte[] bytes) {
+  public ClientDiscoverResponse(byte[] bytes) {
       MessageUnMarshaller.readEvent( getClass(), this, bytes );
   }
 

@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import distributed.application.util.Constants;
 import distributed.application.util.Properties;
 import distributed.application.wireformats.ApplicationHeartbeat;
 import distributed.common.transport.TCPConnection;
@@ -33,6 +34,8 @@ public class SwitchMetadata {
   private final Map<String, ServerInformation> serverConnections;
   // sector identifier, server identifier
   private final Map<Sector, Set<String>> availableSectors;
+  // server\tsector identifier, client connections
+  private final Map<String, List<TCPConnection>> clientConnections;
 
   private final String identifier;
 
@@ -42,8 +45,9 @@ public class SwitchMetadata {
    */
   public SwitchMetadata(String host, int port) {
     this.serverConnections = new HashMap<>();
-    this.identifier = host + ":" + port;
     this.availableSectors = new HashMap<>();
+    this.clientConnections = new HashMap<>();
+    this.identifier = host + ":" + port;
   }
 
   /**
@@ -54,19 +58,41 @@ public class SwitchMetadata {
     return identifier;
   }
 
-  public String getServer(Sector sector) throws IOException {
+  public Map<String, List<TCPConnection>> getClientConnections() {
+    return clientConnections;
+  }
+
+  private String addClientConnection(Sector sector, String server,
+      TCPConnection clientConnection) {
+    String key = server + Constants.SEPERATOR + sector.toString();
+    synchronized ( clientConnections )
+    {
+      List<TCPConnection> waitingClients = clientConnections.get( key );
+      if ( waitingClients == null )
+      {
+        waitingClients = new ArrayList<>();
+      }
+      waitingClients.add( clientConnection );
+    }
+    return key;
+  }
+
+  public String getServer(Sector sector, TCPConnection clientConnection)
+      throws IOException {
+    String server;
     if ( availableSectors.containsKey( sector ) )
     {
       // TODO load balance servers
       Set<String> servers = availableSectors.get( sector );
-      return servers.iterator().next();
+      server = servers.iterator().next();
+      return addClientConnection( sector, server, clientConnection );
     } else
     {
       // return random server
       // TODO load balance servers
       List<String> servers = new ArrayList<>( serverConnections.keySet() );
       Collections.shuffle( servers );
-      String server = servers.get( 0 );
+      server = servers.get( 0 );
 
       LOG.info( "Instruct " + server + " to pull new sector ( "
           + sector.toString() + " )." );
@@ -76,8 +102,8 @@ public class SwitchMetadata {
           new GenericSectorMessage( Protocol.GET_SECTOR_REQUEST, sector );
       serverConnections.get( server ).getConnection().getTCPSender()
           .sendData( request.getBytes() );
-
-      return ( server );
+      addClientConnection( sector, server, clientConnection );
+      return null;
     }
   }
 
