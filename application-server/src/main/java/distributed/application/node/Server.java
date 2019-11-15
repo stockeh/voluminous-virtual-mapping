@@ -106,8 +106,8 @@ public class Server implements Node {
     ServerHeartbeatManager serverHeartbeatManager =
         new ServerHeartbeatManager( connection, metadata );
     Timer timer = new Timer();
-    // 5 seconds intervals in milliseconds
-    timer.schedule( serverHeartbeatManager, 1000, 5000 );
+    // 15 seconds intervals in milliseconds
+    timer.schedule( serverHeartbeatManager, 1000, 15000 );
   }
 
   /**

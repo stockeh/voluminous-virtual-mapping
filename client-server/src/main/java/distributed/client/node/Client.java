@@ -1,5 +1,6 @@
 package distributed.client.node;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -47,6 +48,7 @@ public class Client implements Node {
   private final ClientMetadata metadata;
 
   private final String logDirectory;
+  private final String logFile;
 
   /**
    * Default constructor - creates a new server tying the
@@ -80,7 +82,10 @@ public class Client implements Node {
 
     this.metadata = new ClientMetadata( host, port );
     this.metadata.setNavigation( initialSector, initialPosition );
-    logDirectory = metadata.getConnection() + ".log";
+
+    String temp = System.getProperty("user.home");
+    logDirectory = Properties.SECTOR_LOGGING_DIR+"_"+temp.substring(temp.lastIndexOf(File.separator)+1);
+    logFile = metadata.getConnection()+".log";
   }
 
 
@@ -92,7 +97,7 @@ public class Client implements Node {
         PosixFilePermissions.asFileAttribute( ownerWritable );
     try
     {
-      Path path = Paths.get( Properties.SECTOR_LOGGING_DIR );
+      Path path = Paths.get( logDirectory );
       LOG.info( "Setting up logging directory at " + path );
       Functions.deleteDirectory( path );
       Files.createDirectory( path, permissions );
@@ -108,13 +113,14 @@ public class Client implements Node {
   }
 
   private void logToDir(String fileName, byte[] content) {
+
     Set<PosixFilePermission> ownerWritable =
         PosixFilePermissions.fromString( "rw-rw-rw-" );
     FileAttribute<?> permissions =
         PosixFilePermissions.asFileAttribute( ownerWritable );
-    if ( fileName.startsWith( "/" ) )
-      fileName = fileName.substring( 1 );
-    Path path = Paths.get( Properties.SECTOR_LOGGING_DIR + fileName );
+    if ( !fileName.startsWith(File.separator) )
+      fileName = File.separator + fileName;
+    Path path = Paths.get( logDirectory + fileName );
 
     try
     {
@@ -139,10 +145,10 @@ public class Client implements Node {
     {
       Client node = new Client( InetAddress.getLocalHost().getHostName(),
           serverSocket.getLocalPort(), args );
-      node.createLoggingDir();
+
       LOG.info( "Client node starting up at: " + new Date() + ", on "
           + node.metadata.getConnection() );
-
+      node.createLoggingDir();
       ( new Thread(
           new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
           "Client Thread" ) ).start();
@@ -256,14 +262,15 @@ public class Client implements Node {
     // TODO: wait for all responses to come in before constructing the
     // window and then write to file?
 
+//    LOG.debug( response.numSectors + " -- " );
+//    LOG.info("Logging sector of size " + response.sectorWindow.length + " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
+    for(byte[] row : response.sectorWindow) {
+      logToDir(logFile, row);
+    }
+    logToDir(logFile, "\n");
     // LOG.debug( response.numSectors + " -- " );
     // LOG.info("Logging sector of size " + response.sectorWindow.length +
     // " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
-    for ( byte[] row : response.sectorWindow )
-    {
-      logToDir( logDirectory, row );
-    }
-    logToDir( logDirectory, "\n" );
   }
 
   /**
