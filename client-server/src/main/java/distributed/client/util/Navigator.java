@@ -2,6 +2,7 @@ package distributed.client.util;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -200,5 +201,11 @@ public class Navigator implements Runnable {
       e.printStackTrace();
     }
 
+  }
+
+  @Override
+  public String toString() {
+    return "sector: (" + sector.toString() + ") & position: "
+        + Arrays.toString( position );
   }
 }

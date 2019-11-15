@@ -22,7 +22,6 @@ import distributed.common.node.Node;
 import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPSender;
 import distributed.common.transport.TCPServerThread;
-import distributed.common.util.Functions;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
 import distributed.common.wireformats.ClientDiscoverRequest;
@@ -83,9 +82,10 @@ public class Client implements Node {
     this.metadata = new ClientMetadata( host, port );
     this.metadata.setNavigation( initialSector, initialPosition );
 
-    String temp = System.getProperty("user.home");
-    logDirectory = Properties.SECTOR_LOGGING_DIR+"_"+temp.substring(temp.lastIndexOf(File.separator)+1);
-    logFile = metadata.getConnection()+".log";
+    String temp = System.getProperty( "user.home" );
+    logDirectory = Properties.SECTOR_LOGGING_DIR + "_"
+        + temp.substring( temp.lastIndexOf( File.separator ) + 1 );
+    logFile = metadata.getConnection() + ".log";
   }
 
 
@@ -99,9 +99,12 @@ public class Client implements Node {
     {
       Path path = Paths.get( logDirectory );
       LOG.info( "Setting up logging directory at " + path );
-      Functions.deleteDirectory( path );
-      Files.createDirectory( path, permissions );
-      Files.setPosixFilePermissions( path, ownerWritable );
+      // Functions.deleteDirectory( path );
+      if ( !Files.isDirectory( path ) )
+      {
+        Files.createDirectory( path, permissions );
+        Files.setPosixFilePermissions( path, ownerWritable );
+      }
     } catch ( IOException e )
     {
       e.printStackTrace();
@@ -118,14 +121,18 @@ public class Client implements Node {
         PosixFilePermissions.fromString( "rw-rw-rw-" );
     FileAttribute<?> permissions =
         PosixFilePermissions.asFileAttribute( ownerWritable );
-    if ( !fileName.startsWith(File.separator) )
+    
+    if ( !fileName.startsWith( File.separator ) )
+    {
       fileName = File.separator + fileName;
+    }
     Path path = Paths.get( logDirectory + fileName );
 
     try
     {
-      if ( Files.notExists( path ) )
-        Files.createFile( path, permissions );
+      Files.deleteIfExists( path );
+      Files.createFile( path, permissions );
+
       Files.setPosixFilePermissions( path, ownerWritable );
       Files.write( path, content, StandardOpenOption.APPEND );
     } catch ( IOException e )
@@ -147,8 +154,11 @@ public class Client implements Node {
           serverSocket.getLocalPort(), args );
 
       LOG.info( "Client node starting up at: " + new Date() + ", on "
-          + node.metadata.getConnection() );
+          + node.metadata.getConnection() + " in "
+          + node.metadata.getNavigator() );
+
       node.createLoggingDir();
+
       ( new Thread(
           new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
           "Client Thread" ) ).start();
@@ -262,12 +272,14 @@ public class Client implements Node {
     // TODO: wait for all responses to come in before constructing the
     // window and then write to file?
 
-//    LOG.debug( response.numSectors + " -- " );
-//    LOG.info("Logging sector of size " + response.sectorWindow.length + " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
-    for(byte[] row : response.sectorWindow) {
-      logToDir(logFile, row);
+    // LOG.debug( response.numSectors + " -- " );
+    // LOG.info("Logging sector of size " + response.sectorWindow.length +
+    // " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
+    for ( byte[] row : response.sectorWindow )
+    {
+      logToDir( logFile, row );
     }
-    logToDir(logFile, "\n");
+    logToDir( logFile, "\n" );
     // LOG.debug( response.numSectors + " -- " );
     // LOG.info("Logging sector of size " + response.sectorWindow.length +
     // " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
@@ -306,7 +318,8 @@ public class Client implements Node {
     }
     connection.close();
 
-    LOG.info( "Client successfully connected to the server!" );
+    LOG.info( "Client successfully connected to the server: "
+        + response.serverToConnect );
     ( new Thread( metadata.getNavigator(), "Navigation Thread" ) ).start();
   }
 
