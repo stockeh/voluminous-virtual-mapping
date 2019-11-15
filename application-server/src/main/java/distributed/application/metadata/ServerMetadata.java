@@ -3,6 +3,8 @@ package distributed.application.metadata;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import distributed.application.util.Properties;
+import distributed.common.util.Logger;
 import distributed.common.util.Sector;
 
 /**
@@ -13,6 +15,9 @@ import distributed.common.util.Sector;
  *
  */
 public class ServerMetadata {
+
+  private static final Logger LOG =
+          Logger.getInstance( Properties.SYSTEM_LOG_LEVEL );
 
   private final String identifier;
 
@@ -54,14 +59,14 @@ public class ServerMetadata {
     for ( Sector id : sectorIDs )
     {
       byte[][] sector = sectors.get( id ).getSector();
+
       int rowStart = Math.max( 0, row - windowSize );
-      int rowEnd = Math.min( row + windowSize + 1, sector.length );
+      int rowEnd = Math.min( row + windowSize, sector.length );
       int colStart = Math.max( 0, col - windowSize );
-      int colEnd = Math.min( col + windowSize + 1, sector[ 0 ].length );
+      int colEnd = Math.min( col + windowSize, sector[ 0 ].length );
       width += rowEnd - rowStart;
       height += colEnd - colStart;
     }
-
     byte[][] window = new byte[ width ][ height ];
 
     for ( Sector id : sectorIDs )
@@ -111,9 +116,9 @@ public class ServerMetadata {
     } else
     {
       int rowStart = Math.max( 0, row - windowSize );
-      int rowEnd = Math.min( row + windowSize + 1, sector.length );
+      int rowEnd = Math.min( row + windowSize, sector.length );
       int colStart = Math.max( 0, col - windowSize );
-      int colEnd = Math.min( col + windowSize + 1, sector[ 0 ].length );
+      int colEnd = Math.min( col + windowSize, sector[ 0 ].length );
 
       for ( int i = rowStart; i < rowEnd; i++ )
       {

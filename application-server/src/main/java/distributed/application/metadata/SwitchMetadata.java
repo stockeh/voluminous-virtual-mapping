@@ -67,12 +67,8 @@ public class SwitchMetadata {
     String key = server + Constants.SEPERATOR + sector.toString();
     synchronized ( clientConnections )
     {
-      List<TCPConnection> waitingClients = clientConnections.get( key );
-      if ( waitingClients == null )
-      {
-        waitingClients = new ArrayList<>();
-      }
-      waitingClients.add( clientConnection );
+      clientConnections.computeIfAbsent( key, v -> new ArrayList<>() )
+          .add( clientConnection );
     }
     return key;
   }

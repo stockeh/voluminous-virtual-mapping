@@ -20,9 +20,9 @@ public interface Protocol {
   
   int GET_SECTOR_REQUEST = 5;
 
-  int SECTOR_WINDOW_REQUEST = 8;
+  int SECTOR_WINDOW_REQUEST = 6;
   
-  int SECTOR_WINDOW_RESPONSE = 9;
+  int SECTOR_WINDOW_RESPONSE = 7;
 
-  int SERVER_INITIALIZED = 10;
+  int SERVER_INITIALIZED = 8;
 }
