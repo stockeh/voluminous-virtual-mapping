@@ -182,26 +182,10 @@ public class Switch implements Node {
         break;
 
       case Protocol.SECTOR_LOADED:
+        String[] arr = ((GenericMessage) event).message.split(Constants.SEPERATOR);
+        LOG.info("SERVER FINISHED LOADING SECTOR: " + arr[1]);
         break;
     }
-  }
-
-  private void serverLoadedSector(String keyForClientToConnect) {
-//    LOG.info("Server Loaded Sector: ");
-//    String serverToConnect =
-//            keyForClientToConnect.split( Constants.SEPERATOR )[ 0 ];
-//    List<TCPConnection> connections = metadata.removeServer(keyForClientToConnect);
-//    if ( connections == null )
-//    {
-//      LOG.error( "Unable to send join request to client from switch for "
-//              + keyForClientToConnect );
-//      return;
-//    }
-//    TCPConnection serverConnection = metadata.getServerConnections().get(serverToConnect).getConnection();
-//    for ( TCPConnection connection : connections )
-//    {
-//      serverConnection.getTCPSender().sendData();
-//    }
   }
 
   /**
