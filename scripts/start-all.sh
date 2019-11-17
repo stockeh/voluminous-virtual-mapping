@@ -13,6 +13,7 @@ cat << EOF
     
     script usage: $( basename $0 ) [-o operation] [-c num clients] [-s num sector]
     -o operation   : 'execute' to skip compilation of app server and client
+    -a num servers : integer number of application servers to start - must be > 0
     -c num clients : integer number of clients to start in configuration - must be > s
     -s num sector  : integer number of sectors to start clients in - must be < c
 
@@ -28,12 +29,13 @@ function prop {
 
 COMPILE=true
 
+NUM_SERVERS=1
 NUM_CLIENTS=1
 NUM_SECTORS=1
 SECTOR_BOUNDARY_SIZE=$(prop "sector.boundary.size")
 SECTOR_MAP_SIZE=$(prop "sector.map.size")
 
-while getopts o:c:s: option
+while getopts o:a:c:s: option
 do
     case "${option}" in
         o)
@@ -42,6 +44,7 @@ do
             COMPILE=false
         fi
         ;;
+        a) NUM_SERVERS=${OPTARG};;
         c) NUM_CLIENTS=${OPTARG};;
         s) NUM_SECTORS=${OPTARG};;
         ?) usage;;
@@ -57,7 +60,7 @@ if [ "$COMPILE" = true ] ; then
     bash start.sh -o compile
 fi
 
-bash start.sh -o execute
+bash start.sh -o execute -a $NUM_SERVERS
 
 popd
 
