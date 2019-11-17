@@ -54,6 +54,7 @@ public class EventFactory implements Factory {
   public Event createEvent(byte[] marshalledBytes) throws IOException {
     switch ( ByteBuffer.wrap( marshalledBytes ).getInt() )
     {
+      case Protocol.LOAD_SECTOR:
       case Protocol.GET_SECTOR_REQUEST :
         return new GenericSectorMessage( marshalledBytes );
 
@@ -71,6 +72,9 @@ public class EventFactory implements Factory {
 
       case Protocol.APPLICATION_HEATBEAT :
         return new ApplicationHeartbeat( marshalledBytes );
+
+      case Protocol.PREFETCH_SECTORS:
+        return new PrefetchSectorRequest( marshalledBytes );
 
       default :
         LOG.error( "Event could not be created. "

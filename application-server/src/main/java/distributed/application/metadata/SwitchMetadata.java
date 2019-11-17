@@ -77,6 +77,10 @@ public class SwitchMetadata {
     return key;
   }
 
+  public synchronized boolean sectorIsAvailable(Sector sector) {
+    return availableSectors.containsKey(sector);
+  }
+
   public synchronized List<TCPConnection> removeServer(String keyForClientToConnect) {
     return clientConnections.remove( keyForClientToConnect );
   }
@@ -108,6 +112,14 @@ public class SwitchMetadata {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public synchronized TCPConnection getSectorDestination(Sector sector) {
+    List<String> servers = new ArrayList<>( serverConnections.keySet() );
+    Collections.shuffle( servers );
+    String server = servers.get( 0 );
+    availableSectors.put(sector, new HashSet<>(Arrays.asList( server )));
+    return serverConnections.get(server).getConnection();
   }
 
   public synchronized String getServer(Sector sector, TCPConnection clientConnection)
