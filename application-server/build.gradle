@@ -17,7 +17,9 @@ configurations {
 dependencies {
     libs (
             [group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: '3.1.2'],
-            [group: 'org.apache.hadoop', name: 'hadoop-common', version: '3.1.2']
+            [group: 'org.apache.hadoop', name: 'hadoop-common', version: '3.1.2'],
+            [group: 'io.dropwizard.metrics', name: 'metrics-core', version: '4.1.1'],
+            [group: 'io.dropwizard.metrics', name: 'metrics-jvm', version: '4.1.1']
     )
 
     testImplementation 'junit:junit:4.12'
