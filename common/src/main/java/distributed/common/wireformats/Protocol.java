@@ -27,4 +27,8 @@ public interface Protocol {
   int SERVER_INITIALIZED = 8;
 
   int SECTOR_LOADED = 9;
+
+  int PREFETCH_SECTORS = 10;
+
+  int LOAD_SECTOR = 11;
 }

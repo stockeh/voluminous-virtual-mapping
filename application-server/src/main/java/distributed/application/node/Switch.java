@@ -185,6 +185,24 @@ public class Switch implements Node {
         String[] arr = ((GenericMessage) event).message.split(Constants.SEPERATOR);
         LOG.info("SERVER FINISHED LOADING SECTOR: " + arr[1]);
         break;
+
+      case Protocol.PREFETCH_SECTORS:
+        handleSectorPrefetchRequest((PrefetchSectorRequest) event);
+        break;
+
+    }
+  }
+
+  private void handleSectorPrefetchRequest(PrefetchSectorRequest request) {
+    for ( Sector sector : request.sectors) {
+      if(!metadata.sectorIsAvailable(sector)) {
+        GenericSectorMessage message = new GenericSectorMessage(Protocol.LOAD_SECTOR, sector);
+        try {
+          metadata.getSectorDestination(sector).getTCPSender().sendData(message.getBytes());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
     }
   }
 

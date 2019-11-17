@@ -6,11 +6,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.Timer;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.MetricRegistry;
@@ -29,12 +25,7 @@ import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
-import distributed.common.wireformats.Event;
-import distributed.common.wireformats.GenericMessage;
-import distributed.common.wireformats.GenericSectorMessage;
-import distributed.common.wireformats.Protocol;
-import distributed.common.wireformats.SectorWindowRequest;
-import distributed.common.wireformats.SectorWindowResponse;
+import distributed.common.wireformats.*;
 
 /**
  *
@@ -203,6 +194,7 @@ public class Server implements Node {
         registerServerResponseHandler( event, connection );
         break;
 
+      case Protocol.LOAD_SECTOR:
       case Protocol.GET_SECTOR_REQUEST :
         getSectorRequestHandler( event, connection );
         break;
@@ -218,6 +210,82 @@ public class Server implements Node {
     request.host = connection.getEndHost();
     try {
       switchConnection.getTCPSender().sendData(request.getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+
+
+  private void handleSectorPrefetching(Set<Sector> mySectors, int[] position, int windowSize, Sector current) {
+    Set<Sector> toPrefetch = new HashSet<>();
+    int preMult = Properties.SECTOR_PREFETCH_MULTIPLIER*windowSize;
+    if(position[0]+preMult >= Properties.SECTOR_BOUNDARY_SIZE) {
+      int x = current.x == Properties.SECTOR_MAP_SIZE-1 ? 0 : current.x+1;
+      int y = current.y;
+      Sector sector = new Sector(x, y);
+      if(!toPrefetch.contains(sector)) {
+        toPrefetch.add(sector);
+      }
+      if(position[1]+preMult >= Properties.SECTOR_BOUNDARY_SIZE) {
+        y = current.y == Properties.SECTOR_MAP_SIZE-1 ? 0 : current.y+1;
+        sector = new Sector(x, y);
+        if(!mySectors.contains(sector)) {
+          toPrefetch.add(sector);
+        }
+      }
+    }
+
+    if(position[0]-preMult <= 0) {
+      int x = current.x == 0 ? Properties.SECTOR_MAP_SIZE-1 : current.x-1;
+      int y = current.y;
+      Sector sector = new Sector(x, y);
+      if(!toPrefetch.contains(sector)) {
+        toPrefetch.add(sector);
+      }
+      if(position[1]-preMult <= 0) {
+        y = current.y == 0 ? Properties.SECTOR_MAP_SIZE-1 : current.y-1;
+        sector = new Sector(x, y);
+        if(!mySectors.contains(sector)) {
+          toPrefetch.add(sector);
+        }
+      }
+    }
+
+    if(position[1]+preMult >= Properties.SECTOR_BOUNDARY_SIZE) {
+      int x = current.x;
+      int y = current.y == Properties.SECTOR_MAP_SIZE-1 ? 0 : current.y+1;
+      Sector sector = new Sector(x, y);
+      if(!mySectors.contains(sector)) {
+        toPrefetch.add(sector);
+      }
+      if(position[0]+preMult >= Properties.SECTOR_BOUNDARY_SIZE) {
+        x = current.x == Properties.SECTOR_MAP_SIZE-1 ? 0 : current.x+1;
+        sector = new Sector(x, y);
+        if(!mySectors.contains(sector)) {
+          toPrefetch.add(sector);
+        }
+      }
+    }
+
+    if(position[1]-preMult <= 0) {
+      int x = current.x;
+      int y = current.y == 0 ? Properties.SECTOR_MAP_SIZE-1 : current.y-1;
+      Sector sector = new Sector(x, y);
+      if(!mySectors.contains(sector)) {
+        toPrefetch.add(sector);
+      }
+      if(position[0]-preMult <= 0) {
+        x = current.x == 0 ? Properties.SECTOR_MAP_SIZE-1  : current.x-1;
+        sector = new Sector(x, y);
+        if(!mySectors.contains(sector)) {
+          toPrefetch.add(sector);
+        }
+      }
+    }
+
+    try {
+      switchConnection.getTCPSender().sendData(new PrefetchSectorRequest(Protocol.PREFETCH_SECTORS, toPrefetch).getBytes());
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -264,6 +332,7 @@ public class Server implements Node {
       }
     }
     forwardSectorWindowRequests(nonMatchingSectors, request, connection);
+    handleSectorPrefetching(matchingSectors, request.position, request.windowSize, request.currentSector);
   }
 
   /**
