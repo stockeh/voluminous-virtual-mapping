@@ -25,4 +25,6 @@ public interface Protocol {
   int SECTOR_WINDOW_RESPONSE = 7;
 
   int SERVER_INITIALIZED = 8;
+
+  int SECTOR_LOADED = 9;
 }

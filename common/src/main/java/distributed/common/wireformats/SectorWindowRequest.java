@@ -25,19 +25,37 @@ public class SectorWindowRequest implements Event {
 
   public int[] position;
 
+  public int numRequestedSectors;
+
+  public String host;
+
+  public int port;
+
+  public boolean loadSector;
+
   /**
    * Constructor without assigned message
    * 
    */
   public SectorWindowRequest(int type, long initialTimestamp,
       Set<Sector> sectors, Sector currentSector, int windowSize,
-      int[] position) {
+      int[] position, int numRequestedSectors, String host, int port, boolean loadSector) {
     this.type = type;
     this.initialTimestamp = initialTimestamp;
     this.sectors = sectors;
     this.currentSector = currentSector;
     this.windowSize = windowSize;
     this.position = position;
+    this.numRequestedSectors = numRequestedSectors;
+    this.host = host;
+    this.port = port;
+    this.loadSector = loadSector;
+  }
+
+  public SectorWindowRequest(int type, long initialTimestamp,
+                             Set<Sector> sectors, Sector currentSector, int windowSize,
+                             int[] position, int numRequestedSectors) {
+    this(type, initialTimestamp, sectors, currentSector, windowSize, position, numRequestedSectors, "", 0, false);
   }
 
   /**

@@ -79,10 +79,11 @@ public class Navigator implements Runnable {
   public void deliver() throws IOException {
     int[] pos = new int[] { ( int ) position[ 0 ], ( int ) position[ 1 ] };
 
+    Set<Sector> contributions = getSectorContributions( pos );
     primaryServer.getTCPSender()
         .sendData( new SectorWindowRequest( Protocol.SECTOR_WINDOW_REQUEST,
-            Instant.now().toEpochMilli(), getSectorContributions( pos ), sector,
-            Properties.SECTOR_WINDOW_SIZE, pos ).getBytes() );
+            Instant.now().toEpochMilli(), contributions, sector,
+            Properties.SECTOR_WINDOW_SIZE, pos, contributions.size() ).getBytes() );
   }
 
   /**

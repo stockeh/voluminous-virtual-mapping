@@ -12,10 +12,9 @@ function usage {
 cat << EOF
     
     script usage: $( basename $0 ) [-c num clients] [-s num sector]
-
     -c num clients : integer number of clients to start in configuration - must be > s
     -s num sector  : integer number of sectors to start clients in - must be < c
-    
+
 EOF
     exit 1
 }
@@ -65,7 +64,7 @@ for x in $(seq 1 $SECTOR_MAP_SIZE)
 do
     ((--x))
     for y in $(seq 1 $SECTOR_MAP_SIZE)
-    do    
+    do
         ((--y))
         SECTORS+=($x,$y)
     done
@@ -94,7 +93,7 @@ do
     NEW_SECTOR=${SECTORS[$s]}
     echo sector: $NEW_SECTOR , number of clients in sector: $CLIENTS, at position: $POSITION
     bash start.sh -o $OPERATION -n $CLIENTS -s $NEW_SECTOR -p $POSITION
-    
+
     sleep 1
 done
 

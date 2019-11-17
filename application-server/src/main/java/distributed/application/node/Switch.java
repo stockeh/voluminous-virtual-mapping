@@ -3,10 +3,9 @@ package distributed.application.node;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.net.Socket;
+import java.util.*;
+
 import distributed.application.metadata.ServerInformation;
 import distributed.application.metadata.SwitchMetadata;
 import distributed.application.util.Constants;
@@ -18,11 +17,7 @@ import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
-import distributed.common.wireformats.ClientDiscoverRequest;
-import distributed.common.wireformats.ClientDiscoverResponse;
-import distributed.common.wireformats.Event;
-import distributed.common.wireformats.GenericMessage;
-import distributed.common.wireformats.Protocol;
+import distributed.common.wireformats.*;
 
 /**
  *
@@ -146,6 +141,18 @@ public class Switch implements Node {
     }
   }
 
+  private void forwardSectorRequests(SectorWindowRequest request) {
+    for(Sector sector : request.sectors) {
+      Set<Sector> sectors = new HashSet<>();
+      sectors.add(sector);
+      SectorWindowRequest sectorWindowRequest = new SectorWindowRequest(request.type, request.initialTimestamp,
+              sectors, request.currentSector, request.windowSize, request.position, request.numRequestedSectors,
+              request.host, request.port, false);
+      metadata.forwardRequestToServer( sector, sectorWindowRequest );
+
+    }
+  }
+
   /**
    * {@inheritDoc}
    */
@@ -169,7 +176,32 @@ public class Switch implements Node {
       case Protocol.SERVER_INITIALIZED :
         serverIsReadyForClient( (( GenericMessage ) event ).getMessage());
         break;
+
+      case Protocol.SECTOR_WINDOW_REQUEST:
+        forwardSectorRequests((SectorWindowRequest) event);
+        break;
+
+      case Protocol.SECTOR_LOADED:
+        break;
     }
+  }
+
+  private void serverLoadedSector(String keyForClientToConnect) {
+//    LOG.info("Server Loaded Sector: ");
+//    String serverToConnect =
+//            keyForClientToConnect.split( Constants.SEPERATOR )[ 0 ];
+//    List<TCPConnection> connections = metadata.removeServer(keyForClientToConnect);
+//    if ( connections == null )
+//    {
+//      LOG.error( "Unable to send join request to client from switch for "
+//              + keyForClientToConnect );
+//      return;
+//    }
+//    TCPConnection serverConnection = metadata.getServerConnections().get(serverToConnect).getConnection();
+//    for ( TCPConnection connection : connections )
+//    {
+//      serverConnection.getTCPSender().sendData();
+//    }
   }
 
   /**
@@ -218,6 +250,7 @@ public class Switch implements Node {
     Sector sector = request.sector;
 
     LOG.info( "Connecting Client to Server with Sector: " + sector.toString() );
+
     try
     {
       String keyForClientToConnect = metadata.getServer( sector, connection );

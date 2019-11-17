@@ -15,8 +15,10 @@ import distributed.application.wireformats.ApplicationHeartbeat;
 import distributed.common.transport.TCPConnection;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
+import distributed.common.wireformats.Event;
 import distributed.common.wireformats.GenericSectorMessage;
 import distributed.common.wireformats.Protocol;
+import distributed.common.wireformats.SectorWindowRequest;
 
 /**
  * Class to maintain the information needed for a given server. This
@@ -79,6 +81,35 @@ public class SwitchMetadata {
     return clientConnections.remove( keyForClientToConnect );
   }
 
+  public synchronized void forwardRequestToServer(Sector sector, SectorWindowRequest request) {
+    String server;
+    boolean loadSectors = false;
+    if ( availableSectors.containsKey( sector ) )
+    {
+      // TODO load balance servers
+      Set<String> servers = availableSectors.get( sector );
+      server = servers.iterator().next();
+
+      if(clientConnections.containsKey(server+Constants.SEPERATOR+sector.toString())) {
+        loadSectors = true;
+      }
+    } else {
+      List<String> servers = new ArrayList<>( serverConnections.keySet() );
+      Collections.shuffle( servers );
+      server = servers.get( 0 );
+      availableSectors.put(sector, new HashSet<>(Arrays.asList( server )));
+      loadSectors = true;
+    }
+
+    TCPConnection serverConnection = serverConnections.get(server).getConnection();
+    request.loadSector = loadSectors;
+    try {
+      serverConnection.getTCPSender().sendData(request.getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   public synchronized String getServer(Sector sector, TCPConnection clientConnection)
       throws IOException {
     String server;
@@ -107,7 +138,7 @@ public class SwitchMetadata {
 
       // Instruct server to pull new sector
       GenericSectorMessage request =
-          new GenericSectorMessage( Protocol.GET_SECTOR_REQUEST, sector );
+              new GenericSectorMessage( Protocol.GET_SECTOR_REQUEST, sector );
       serverConnections.get( server ).getConnection().getTCPSender()
           .sendData( request.getBytes() );
 

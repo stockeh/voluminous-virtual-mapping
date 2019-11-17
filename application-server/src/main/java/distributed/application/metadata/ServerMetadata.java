@@ -52,83 +52,92 @@ public class ServerMetadata {
     return copy;
   }
 
-  public byte[][] getWindow(Set<Sector> sectorIDs, Sector currentSector,
+  public Set<Sector> getNonMatchingSectors(Set<Sector> requested) {
+    Set<Sector> copy = new HashSet<>( requested );
+    copy.removeAll( getSectorIdentifiers() );
+    return copy;
+  }
+
+  public byte[][] getWindow(Sector sectorID, Sector currentSector,
       int row, int col, int windowSize) {
-    int width = 0;
-    int height = 0;
-    for ( Sector id : sectorIDs )
-    {
-      byte[][] sector = sectors.get( id ).getSector();
+//    for ( Sector id : sectorIDs )
+//    {
+      byte[][] sector = sectors.get( sectorID ).getSector();
 
       int rowStart = Math.max( 0, row - windowSize );
       int rowEnd = Math.min( row + windowSize, sector.length );
       int colStart = Math.max( 0, col - windowSize );
       int colEnd = Math.min( col + windowSize, sector[ 0 ].length );
-      width += rowEnd - rowStart;
-      height += colEnd - colStart;
-    }
+      int width = rowEnd - rowStart + 1;
+      int height = colEnd - colStart + 1;
+//    }
     byte[][] window = new byte[ width ][ height ];
 
-    for ( Sector id : sectorIDs )
-    {
-      byte[][] sector = sectors.get( id ).getSector();
-      int r = row;
-      int c = col;
-      int xDiff = id.getX() - currentSector.getX();
-      int yDiff = id.getX() - currentSector.getX();
-
-      if ( xDiff < 0 )
-      {
-        r = sector.length + row;
-        if ( Math.abs( xDiff ) > 1 )
-          r += sector.length;
-      } else if ( xDiff > 0 )
-      {
-        r = 0 - row;
-        if ( Math.abs( xDiff ) > 1 )
-          r -= sector.length;
-      }
-
-      if ( yDiff < 0 )
-      {
-        c = sector.length + col;
-        if ( Math.abs( yDiff ) > 1 )
-          c += sector.length;
-      } else if ( yDiff > 0 )
-      {
-        c = 0 - col;
-        if ( Math.abs( yDiff ) > 1 )
-          c -= sector.length;
-
-      }
-      window = getWindow( sector, r, c, windowSize, window );
+    for ( int i = rowStart, j = 0; i <= rowEnd; i++, j++ ) {
+      System.arraycopy(sector[i],  0, window[j], 0, height);
     }
+
     return window;
+//    for ( Sector id : sectorIDs )
+//    {
+//      byte[][] sector = sectors.get( id ).getSector();
+//      int r = row;
+//      int c = col;
+//      int xDiff = id.getX() - currentSector.getX();
+//      int yDiff = id.getX() - currentSector.getX();
+//
+//      if ( xDiff < 0 )
+//      {
+//        r = sector.length + row;
+//        if ( Math.abs( xDiff ) > 1 )
+//          r += sector.length;
+//      } else if ( xDiff > 0 )
+//      {
+//        r = 0 - row;
+//        if ( Math.abs( xDiff ) > 1 )
+//          r -= sector.length;
+//      }
+//
+//      if ( yDiff < 0 )
+//      {
+//        c = sector.length + col;
+//        if ( Math.abs( yDiff ) > 1 )
+//          c += sector.length;
+//      } else if ( yDiff > 0 )
+//      {
+//        c = 0 - col;
+//        if ( Math.abs( yDiff ) > 1 )
+//          c -= sector.length;
+//
+//      }
+//      window = getWindow( sector, r, c, windowSize, window );
+//    }
+//    return window;
 
   }
 
-  private byte[][] getWindow(byte[][] sector, int row, int col, int windowSize,
-      byte[][] window) {
-
-    if ( sector == null )
-    {
-      return window;
-    } else
-    {
-      int rowStart = Math.max( 0, row - windowSize );
-      int rowEnd = Math.min( row + windowSize, sector.length );
-      int colStart = Math.max( 0, col - windowSize );
-      int colEnd = Math.min( col + windowSize, sector[ 0 ].length );
-
-      for ( int i = rowStart; i < rowEnd; i++ )
-      {
-
-        System.arraycopy( sector[ i ], colStart, window[ i - rowStart ], 0,
-            colEnd - colStart );
-      }
-      return window;
-    }
-  }
+//  private byte[][] getWindow(byte[][] sector, int row, int col, int windowSize,
+//      byte[][] window) {
+//
+//    if ( sector == null )
+//    {
+//      return window;
+//    } else
+//    {
+//      int rowStart = Math.max( 0, row - windowSize );
+//      int rowEnd = Math.min( row + windowSize, sector.length );
+//      int colStart = Math.max( 0, col - windowSize );
+//      int colEnd = Math.min( col + windowSize, sector[ 0 ].length );
+//
+//      for ( int i = rowStart; i < rowEnd; i++ )
+//      {
+//
+//        System.arraycopy( sector[ i ], colStart, window[ i - rowStart ], 0,
+//            colEnd - colStart );
+//      }
+//      return window;
+//    }
+//  }
 
   /**
    * 

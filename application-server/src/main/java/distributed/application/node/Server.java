@@ -43,6 +43,8 @@ public class Server implements Node {
 
   private final ServerMetadata metadata;
 
+  private TCPConnection switchConnection;
+
 
   /**
    * Default constructor - creates a new server tying the
@@ -103,6 +105,8 @@ public class Server implements Node {
         Protocol.REGISTER_SERVER_REQUEST, metadata.getIdentifier() );
     connection.getTCPSender().sendData( request.getBytes() );
 
+    switchConnection = connection;
+
     ServerHeartbeatManager serverHeartbeatManager =
         new ServerHeartbeatManager( connection, metadata );
     Timer timer = new Timer();
@@ -160,6 +164,7 @@ public class Server implements Node {
         registerServerResponseHandler( event, connection );
         break;
 
+      case Protocol.SECTOR_LOADED:
       case Protocol.GET_SECTOR_REQUEST :
         getSectorRequestHandler( event, connection );
         break;
@@ -170,24 +175,44 @@ public class Server implements Node {
     }
   }
 
+  private void forwardSectorWindowRequests(Set<Sector> sectors, SectorWindowRequest request, TCPConnection connection) {
+    request.sectors = sectors;
+    request.port = connection.getSocket().getPort();
+    request.host = connection.getEndHost();
+    try {
+      switchConnection.getTCPSender().sendData(request.getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   private void handleSectorWindowRequest(Event event,
       TCPConnection connection) {
     SectorWindowRequest request = ( SectorWindowRequest ) event;
+    if(request.loadSector) {
+      for(Sector toLoad : request.sectors) {
+        loadFile(toLoad);
+      }
+    }
+
     Set<Sector> matchingSectors =
         metadata.getMatchingSectors( request.getSectors() );
-    byte[][] window =
-        metadata.getWindow( matchingSectors, request.currentSector,
-            request.position[ 0 ], request.position[ 1 ], request.windowSize );
-    try
-    {
-      connection.getTCPSender()
-          .sendData( new SectorWindowResponse( Protocol.SECTOR_WINDOW_RESPONSE,
-              window, request.getSectors().size() ).getBytes() );
-    } catch ( IOException e )
-    {
-      LOG.error( "Unable to reply to Client for window request. " + e.toString() );
-      e.printStackTrace();
+
+    Set<Sector> nonMatchingSectors = metadata.getNonMatchingSectors( request.getSectors() );
+    for(Sector sector : matchingSectors) {
+      byte[][] window =
+              metadata.getWindow(sector, request.currentSector,
+                      request.position[0], request.position[1], request.windowSize);
+      try {
+        connection.getTCPSender()
+                .sendData(new SectorWindowResponse(Protocol.SECTOR_WINDOW_RESPONSE,
+                        window, request.getSectors().size(), request.initialTimestamp, sector).getBytes());
+      } catch (IOException e) {
+        LOG.error("Unable to reply to Client for window request. " + e.toString());
+        e.printStackTrace();
+      }
     }
+    forwardSectorWindowRequests(nonMatchingSectors, request, connection);
   }
 
   /**
@@ -212,6 +237,8 @@ public class Server implements Node {
     }
   }
 
+
+
   /**
    * 
    * @param event
@@ -224,8 +251,9 @@ public class Server implements Node {
 
     try
     {
+      int type = request.type == Protocol.GET_SECTOR_REQUEST ? Protocol.SERVER_INITIALIZED : Protocol.SECTOR_LOADED;
       connection.getTCPSender()
-          .sendData( new GenericMessage( Protocol.SERVER_INITIALIZED,
+          .sendData( new GenericMessage(  type,
               metadata.getIdentifier() + Constants.SEPERATOR
                   + request.sector.toString() ).getBytes() );
     } catch ( IOException e )
