@@ -1,14 +1,10 @@
 package distributed.application.metadata;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+
+import distributed.application.node.Server;
 import distributed.application.util.Constants;
 import distributed.application.util.Properties;
 import distributed.application.wireformats.ApplicationHeartbeat;
@@ -85,6 +81,7 @@ public class SwitchMetadata {
     return clientConnections.remove( keyForClientToConnect );
   }
 
+
   public synchronized void forwardRequestToServer(Sector sector, SectorWindowRequest request) {
     String server;
     boolean loadSectors = false;
@@ -98,10 +95,7 @@ public class SwitchMetadata {
         loadSectors = true;
       }
     } else {
-      List<String> servers = new ArrayList<>( serverConnections.keySet() );
-      Collections.shuffle( servers );
-      server = servers.get( 0 );
-      availableSectors.put(sector, new HashSet<>(Arrays.asList( server )));
+      server = getSectorDestination(sector);
       loadSectors = true;
     }
 
@@ -114,12 +108,17 @@ public class SwitchMetadata {
     }
   }
 
-  public synchronized TCPConnection getSectorDestination(Sector sector) {
-    List<String> servers = new ArrayList<>( serverConnections.keySet() );
-    Collections.shuffle( servers );
-    String server = servers.get( 0 );
+  public synchronized String getSectorDestination(Sector sector) {
+
+    List<Map.Entry<String, ServerInformation>> serverSet = new ArrayList<>(serverConnections.entrySet());
+    Comparator<Map.Entry<String,ServerInformation>> cSectors = Comparator.comparing( s -> s.getValue().getNumSectors());
+    Comparator<Map.Entry<String,ServerInformation>> cRand = Comparator.comparing( s -> s.getValue().getRandomComparable());
+    Comparator<Map.Entry<String,ServerInformation>> cBoth = cSectors.thenComparing(cRand);
+    serverSet.sort(cBoth);
+
+    String server = serverSet.get(0).getKey();
     availableSectors.put(sector, new HashSet<>(Arrays.asList( server )));
-    return serverConnections.get(server).getConnection();
+    return server;
   }
 
   public synchronized String getServer(Sector sector, TCPConnection clientConnection)
@@ -141,10 +140,7 @@ public class SwitchMetadata {
     {
       // return random server
       // TODO load balance servers
-      List<String> servers = new ArrayList<>( serverConnections.keySet() );
-      Collections.shuffle( servers );
-      server = servers.get( 0 );
-      availableSectors.put(sector, new HashSet<>(Arrays.asList( server )));
+      server = getSectorDestination(sector);
       LOG.info( "Instruct " + server + " to pull new sector ( "
           + sector.toString() + " )." );
 
