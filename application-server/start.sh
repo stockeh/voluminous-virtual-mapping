@@ -90,7 +90,7 @@ do
     n=$((i % NUM_MACHINES + 1))
     machine="$(sed -n ${n}'p' < $MACHINE_LIST)"
 
-    title=$machine-$i
+    title=server-$machine
     
     echo 'logging into '$machine
         

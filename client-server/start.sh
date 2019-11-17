@@ -75,7 +75,7 @@ do
 
     echo 'logging into '$machine
     
-    title=$machine-$SECTOR
+    title=client-$machine-$SECTOR
     
     OPTION='--tab -t "'$title'" -e "ssh -t '$machine' cd '$DIR'; sleep '$k'; echo '$SCRIPT'; '$SCRIPT'"'
     COMMAND+=" $OPTION"
