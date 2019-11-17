@@ -1,0 +1,808 @@
+NAME		TYPE			CPU	MEM	OS		USE	LOCATION	S/N		MAC ADDRESS
+----		----			---	---	--		---	--------	---		-----------
+albany		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121X	2c:44:fd:26:90:0e
+annapolis	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121Q	2c:44:fd:26:8f:f0
+atlanta		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120Y	2c:44:fd:15:3b:a7
+augusta		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120H	2c:44:fd:26:8c:81
+austin		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121W	2c:44:fd:15:3d:ca
+baton-rouge	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120T	2c:44:fd:1c:7b:bd
+bismarck	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121G	2c:44:fd:15:3d:cd
+boise		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120V	74:46:a0:c3:bd:c6
+boston		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121N	2c:44:fd:15:3d:c7
+carson-city	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120X	2c:44:fd:26:8f:6c
+charleston	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120P	2c:44:fd:1c:79:81
+cheyenne	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA3491211	74:46:a0:c3:bd:7e
+columbia	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121S	74:46:a0:c3:be:ba
+columbus-oh	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120Z	2c:44:fd:26:8e:3b
+concord		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120Q	2c:44:fd:15:3c:1d
+denver		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121Y	74:46:a0:c3:be:b9
+des-moines	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121L	2c:44:fd:15:3d:c5
+dover		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA3491218	2c:44:fd:15:3b:5c
+frankfort	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120K	2c:44:fd:1c:78:57
+harrisburg	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120N	2c:44:fd:1c:79:1b
+hartford	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121B	2c:44:fd:1c:77:d6
+helena		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120S	2c:44:fd:1c:7b:26
+honolulu	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121T	2c:44:fd:1c:7c:64
+indianapolis	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120R	2c:44:fd:1c:7b:c4
+jackson		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120W	2c:44:fd:26:8f:63
+jefferson-city	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA3491213	2c:44:fd:26:8f:68
+juneau		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121H	2c:44:fd:15:3d:d1
+lansing		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121C	2c:44:fd:15:3b:58
+lincoln		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA40420VK	f0:92:1c:f3:1e:da
+little-rock	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121J	2c:44:fd:1c:7c:61
+madison		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA3491212	2c:44:fd:1c:7a:71
+montgomery	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA3491212	2c:44:fd:15:3d:c6
+montpelier	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120M	2c:44:fd:1c:78:f0
+nashville	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120J	2c:44:fd:26:8c:82
+oklahoma-city	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA3491221	2c:44:fd:1c:7a:74
+olympia		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA3491216	2c:44:fd:15:3b:0d
+phoenix		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA3491219	2c:44:fd:26:8d:1d
+pierre		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121D	2c:44:fd:26:8c:b1
+providence	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121R	2c:44:fd:26:90:0f
+raleigh		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA3491214	74:46:a0:c3:bd:9e
+richmond	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121K	2c:44:fd:26:90:10
+sacramento	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121Z	2c:44:fd:15:3d:cb
+saint-paul	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA3491210	2c:44:fd:1c:7a:21
+salem		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121P	74:46:a0:c3:be:b3
+salt-lake-city	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA3491217	2c:44:fd:15:3a:c2
+santa-fe	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA3491220	74:46:a0:c3:be:8e
+springfield	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349121V	2c:44:fd:1c:7c:5f
+tallahassee	HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120-unix-lab	2UA349120G	2c:44:fd:1c:77:e6
+topeka		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120A-unix-lab	2UA349120L	2c:44:fd:26:8d:21
+trenton		HP-Z420-XeonE5-2650v2	8x2.6G	32Gb	Linux(Fedora)	general	120A-unix-lab	2UA349121F	2c:44:fd:15:3a:c9
+anchovy		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2R	c8:d3:ff:ba:5f:a4
+barracuda	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q30	c8:d3:ff:ba:5f:a0
+blowfish	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q34	c8:d3:ff:ba:5f:b0
+bonito		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q36	c8:d3:ff:ba:5f:a5
+brill		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2W	c8:d3:ff:be:84:1c
+bullhead	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q32	c8:d3:ff:be:84:21
+char		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2T	c8:d3:ff:ba:5f:b7
+cod		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2N	c8:d3:ff:be:81:80
+dorado		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2Y	c8:d3:ff:be:83:fa
+eel		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q35	c8:d3:ff:ba:5f:ad
+flounder	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2V	c8:d3:ff:be:81:86
+grouper		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q39	c8:d3:ff:ba:5f:98
+halibut		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2L	c8:d3:ff:ba:5d:26
+herring		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2Z	c8:d3:ff:ba:5d:1f
+mackerel	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2X	c8:d3:ff:be:84:20
+marlin		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2J	c8:d3:ff:ba:5c:b8
+perch		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2P	c8:d3:ff:be:81:63
+pollock		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2S	c8:d3:ff:ba:5d:28
+sardine		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q3B	c8:d3:ff:be:84:1b
+shark		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q37	c8:d3:ff:be:84:22
+sole		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2M	c8:d3:ff:be:81:82
+swordfish	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2K	c8:d3:ff:be:81:81
+tarpon		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q31	c8:d3:ff:be:84:28
+turbot		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q38	c8:d3:ff:be:84:14
+tuna		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q2Q	c8:d3:ff:ba:5d:27
+wahoo		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	325-interac-lab	2UA7321Q33	c8:d3:ff:be:84:1f
+a-basin		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426H7	dc:4a:3e:7c:89:02
+ajax		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426H4	dc:4a:3e:75:39:0b
+beaver-creek	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426H1	dc:4a:3e:7c:88:8e
+breckenridge	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HR	dc:4a:3e:78:b2:56
+buttermilk	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HB	dc:4a:3e:78:b2:75
+cooper		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426H9	dc:4a:3e:75:39:7d
+copper-mtn	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426GZ	dc:4a:3e:7c:88:8b
+crested-butte	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HH	dc:4a:3e:75:39:81
+eldora		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426GY	dc:4a:3e:78:b2:16
+grandby-ranch	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HV	dc:4a:3e:78:b2:76
+aspen-highlands	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426H6	dc:4a:3e:75:39:0a
+howelsen-hill	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426H0	dc:4a:3e:75:38:f8
+keystone	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426H3	dc:4a:3e:7c:88:7e
+loveland	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HX	dc:4a:3e:7d:0a:1a
+mary-jane	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HN	dc:4a:3e:7c:88:fe
+monarch		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HL	dc:4a:3e:75:39:83
+powderhorn	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HC	dc:4a:3e:78:b2:6e
+purgatory	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HP	dc:4a:3e:7c:88:ff
+silverton	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HK	dc:4a:3e:75:39:6d
+snowmass	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HM	dc:4a:3e:75:39:74
+steamboat	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HD	dc:4a:3e:78:b2:6c
+sunlight	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426H8	dc:4a:3e:75:39:7e
+telluride	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HF	dc:4a:3e:7c:89:04
+vail		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HW	dc:4a:3e:7d:0a:17
+winter-park	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HQ	dc:4a:3e:7c:88:87
+wolf-creek	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	225-interac-lab	2UA63426HJ	dc:4a:3e:7c:88:e9
+earth		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	120E-unix-lab	2UA63426J0	dc:4a:3e:7d:0a:18
+jupiter		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	120E-unix-lab	2UA63426H5	dc:4a:3e:78:b2:17
+mars		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	120E-unix-lab	2UA63426HZ	dc:4a:3e:7f:11:58
+mercury		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	120E-unix-lab	2UA63426HS	dc:4a:3e:78:b2:11
+neptune		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	120E-unix-lab	2UA63426H2	dc:4a:3e:75:39:06
+saturn		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	120E-unix-lab	2UA63426HG	dc:4a:3e:75:39:68
+uranus		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	120E-unix-lab	2UA63426HT	dc:4a:3e:7c:88:f3
+venus		HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	general	120E-unix-lab	2UA63426HY	dc:4a:3e:7f:11:56
+bentley		HP-Z440-XeonE5-1650v3	6x3.5Gh	32Gb	Linux(Fedora)	general	315-hpc/net-lab	2UA5351R0X	ec:b1:d7:4c:a0:c1
+bugatti		HP-Z440-XeonE5-1650v3	6x3.5Gh	32Gb	Linux(Fedora)	general	315-hpc/net-lab	2UA5351R0Y	ec:b1:d7:50:4d:11
+ferrari		HP-Z440-XeonE5-1650v3	6x3.5Gh	32Gb	Linux(Fedora)	general	315-hpc/net-lab	2UA5351R10	ec:b1:d7:56:01:7a
+jaguar		HP-Z440-XeonE5-1650v3	6x3.5Gh	32Gb	Linux(Fedora)	general	315-hpc/net-lab	2UA5351R0V	ec:b1:d7:50:4e:a2
+lamborghini	HP-Z440-XeonE5-1650v3	6x3.5Gh	32Gb	Linux(Fedora)	general	315-hpc/net-lab	2UA5351R0W	ec:b1:d7:56:02:ae
+lotus		HP-Z440-XeonE5-1650v3	6x3.5Gh	32Gb	Linux(Fedora)	general	315-hpc/net-lab	2UA5351R11	ec:b1:d7:4c:a0:c0
+maserati	HP-Z440-XeonE5-1650v3	6x3.5Gh	32Gb	Linux(Fedora)	general	315-hpc/net-lab	2UA5351R0Z	ec:b1:d7:50:4d:10
+porsche		HP-Z440-XeonE5-1650v3	6x3.5Gh	32Gb	Linux(Fedora)	general	315-hpc/net-lab	2UA5351R0T	ec:b1:d7:4c:a1:a7
+corvette	HP-Z440-XeonE5-1650v3	6x3.5Gh	32Gb	Linux(Fedora)	general	475-machine-rm	2UA54518CT	ec:b1:d7:59:3f:9d
+mustang		HP-Z440-XeonE5-1650v3	6x3.5Gh	32Gb	Linux(Fedora)	general	475-machine-rm	2UA54518CV	50:65:f3:2a:40:1f
+ankara		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328KH	8c:dc:d4:29:ab:ec
+baghdad		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328JS	8c:dc:d4:2b:df:02
+bangkok		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328KL	8c:dc:d4:27:f1:f2
+beijing		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328KK	8c:dc:d4:29:ab:f3
+berlin		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328K6	8c:dc:d4:2b:e0:58
+bogota		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328K3 	8c:dc:d4:27:f0:3b
+cairo		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general 215-interac-lab	2UA51328JP	8c:dc:d4:2b:df:00
+damascus	HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328JZ	8c:dc:d4:2b:df:09
+dhaka		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328KG	8c:dc:d4:27:f1:f9
+hanoi		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328K7	8c:dc:d4:29:ab:e2
+hong-kong	HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328JV	8c:dc:d4:29:aa:d8
+jakarta		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328JY	8c:dc:d4:2b:df:4a
+kabul		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328KJ	8c:dc:d4:29:ab:e5
+kinshasa	HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328K5	8c:dc:d4:27:f1:e7
+lima		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328K8	8c:dc:d4:27:f1:f4
+london		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328JW	8c:dc:d4:27:f0:73
+madrid		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328KF	8c:dc:d4:27:f1:ff
+mexico-city	HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328K4	8c:dc:d4:27:f1:eb
+moscow		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328JQ	8c:dc:d4:29:ab:00
+pyongyang	HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328KB	8c:dc:d4:29:ab:f4
+riyadh		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328K1	8c:dc:d4:27:f0:74
+santiago	HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328KC	8c:dc:d4:29:ab:f9
+seoul		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328K2	8c:dc:d4:29:aa:d7
+singapore	HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328KD	8c:dc:d4:29:ab:f1
+tehran		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328JX	8c:dc:d4:2b:df:0f
+tokyo		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	215-interac-lab	2UA51328JT	8c:dc:d4:2b:df:0a
+washington-dc	HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Linux(Fedora)	general	120A-unix-lab	2UA51328K9	8c:dc:d4:2b:e0:59
+oslo		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Win10		general	250-collab-rm	2UA51328	8c:dc:d4:29:AB:E7
+paris		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Win10		general	450-collab-rm	2UA51328JR	8c:dc:d4:27:F0:6E
+rome		HP-Z230-XeonE3-1231v3	4x3.4G	32Gb	Win10		general	350-collab-rm	2UA51328KO	8c:dc:d4:27:F0:ED
+acorn		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	415-3		2UA2390DCK	b4:b5:2f:bf:9d:82
+almond		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	110-lab (loan)	2UA2390DBK	b4:b5:2f:bf:9d:27
+beech		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	472-hansenp	2UA2390DBV	b4:b5:2f:bf:9c:f6
+brazil		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		r/t	110-open-lab	2UA2390DCW	b4:b5:2f:bf:9d:3c
+butternut	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	376		2UA2390DCT	b4:b5:2f:bf:9d:78
+cashew		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		r/t	266		2UA2390DCZ	b4:b5:2f:bf:9d:84
+chestnut	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	376		2UA2390DC1	b4:b5:2f:bf:9c:fc
+chinquapin	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	466-rmm		2UA2390DCY	b4:b5:2f:bf:9d:7f
+coconut		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		r/t	278-reception	2UA2390DBJ	b4:b5:2f:bf:9c:f1
+filbert		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	472-hansenp	2UA2390DCO	b4:b5:2f:bf:9d:34
+ginko		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	335-7		2UA2390DBR	b4:b5:2f:bf:9d:86
+hazelnut	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	478-systems	2UA2390DBL	b4:b5:2f:bf:9d:96
+heartnut	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	445		2UA2390DD4	b4:b5:2f:bf:9d:8a
+hickory		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		r/t	110-open-lab	2UA2390DCM	b4:b5:2f:bf:9c:82
+lychee		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	trzyna-home	2UA2390DC3	b4:b5:2f:bf:9c:e6
+macadamia	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10-hhajar	r/t	460-Hajar	2UA2390DD1	b4:b5:2f:bf:9d:85
+nangai		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	445		2UA2390DCG	b4:b5:2f:bf:9c:fd
+peanut		HP-Z220-XeonE3-1230	4x3.3G	8Gb	custom(Ubuntu)	r/t	252-7-pouchet	2UA2390DCF	b4:b5:2f:bf:9d:5b
+pecan		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	342		2UA2390DCQ	b4:b5:2f:bf:9d:f6
+pepita		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		r/t	335-desk 8	2UA2390DD6	b4:b5:2f:bf:9d:98
+pili		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	120A-unix-lab	2UA2390DBZ	b4:b5:2f:bf:9c:fa
+pine		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	478-systems	2UA2390DBX	b4:b5:2f:bf:9c:f4
+pinion		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	415-9	  	2UA2390DCS	b4:b5:2f:bf:9d:61
+pistachio	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	335-NW  	2UA2390DC5	b4:b5:2f:bf:9c:c4
+shea		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	446		2UA2390DC9	b4:b5:2f:bf:9d:68
+walnut		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	478-systems	2UA2390DCV	b4:b5:2f:bf:9d:7c
+snap		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	368		2UA239090D	B4:B5:2F:A9:6F:CB
+bananas		HP-Z800-XeonE5645-SAS	12x2.4G	96Gb	Linux(Fedora)	r/t	415-NW   	2UA2180XJR	e8:39:35:30:4d:ac
+coconuts	HP-Z800-XeonE5645-SAS	12x2.4G	96Gb	Linux(Fedora)	r/t	242	   	2UA2180XJQ	e8:39:35:30:5d:0c
+lemons		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Win10		general	325-hpc-lab	2UA0330TN0
+raspberries	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	335-SW  	2UA0330TMX	1c:c1:de:66:14:47
+pomegranates	HP-xw4600-Core2Quad-SAS	4x2.83G	8Gb	Linux(Fedora)	r/t	475-machine-rm	2UA9510WGH	00:26:55:46:2d:00
+dates		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	general	475-machine-rm	2UA0330TMR	1c:c1:de:66:d2:d0
+brahms		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Win10		r/t	468-ghosh	2UA0330TMY	1C:C1:DE:66:13:DE
+kumquats	HP-xw4600-Core2Quad-SAS	4x2.83G	8Gb	Win10		general	356-malaiya	2UA9510WGJ	00:26:55:46:2d:09
+eggplant	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910XM	00:1f:29:01:bb:11
+endive		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910XB	00:1f:29:01:ab:bc
+fennel		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910WZ	00:1f:29:01:bb:21
+garlic		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910WS	00:1f:29:01:ab:c3
+gourd		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910Y0	00:1f:29:01:bb:24
+horseradish	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910WG	00:1f:29:01:bb:5b
+kale		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910XV	00:1f:29:01:ab:2c
+kelp		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910WN	00:1f:29:01:ab:fa
+leek		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910XS	00:1f:29:01:bb:0e
+lettuce		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910X3	00:1f:29:01:bb:2a
+mushroom	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910XC	00:1f:29:01:bb:1a
+okra		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910XL	00:1f:29:01:ab:b0
+onion		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910X4	00:1f:29:01:bb:33
+parsley		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910WL	00:1f:29:01:bb:65
+parsnip		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910X6	00:1f:29:01:bb:1d
+pea		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910WR	00:1f:29:01:ab:fe
+pepper		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910XT	00:1f:29:01:bb:1b
+potato		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910XY	00:1f:29:01:bb:1c
+pumpkin		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910XG	00:1f:29:01:bb:16
+radish		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910Y1	00:1f:29:01:bb:20
+rhubarb		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910XW	00:1f:29:01:bb:0d
+romanesco	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910XK	00:1f:29:01:bb:15
+rutabaga	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910X7	00:1f:29:01:bb:18
+shallot		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910WP	00:1f:29:01:ab:f8
+spinach		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910XJ	00:1f:29:01:ab:a7
+squash		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910XH	00:1f:29:01:ab:35
+tomatillo	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910WT	00:1f:29:01:bb:28
+tomato		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910X1	00:1f:29:01:ab:ff
+turnip		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910WX	00:1f:29:01:ab:e7
+wasabi		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	475-machine-rm	2UA83910XN	00:1f:29:01:bb:06
+yam		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	general	475-machine-rm	2UA83910XR	00:1f:29:01:bb:12
+zucchini	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	general	475-machine-rm	2UA83910WH	00:1f:29:01:bb:61
+uncompahgre	HP-Z210-XeonE3-1230	4x3.2G	12Gb	Linux(Fedora)	general	478-systems	2UA12822SB	2c:27:d7:49:84:84
+artichoke	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Win10		r/t	240-waker	2UA83910X8	00:1F:29:01:BB:13
+figs		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	general	252		2UA0330TMT	1c:c1:de:66:13:eb
+grapes		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	general	345-iot-lab	2UA0330TMZ	1c:c1:de:66:d2:e0
+huckleberries	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	general	252		2UA0340PQK	d4:85:64:02:7d:fc
+kiwis		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	435-SE		2UA0330TMQ	1c:c1:de:66:14:64
+melons		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	general	252		2UA0330TMW	1c:c1:de:66:14:37
+nectarines	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	general	415-SE		2UA0330TMS	1c:c1:de:66:d2:c1
+peaches		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	general	478-storage	2UA0330TMV	1c:c1:de:66:14:40
+pears		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	general	252		2UA0330TN1	1c:c1:de:66:13:d3
+arugula		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Win10		r/t	405-storage	2UA83910WJ	00:1F:29:01:BB:62
+asparagus	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Win10		r/t	405-storage	2UA83910WM
+bean		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	405-storage	2UA83910WQ
+beet		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	405-storage	2UA83910WF
+bok-choy	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	405-storage	2UA83910XP
+broccoli	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	405-storage	2UA83910XQ
+brussels-sprout	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(CentOS)	r/t	472-hansenp	2UA83910WW
+cabbage		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	405-storage	2UA83910WY
+cantaloupe	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	472-hansenp	2UA83910W2
+carrot		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	405-storage	2UA83910WV
+cauliflower	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Kali)	r/t	405-storage	2UA83910XZ
+celery		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	405-storage	2UA83910X5
+chard		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	405-storage	2UA83910WK
+cilantro	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	405-storage	2UA83910XD
+collard		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	405-storage	2UA83910XX
+corn		HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	405-storage	2UA83910XF
+cucumber	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Win10		r/t	475-machine-rm	2UA83910X9
+dillweed	HP-xw6600-Xeon5450-SAS	8x3.0G	16Gb	Linux(Fedora)	r/t	405-storage	2UA83910X0
+black-bottle	HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(Fedora)	r/t	244-NW		2UA7242WW8	c8:d3:ff:b1:40:89
+coopersmiths	HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(Fedora)	r/t	335-NW		2UA7242WW9	c8:d3:ff:b1:40:45
+dc-oakes	HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(Fedora)	r/t	335-9		2UA7242WWB	c8:d3:ff:b1:40:85
+equinox		HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(Fedora)	r/t	235-SE		2UA7242WWC	a0:8c:fd:e8:1f:67
+funkwerks	HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(Fedora)	r/t	435-NW		2UA7242WWD	a0:8c:fd:e8:1f:68
+gilded-goat	HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(Fedora)	r/t	235-SE		2UA7242WWF	a0:8c:fd:e8:1f:6b
+intersect	HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Win10		r/t	478-systems	2UA7242WWG	c8:d3:ff:b1:40:83	
+jessup-farm	HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(Fedora)	r/t	405-storage	2UA7242WWH	?
+maxline		HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(Fedora)	r/t	335-SE		2UA7242WWJ	?
+mcclellans	HP-Z440-XeonE5-1650v4	6x3.6Gh	16Gb	Linux(Fedora)	r/t	478-systems	2UA8171N9T	18:60:24:82:BF:32	
+new-belgium	HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(Fedora)	r/t	478-systems	2UA7242WWL	?
+odell		HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(Fedora)	systems	478-abchawla	2UA7242WWM	c8:d3:ff:b1:40:8f
+rally-king	HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(Fedora)	r/t	445		2UA7242WWN	?
+snowbank	HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(Fedora)	systems	474-trzyna	2UA7242WWP	c8:d3:ff:b1:40:5d
+three-four	HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(Fedora)	r/t	460		2UA7242WWQ	c8:d3:ff:b1:40:87	
+zwei		HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(Fedora)	r/t	368-3		2UA7242WWR	a0:8c:fd:e8:1f:71
+uno		HP-Z440-XeonE5-1650v4	6x3.6Gh	64Gb	Linux(Fedora)	r/t	475-ldecarli	2UA7272283	c8:d3:ff:b1:54:24
+samuel		HP-Z440-XeonE5-1650v4	6x3.6Gh	64Gb	Linux(Fedora)	r/t	444-anderson	2UA7401MH4	40:b0:34:3c:4a:71
+smarthome	HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Linux(custom)	r/t	460-indrajit	2UA7212K94	a0:8c:fd:e3:3a:e1
+cwc1		HP-Z440-XeonE5-1650v3	6x3.5Gh	32Gb	custom(Win10)	r/t	445-hci-lab	2UA5362C14	?
+cwc2		HP-Z440-XeonE5-1650v3	6x3.5Gh	32Gb	custom(Win10)	r/t	445-hci-lab	2UA5362C15	?
+aqua		Exxact-XeonE5-2695v4	18x2.1Gh 128Gb	Linux(Fedora)	r/t	475-machine-rm	4622101486	2c:4d:54:46:87:af
+teal		Exxact-XeonE5-2695v4    18x2.1Gh 128Gb	Linux(Fedora)	r/t	475-machine-rm	4622101487	2c:4d:54:46:4f:31
+tweak		HP-Z440-XeonE5-1650v3	6x3.5G	64Gb	custom(Fedora)	r/t	235-5		2UA5091XQ9	64:51:06:57:22:e8
+alexandra	HP-Z440-XeonE5-1650v4	6x3.6Gh	32Gb	Win10		r/t	435-desk 6	2UA7242WWK	?
+acushla		HP-xw4600-Core2Duo-SAS	2x2.83G	6Gb	Linux(Fedora)	general	475-machine-rm	2UA83906VT	00:22:64:1a:c3:21
+(n/a)		HP-xw4600-Core2Quad-SAS	4x2.83G	8Gb	custom		general	315-netsec-lab	2UA9510WGB
+(n/a)		HP-xw4600-Core2Quad-SAS	4x2.83G	8Gb	custom		general	315-netsec-lab	2UA9510WGK
+(n/a)		HP-xw4600-Core2Quad-SAS	4x2.83G	8Gb	custom		general	315-netsec-lab	2UA9510WGM
+(n/a)		HP-xw4400-Core2Duo-SAS	2x2.13G	6Gb	custom		general	315-netsec-lab	2UA74800K6
+(n/a)		HP-xw4400-Core2Duo-SAS	2x2.13G	6Gb	custom		general 315-netsec-lab	2UA74800K7
+durango		HP-xw4600-Core2Quad-SAS	4x2.83G	8Gb	W2016Serv	general	475-machine-rm	2UA9510WGG
+creede		HP-xw4600-Core2Quad-SAS	4x2.83G	8Gb	W2012ServR2	general	475-machine-rm	2UA9510WGD
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	315-netsec-lab	2UA12822SD	2c:27:d7:46:cc:8b
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general 315-netsec-lab	2UA12822RT	2c:27:d7:46:cc:d7
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	315-netsec-lab	2UA12822RY	2c:27:d7:49:84:4a
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	315-netsec-lab	2UA12822RN	2c:27:d7:46:cc:e7
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	315-netsec-lab	2UA12822S1	2c:27:d7:49:84:a4
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	315-netsec-lab	2UA12822RQ	2c:27:d7:49:84:b0
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	405-storage	2UA12822S5	2c:27:d7:49:84:76
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	315-netsec-lab	2UA12822S8	2c:27:d7:46:cc:ed
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	315-netsec-lab	2UA12822RM	2c:27:d7:46:cc:e2
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	315-netsec-lab	2UA12822RP	2c:27:d7:46:cc:e0
+kitchener	HP-Z210-XeonE3-1230	4x3.2G	8Gb	Win10		general	425-lab-podium	2UA12822SC	2c:27:d7:46:cc:83
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	315-netsec-lab	2UA12822RW	2c:27:d7:49:84:96
+calliope	HP-Z210-XeonE3-1230	4x3.2G	8Gb	Win10		general	262-ecundiff	2UA12822S9	2c:27:d7:49:84:6b
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	315-netsec-lab	2UA12822RV	2c:27:d7:46:cc:d4
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	315-netsec-lab	2UA12822S7	2c:27:d7:46:cc:ec
+collins		HP-Z210-XeonE3-1230	4x3.2G	8Gb	Win10		general	376		2UA12822S4	2c:27:d7:49:84:be
+perseus		HP-Z210-XeonE3-1230	4x3.2G	8Gb	Win10		general	266-hdwolfe	2UA12822SF	2c:27:d7:49:84:bf
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	315-netsec-lab	2UA12822S2	2c:27:d7:49:84:bd
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	315-netsec-lab	2UA12822RZ	2c:27:d7:46:cc:e8
+(n/a)		HP-Z210-XeonE3-1230	4x3.2G	8Gb	custom		general	315-netsec-lab	2UA12822RS	2c:27:d7:49:84:b3
+crestone	HP-Z210-XeonE3-1230	4x3.2G	8Gb	Win10		general	130-lecture	2UA12822S3	2c:27:d7:46:cc:eb
+oak		HP-DL585-G7-AMD-6220	32x3.0	512Gb	Linux(Fedora)	r/t	475-machine-rm	USE240H0KA	98:4b:e1:78:ae:00
+damavand	SuperMicro-AMD-6386SE	64x2.8	512Gb	Linux(Fedora)	r/t	475-chitsaz	457287?		00:25:90:5b:af:12
+phi		HP-DL380-G9-XeE5-2620v3	6x2.4Gh	64Gb	Linux(Fedora)	general	475-machine-rm	MXQ51605J4	EC:B1:D7:84:43:2C
+chi		HP-DL380-G9-XeE5-2620v3	6x2.4Gh	64Gb	Linux(Fedora)	general	475-machine-rm	MXQ51605HR	C4:34:6B:B9:79:6C
+psi		HP-DL380-G9-XeE5-2620v3	6x2.4Gh	64Gb	Linux(Fedora)	general	475-machine-rm	MXQ51605K2	C4:34:6B:B9:75:4C
+omega		HP-DL380-G9-XeE5-2620v3	6x2.4Gh	64Gb	Linux(Fedora)	general	475-machine-rm	MXQ51605JF	EC:B1:D7:84:9B:20
+bacon		HP-DL580-G7-XeonE7-4830	16x2.13	128Gb	Linux(Fedora)	r/t	475-machine-rm	USE123N1R2	98:4b:e1:6b:ba:d0
+eggs		HP-DL580-G7-XeonE7-4830	16x2.13	128Gb	Linux(Fedora)	r/t	475-machine-rm	USE123N1R3	98:4b:e1:6b:89:5c
+phire		X9DRG-QF-XeonE5-2620v2	6x2.1G	32Gb	Linux(Redhat)	r/t	475-machine-rm	C7470KC25M60202	00:25:90:E2:69:A6
+cyrus		HP-Z240-Core-i7-6700	4x3.4G	16Gb	custom(Ubuntu)	r/t	275-chitsaz	2UA6080RNL	ec:b1:d7:4b:f0:20
+muse		HP-Z230-XeonE3-1231v3	4x3.4G	16Gb	Win10		staff	472-hansenp	2UA5091W1P	C4:34:6B:7B:23:EF
+chip		HP-Z230-XeonE3-1231v3	4x3.4G	16Gb	Linux(Fedora)	r/t	445		2UA5091W1Q	64:51:06:45:D3:D9
+orchid		HP-Z230-XeonE3-1231v3	4x3.4G	16Gb	Win10		r/t	276-wendys	2UA5091W1R	c4:34:6b:7b:24:02
+kenai		HP-Z230-XeonE3-1231v3	4x3.4G	16Gb	Linux(Fedora)	r/t	478-systems	2UA5091W1S	c4:34:6b:7b:23:f7
+kuskokwim	HP-Z230-XeonE3-1231v3	4x3.4G	16Gb	Linux(Fedora)	r/t	235-NW		2UA5091W1T	64:51:06:45:d3:b5
+stikine		HP-Z230-XeonE3-1231v3	4x3.4G	16Gb	Linux(Fedora)	r/t	256-wilcox	2UA5091W1V	c4:34:6b:7b:24:0c
+yukon		HP-Z230-XeonE3-1231v3	4x3.4G	16Gb	Linux(Fedora)	r/t	460		2UA5091W1W	64:51:06:45:d3:af
+capn		HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Linux(Fedora)	r/t	478-systems	2UA4242BS9	40:A8:F0:3D:42:86
+buzz		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	445		2UA3061BLW	10:60:4B:7D:ED:D7
+crackle		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t	256-fsieker	2UA3241Y5T	10:60:4b:69:8c:e8	
+pop	 	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		r/t	445		2UA239090G	B4:B5:2F:A9:6F:C4
+toucan		HP-Z220-XeonE3-1230	4x3.3G	8Gb	custom(Linux)	r/t	475-machine-rm	2UA129090F
+sun		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(Fedora)	r/t     345		2UA24106C4	b4:b5:2f:ca:83:24
+spruce		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Linux(fedora)	r/t	252-6	  	2UA24102RZ	B4:B5:2F:CA:83:0E
+beaverhead	HP-Z210-XeonE3-1230	4x3.2G	12Gb	Linux(Fedora)	r/t	415-NW		2UA1421XNM	2c:41:38:9b:89:fc
+big-hole	HP-Z210-XeonE3-1230	4x3.2G	8Gb	Linux(Fedora)	r/t	252		2UA1421XNC	2C:41:38:93:B5:8D
+cut-bank	HP-Z210-XeonE3-1230	4x3.2G	12Gb	Linux(Fedora)	r/t	435-NW		2UA1421XNH	2c:41:38:9b:89:a7
+depuy		HP-Z210-XeonE3-1230	4x3.2G	8Gb	Linux(Fedora)	r/t	235-SE		2UA1421XNK	2c:41:38:93:b5:e3
+gallatin	HP-Z210-XeonE3-1230	4x3.2G	12Gb	Linux(Fedora)	r/t	415-NE		2UA1421XNB	2c:41:38:93:b6:03
+jagger		HP-Z220-XeonE3-1230	4x3.3G  8Gb     Linux(Fedora)   r/t	376-SE          2UA3081J0S	6c:3b:e5:14:56:70
+lion		HP-Z220-XeonE3-1230	4x3.3G  8Gb     Linux(Fedora)   r/t	335-NW		2UA3310C6Y	88:51:fb:6e:8d:95
+jefferson	HP-Z210-XeonE3-1230	4x3.2G	12Gb	Linux(Fedora)	r/t	435-SE		2UA1421XND	2c:41:38:9b:8a:0d
+gardner		HP-Z210-XeonE3-1230	4x3.2G	12Gb	Linux(Fedora)	r/t	478-systems	2UA1421XNJ	2c:41:38:93:b5:ff
+platte		HP-Z210-XeonE3-1230	4x3.2G	8Gb	Linux(Fedora)	r/t	470-bohm	2UA1421XNG	2c:41:38:9b:89:f0
+ruby		HP-Z210-XeonE3-1230	4x3.2G	12Gb	Linux(Fedora)	r/t	415-NW		2UA1421XNL	2c:41:38:93:b6:00
+stillwater	HP-Z210-XeonE3-1230	4x3.2G	12Gb	Linux(Fedora)	r/t	415-5		2UA1421XNF	2c:41:38:9b:89:a6
+boulder		HP-Z210-XeonE3-1230	4x3.2G	12Gb	Linux(Fedora)	r/t	415-SE		2UA22422M4	80:c1:6e:fa:de:25
+marias		HP-Z210-XeonE3-1230	4x3.2G	12Gb	Linux(Fedora)	r/t	478   		2UA22422M5	ac:16:2d:05:38:78
+red-rock	HP-Z210-XeonE3-1230	4x3.2G	12Gb	Linux(Fedora)	r/t	335-NW		2UA22422M6	ac:16:2d:05:38:36
+shields		HP-Z210-XeonE3-1230	4x3.2G	8Gb	Linux(Fedora)	r/t	366-nblancha  	2UA22422M2	ac:16:2d:05:38:75
+smith		HP-Z210-XeonE3-1230	4x3.2G	8Gb	Linux(Fedora)	r/t	468-ghosh	2UA22422M7	80:c1:6e:fa:de:28
+teton		HP-Z210-XeonE3-1230	4x3.2G	8Gb	Win10		r/t	270-Whitley	2UA22422M3	80:C1:6E:FA:DE:27
+amsterdam	HP-xw4600-Core2Quad-SAS	4x2.83G	4Gb	Linux(Fedora)	r/t	405-storage	2UA9421H0Q	00:22:64:1b:7e:54
+democrat	HP-xw4600-Core2Quad-SAS	4x2.83G	8Gb	Win7		r/t	405-storage	2UA0140320
+betaz		HP-xw4600-Core2Quad-SAS	4x2.83G	4Gb	Linux(Fedora)	r/t	405-storage	2UA0060Y3N	18:a9:05:33:79:59
+belford 	HP-xw4600-Core2Quad-SAS	4x2.83G	8Gb	Linux(Fedora)	r/t	475-systems	2UA0200D5D	18:a9:05:30:3e:6d
+laramie		HP-xw4600-Core2Quad-SAS	4x2.83G	8Gb	Linux(Fedora)	r/t	475-systems	2UA0200D5F	18:a9:05:30:3f:52
+st-vrain	HP-xw4600-Core2Quad-SAS	4x2.83G	8Gb	Linux(Fedora)	r/t	405-storage	2UA0200D5H	f4:ce:46:2c:07:d8
+pagosa		HP-xw4600-Core2Quad-SAS	4x2.83G	4Gb	W2012ServR2	r/t	475-machine-rm	2UA953036T	
+waters		HP-xw4600-Core2Duo-SAS	2x2.83G	6Gb	custom		r/t	475-machine-rm	2UA8520J2M	00:22:64:33:63:e7
+dhaulagiri	HP-xw4600-Core2Duo-SAS	2x2.83G	6Gb	custom		r/t	352		2UA9240Y94	00:24:81:a1:e7:dd
+europa		HP-xw6600-Xeon5405-SATA	4x2.0Gh	8Gb	Linux(Fedora)	r/t	335-NE		2UA8180CZ4	00:22:64:1a:c3:21
+la-plata	HP-Z210-XeonE3-1230	4x3.2G	8Gb	Linux(Fedora)	r/t	240-waker	2UA12822RX	2c:27:d7:49:84:a5
+lattice-0	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND5A	68:b5:99:b4:04:36
+lattice-1	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4C	68:b5:99:b4:04:40
+lattice-2	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4L	68:b5:99:b4:e3:e0
+lattice-3	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4F	68:b5:99:b4:e3:aa
+lattice-4	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND53	68:b5:99:b4:e3:e4
+lattice-5	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND54	68:b5:99:b4:04:42
+lattice-6	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND43	68:b5:99:b4:04:54
+lattice-7	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4Q	68:b5:99:b4:e3:c4
+lattice-8	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND49	68:b5:99:b4:14:a8
+lattice-9	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND47	68:b5:99:b4:14:b8
+lattice-10	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND40	68:b5:99:b4:04:9a
+lattice-11	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND57	68:b5:99:b4:f3:b0
+lattice-12	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND58	68:b5:99:b4:34:06
+lattice-13	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4K	68:b5:99:b4:f3:cc
+lattice-14	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND45	68:b5:99:b4:04:7a
+lattice-15	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4R	68:b5:99:b4:04:a0
+lattice-16	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4N	68:b5:99:b4:5b:60
+lattice-17	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND3Z	68:b5:99:b4:f3:d8
+lattice-18	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4G	68:b5:99:b1:c2:52
+lattice-19	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND44	68:b5:99:b4:04:34
+lattice-20	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4M	68:b5:99:b4:34:00
+lattice-21	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4T	68:b5:99:b4:04:2c
+lattice-22	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4D	e8:39:35:b6:a4:30
+lattice-23	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4P	68:b5:99:b4:5b:dc
+lattice-24	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND55	68:b5:99:b4:6a:5e
+lattice-25	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4X	68:b5:99:b4:34:2a
+lattice-26	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND56	68:b5:99:b1:c2:3a
+lattice-27	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4V	68:b5:99:b4:04:0c
+lattice-28	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND59	68:b5:99:b4:34:60
+lattice-29	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND3X	68:b5:99:b1:c2:8a
+lattice-30	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4S	68:b5:99:b4:14:7a
+lattice-31	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4Z	68:b5:99:b4:04:1c
+lattice-32	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND3S	68:b5:99:b1:d2:b4
+lattice-33	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4A	68:b5:99:b4:14:ba
+lattice-34	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND3V	68:b5:99:b4:14:84
+lattice-35	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND5B	68:b5:99:b4:04:4a
+lattice-36	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4H	68:b5:99:b4:04:6e
+lattice-37	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND50	68:b5:99:b4:04:1a
+lattice-38	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND52	68:b5:99:b4:14:70
+lattice-39	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND3T	68:b5:99:b4:04:66
+lattice-40	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND41	68:b5:99:b4:04:46
+lattice-41	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND46	68:b5:99:b4:04:14
+lattice-42	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4B	68:b5:99:b4:04:50
+lattice-43	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND48	68:b5:99:b4:14:8c
+lattice-44	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND51	68:b5:99:b4:34:50
+lattice-45	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND3R	68:b5:99:b4:4b:18
+lattice-46	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND42	68:b5:99:b4:f3:fa
+lattice-47	HP-DL160-G6-E5620-SAS	4x2.4Gh	12Gb	Linux(Fedora)	r/t	475-machine-rm	USE048ND4J	68:b5:99:b4:04:72
+lattice-48	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233900WV	a4:5d:36:11:20:c4
+lattice-49	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233800GS	a4:5d:36:11:85:9c
+lattice-50	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX2329008G	a4:5d:36:11:03:c0
+lattice-51	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233800GP	a4:5d:36:11:90:d4
+lattice-52	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX2329008J	a4:5d:36:11:03:a0
+lattice-53	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233900MJ	a4:5d:36:11:bd:20
+lattice-54	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX23380137	a4:5d:36:11:bb:98
+lattice-55	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233800GN	a4:5d:36:11:90:d8
+lattice-56	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX23380136	a4:5d:36:11:87:c4
+lattice-57	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX23380138	a4:5d:36:11:98:4c
+lattice-58	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX2329008L	a4:5d:36:11:03:60
+lattice-59	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233300XG	a4:5d:36:11:36:b4
+lattice-60	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX232400UK	2c:59:e5:9a:65:f0
+lattice-61	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX232500U8	2c:59:e5:9a:54:ec
+lattice-62	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX232500UP	2c:59:e5:9a:64:00
+lattice-63	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233300XR	a4:5d:36:11:24:60
+lattice-64	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233300XF	a4:5d:36:11:36:a8
+lattice-65	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233300Y7	a4:5d:36:11:36:34
+lattice-66	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233300LP	a4:5d:36:11:30:00
+lattice-67	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233300LT	a4:5d:36:11:33:80
+lattice-68	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233300YB	a4:5d:36:11:36:7c
+lattice-69	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233300XP	a4:5d:36:11:23:a0
+lattice-70	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233300LR	a4:5d:36:11:36:90
+lattice-71	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233300Y8	a4:5d:36:11:36:38
+lattice-72	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX23380139	a4:5d:36:11:9b:f8
+lattice-73	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233800GR	a4:5d:36:11:90:a4
+lattice-74	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX2338013A	a4:5d:36:11:bd:84
+lattice-75	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233300XK	a4:5d:36:11:36:04
+lattice-76	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX233300YC	a4:5d:36:11:36:ac
+lattice-77	HP-DL320eG8-E3-1220-SAS	4x3.1Gh	8Gb	Linux(Fedora)	r/t	475-machine-rm	MX23380135	a4:5d:36:11:b8:c0
+lattice-78	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804FT	5c:b9:01:7b:bd:cb
+lattice-79	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GC	30:8d:99:b2:4b:87
+lattice-80	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GF	30:8d:99:b2:6b:13
+lattice-81	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GW	30:8d:99:b2:5b:cb
+lattice-82	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GL	30:8d:99:b2:5b:f7
+lattice-83	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GZ	30:8d:99:b2:6b:5b
+lattice-84	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804FV	5c:b9:01:7b:bd:e7
+lattice-85	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GD	30:8d:99:b2:5b:df
+lattice-86	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804G8	30:8d:99:b2:6b:47
+lattice-87	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804G5	30:8d:99:b2:6b:67
+lattice-88	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804G4	30:8d:99:b2:6b:57
+lattice-89	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804G7	30:8d:99:b2:4b:ff
+lattice-90	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GM	30:8d:99:b2:6b:4b
+lattice-91	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GK	30:8d:99:b2:5b:a7
+lattice-92	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GY	30:8d:99:b2:6b:87
+lattice-93	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GT	30:8d:99:b2:6b:07
+lattice-94	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804G6	30:8d:99:b2:5b:9b
+lattice-95	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GX	30:8d:99:b2:6b:b3
+lattice-96	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804FL	5c:b9:01:7b:bd:37
+lattice-97	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804FW	5c:b9:01:7b:fc:57
+lattice-98	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804FR	5c:b9:01:7b:9d:53
+lattice-99	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804FP	5c:b9:01:7b:bd:53
+lattice-100	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804FQ	5c:b9:01:7b:5d:6b
+lattice-101	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804FS	5c:b9:01:7b:8d:ef
+lattice-102	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804FX	30:8d:99:b2:5b:bb
+lattice-103	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804H1	30:8d:99:b2:6b:ab
+lattice-104	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804FM	5c:b9:01:7b:6d:03
+lattice-105	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804G2	30:8d:99:b2:5b:ef
+lattice-106	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804FY	30:8d:99:b2:6b:77
+lattice-107	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804G0	30:8d:99:b2:6b:db
+lattice-108	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GG	30:8d:99:b2:5b:13
+lattice-109	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804FN	5c:b9:01:7b:bd:5b
+lattice-110	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804G9	30:8d:99:b2:5b:f3
+lattice-111	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GR	30:8d:99:b2:4b:7f
+lattice-112	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GS	30:8d:99:b2:5b:9f
+lattice-113	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GN	30:8d:99:b2:5b:7b
+lattice-114	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GV	30:8d:99:b2:6b:0f
+lattice-115	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GQ	30:8d:99:b2:5b:cf
+lattice-116	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GP	30:8d:99:b2:5b:5f
+lattice-117	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804FZ	30:8d:99:b2:6b:c3
+lattice-118	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804H0	30:8d:99:b2:6b:43
+lattice-119	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GB	30:8d:99:b2:5b:d3
+lattice-120	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GJ	30:8d:99:b2:5b:33
+lattice-121	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804G3	30:8d:99:b2:3b:7b
+lattice-122	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804GH	30:8d:99:b2:5b:57
+lattice-123	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M260804G1	30:8d:99:b2:0b:df
+lattice-124	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2613057S	30:8d:99:b2:2d:9b
+lattice-125	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2613057W	30:8d:99:b2:73:df
+lattice-126	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2613057Y	30:8d:99:b2:b4:3b
+lattice-127	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2613057X	30:8d:99:b2:3d:1b
+lattice-128	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2613057Q	30:8d:99:b2:ac:0b
+lattice-129	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2613057R	30:8d:99:b2:b4:53
+lattice-130	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2613057T	30:8d:99:b2:e4:c3
+lattice-131	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2613057V	5c:b9:01:7b:f7:6f
+lattice-132	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2613057P	30:8d:99:b2:d3:f3
+lattice-133	HP-DL60-G9-E5-2620v3	6x2.4Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2613057N	30:8d:99:b2:15:87
+lattice-134	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030C	e0:07:1b:8a:8d:c7
+lattice-135	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030P	e0:07:1b:8a:57:3f
+lattice-136	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZY	e0:07:1b:8a:9d:03
+lattice-137	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZX	e0:07:1b:8a:8d:cf
+lattice-138	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030K	e0:07:1b:8a:8d:db
+lattice-139	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030S	e0:07:1b:8a:ad:17
+lattice-140	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030R	e0:07:1b:8a:0d:eb
+lattice-141	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZW	e0:07:1b:8a:8d:1f
+lattice-142	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZM	e0:07:1b:8a:9d:63
+lattice-143	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZH	e0:07:1b:8a:9d:ff
+lattice-144	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZG	e0:07:1b:8a:8d:d7
+lattice-145	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZQ	e0:07:1b:8a:8d:e3
+lattice-146	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZN	e0:07:1b:8a:9d:77
+lattice-147	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZR	e0:07:1b:8a:9d:cf
+lattice-148	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZS	e0:07:1b:8a:5d:cf
+lattice-149	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030F	e0:07:1b:8a:8d:33
+lattice-150	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZT	e0:07:1b:8a:8d:5b
+lattice-151	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030N	e0:07:1b:8a:9d:df
+lattice-152	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZL	e0:07:1b:8a:9d:2f
+lattice-153	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZP	e0:07:1b:8a:9d:4f
+lattice-154	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030Q	e0:07:1b:8a:9d:8b
+lattice-155	HP-DL60-G9-E5-2620v4	8x2.1Gh	16Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030J	e0:07:1b:8a:4d:e7
+lattice-156	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030M	e0:07:1b:8a:8d:c3
+lattice-157	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZV	e0:07:1b:8a:8d:8b
+lattice-158	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030L	e0:07:1b:8a:7d:8f
+lattice-159	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZK	e0:07:1b:8a:9d:af
+lattice-160	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M26450304	e0:07:1b:8a:5d:d7
+lattice-161	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M26450305	e0:07:1b:8a:9d:8f
+lattice-162	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030G	e0:07:1b:8a:8d:57
+lattice-163	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030H	e0:07:1b:8a:6d:a7
+lattice-164	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZJ	e0:07:1b:8a:9d:47
+lattice-165	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M26450307	e0:07:1b:8a:8d:d3
+lattice-166	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M26450301	e0:07:1b:8a:8d:df
+lattice-167	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M26450308	e0:07:1b:8a:8d:93
+lattice-168	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030B	e0:07:1b:8a:5d:9b
+lattice-169	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M264502ZZ	e0:07:1b:8a:9d:57
+lattice-170	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M2645030D	e0:07:1b:8a:8d:fb
+lattice-171	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M26450306	e0:07:1b:8a:8d:eb
+lattice-172	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M26450303	e0:07:1b:8a:8d:7f
+lattice-173	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M26450302	e0:07:1b:8a:6d:13
+lattice-174	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M26450300	e0:07:1b:8a:9d:27
+lattice-175	HP-DL60-G9-E5-2620v4	8x2.1Gh	64Gb	Linux(Fedora)	r/t	475-machine-rm	2M26450309	e0:07:1b:8a:9d:bb
+lattice-176	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418729621	ac:1f:6b:49:3b:66
+lattice-177	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719235	ac:1f:6b:49:3a:1c
+lattice-178	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719264	ac:1f:6b:49:35:42
+lattice-179	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719232	ac:1f:6b:49:3a:3e
+lattice-180	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719234	ac:1f:6b:49:2a:3e
+lattice-181	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719231	ac:1f:6b:49:3a:1e
+lattice-182	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719255	ac:1f:6b:49:34:a0
+lattice-183	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719251	ac:1f:6b:49:39:8c
+lattice-184	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719259	ac:1f:6b:49:39:c0
+lattice-185	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719246	ac:1f:6b:49:3a:e4
+lattice-186	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719241	ac:1f:6b:49:35:46
+lattice-187	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719245	ac:1f:6b:49:3b:e2
+lattice-188	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719270	ac:1f:6b:49:36:02
+lattice-189	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719248	ac:1f:6b:49:3a:32
+lattice-190	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719242	ac:1f:6b:49:34:9a
+lattice-191	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719243	ac:1f:6b:49:34:94
+lattice-192	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719227	ac:1f:6b:49:3a:2a
+lattice-193	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719269	ac:1f:6b:49:3c:1e
+lattice-194	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719238	ac:1f:6b:49:3a:4a
+lattice-195	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719240	ac:1f:6b:49:3a:3c
+lattice-196	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719244	ac:1f:6b:49:3a:e2
+lattice-197	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719249	ac:1f:6b:49:36:08
+lattice-198	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719237	ac:1f:6b:49:2a:40
+lattice-199	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719247	ac:1f:6b:49:3b:de
+lattice-200	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719230	ac:1f:6b:49:3a:14
+lattice-201	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719258	ac:1f:6b:49:34:88
+lattice-202	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719265	ac:1f:6b:49:36:0a
+lattice-203	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719257	ac:1f:6b:49:34:9c
+lattice-204	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418729619	ac:1f:6b:49:3b:76
+lattice-205	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418729617	ac:1f:6b:49:3b:4c
+lattice-206	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418729616	ac:1f:6b:49:3b:f4
+lattice-207	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719250	ac:1f:6b:49:34:9e
+lattice-208	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719236	ac:1f:6b:49:3a:1a
+lattice-209	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719260	ac:1f:6b:49:34:86
+lattice-210	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719228	ac:1f:6b:49:3a:2e
+lattice-211	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719229	ac:1f:6b:49:3a:24
+lattice-212	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719253	ac:1f:6b:49:34:a2
+lattice-213	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719252	ac:1f:6b:49:3a:a4
+lattice-214	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719268	ac:1f:6b:49:36:00
+lattice-215	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719263	ac:1f:6b:49:3a:ba
+lattice-216	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719261	ac:1f:6b:49:3a:28
+lattice-217	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719262	ac:1f:6b:49:2a:3a
+lattice-218	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719239	ac:1f:6b:49:3b:dc
+lattice-219	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719254	ac:1f:6b:49:34:a6
+lattice-220	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418729620	ac:1f:6b:49:3b:6e
+lattice-221	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719267	ac:1f:6b:49:36:06
+lattice-222	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719266	ac:1f:6b:49:36:04
+lattice-223	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719256	ac:1f:6b:49:34:98
+lattice-224	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418729618	ac:1f:6b:49:3b:72
+lattice-225	SYS-5018R-M/E5-2620V4	8x2.1Gh	32GB	Linux(Fedora)	r/t	475-machine-rm	S16231418719233	ac:1f:6b:49:37:96
+frankfurt	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	245-gaddvi	2UA035114W	d4:85:64:15:09:05
+somerset	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	435-SE		2UA03511SJ	d4:85:64:15:08:db
+animas		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	415-2		2UA03415W3	1c:c1:de:66:fb:81
+arkansas	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	435-SW		2UA03415W8	1c:c1:de:66:fb:7d
+colorado	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	478-systems	2UA03415W1	1c:c1:de:66:fb:72
+conejos		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	252		2UA03415W6	1c:c1:de:66:fb:69
+dolores		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	235-NW		2UA03415WB	d4:85:64:02:7d:ca
+eagle		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	415-NE		2UA03415W4	1c:c1:de:66:fb:5f
+frying-pan	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	435-6		2UA03415W7	1c:c1:de:66:fb:94
+gunny		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Win10		r/t	478-systems	2UA03415W9	d4:85:64:02:7d:cb
+piedra		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	235-10		2UA03415W5	1c:c1:de:66:fb:68
+rio-grande	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	235-NW		2UA03415W2	1c:c1:de:66:fb:90
+bighorn		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Win10		r/t	475-machine-rm	2UA1071PQT	78:ac:c0:97:44:45
+clarks-fork	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	235		2UA117054L	78:ac:c0:ad:2b:17
+green		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	252-3		2UA1071PQK	78:ac:c0:97:44:30
+greybull	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	246-applin	2UA1071PQP	78:ac:c0:97:44:37
+hams-fork	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	478-systems	2UA1071PQN	78:ac:c0:97:44:19
+new-fork	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	235-NW 		2UA1071PQV	78:ac:c0:97:44:38
+nowood		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	460		2UA1071PQJ	78:ac:c0:97:44:3f
+popo-agie	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	235-12		2UA1071PQH	78:ac:c0:97:44:1a
+powder		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	235-SW		2UA1071PQS	78:ac:c0:97:44:32
+shoshone	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	235-NE		2UA1071PQW	78:ac:c0:97:44:18
+snake		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	335-NE		2UA117054K	78:ac:c0:ad:2b:07
+sweetwater	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	415-11		2UA1071PQQ	78:ac:c0:97:44:26
+tongue		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	435-NW		2UA1071PQL	78:ac:c0:97:44:35
+wind		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Win10		r/t	248-krisbrwn	2UA1071PQG	64:31:50:3f:42:e7
+yellowstone	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	r/t	415-SE		2UA1071PQR	78:ac:c0:97:44:33
+lang		HP-Z800-Xeon5550-SAS	8x2.6Gh	96Gb	Linux(Fedora)	r/t	475-machine-rm	2UA9160R69	00:1f:29:03:07:e2
+ocarolan	HP-xw9300-AMD		2x2.8Gh	7.5Gb	Linux(Fedora)	r/t	(home)-anderson	2UAS440WHL
+pancakes	HP-Z800-XeonE5645-SAS	12x2.4G	96Gb	Linux(Fedora)	r/t	435-NW		2UA22416Q3	e8:39:35:31:41:e2
+waffles		HP-Z800-XeonE5645-SAS	12x2.4G	96Gb	Linux(Fedora)	r/t	475-machine-rm	2UA22416Q2	e8:39:35:31:51:12
+toast		HP-Z800-XeonE5645-SAS	12x2.4G	96Gb	Linux(Fedora)	r/t	242		2UA22416Q4	e8:39:35:31:51:0e
+red		SuperMicr-XeonE5-2620v3	12x2.4G	128Gb	Linux(Redhat)	r/t	475-draper	S174959X6408466	0c:c4:7a:6e:fd:96 
+blue		SuperMicr-XeonE5-2630v4	20x2.2G	128Gb	Linux(Fedora)	r/t	475-draper	S16582726729987	0c:c4:7a:c4:73:02
+cyan		SuperMicr-XeonE5-2630v4	20x2.2G	128Gb	Linux(Fedora)	r/t	475-draper	S16582726729986	0c:c4:7a:c4:62:a8
+magenta		SuperMicr-XeonE5-2630v4	20x2.2G	128Gb	Linux(Fedora)	r/t	475-draper	S16582726729965	0c:c4:7a:c4:5f:f0
+pink		SuperMicr-XeonE5-2630v4	20x2.2G	128Gb	Linux(Fedora)	r/t	475-draper	S16582726729993	0c:c4:7a:c4:60:6e
+yellow		SuperMicr-XeonE5-2630v4	20x2.2G	128Gb	Linux(Fedora)	r/t	475-draper	S16582726729962	0c:c4:7a:c3:b1:3e
+grace		HP-xw9300-AMD250	2x2.4Gh	4Gb	Linux(Fedora)	r/t	478-sna		2UA54806V2	------------------
+oranges		HP-Z800-XeonE5520-SATA	8x2.26G	24Gb	Linux(Fedora)	r/t	439-storage  	2UA00110V4	00:1f:29:05:82:dc
+sherman		HP-xw4400-Core2Duo-SATA	2x2.13	6Gb	Linux(Fedora)	r/t	475-machine-rm	2UA72200MQ	00:22:64:1a:c3:21
+(n/a)		Dell-Dimension-9100-P4	3.0Ghz	3Gb	custom		r/t	352		DYLLT71-30390309901
+merl		HP-xw4600-Core2Duo-SATA	2x2.83G	6Gb	Win7		r/t	439-surplus	2UA8281D46
+bach		HP-DL380-G9-XeE5-2650v3	20x2.3G	128Gb	Linux(Redhat)	r/t	475-machine-rm	MXQ55105P2
+chopin		HP-DL380-G9-XeE5-2650v3	20x2.3G	128Gb	Linux(Redhat)	r/t	475-machine-rm	MXQ55104ZF
+parsons		HP-DL380-G9-XeE5-2650v3	20x2.3G	128Gb	Linux(Redhat)	r/t	475-machine-rm	MXQ55105P0	94:57:a5:55:94:a8q
+test6		HP-DL380-G9-XeE5-2620v3	6x2.4G	16Gb	Linux(Redhat)	r/t	475-machine-rm	MXQ60402WF
+chico		HP-DL380-G7-X5650	2x2.66	24Gb	Linux(Redhat)	systems	475-machine-rm	USE202RBMK	44-1E-A1-04-E0-36
+faure		HP-DL380-G7-X5650	2x2.66	24Gb	Linux(Redhat)	systems	475-machine-rm	USE202RBMJ	44-1E-A1-05-FA-B6
+old-parsons	HP-DL380-G7-X5650	2x2.66	24Gb	Linux(Redhat)	systems	475-machine-rm	USE202RBMH	44-1E-A1-05-56-06
+test4		HP-DL380-G7-X5650	2x2.66	24Gb	Linux(Redhat)	systems	475-machine-rm	USE202RBMC	44:1E:A1:06:7A:90
+fir		SuperMicr-XeonE5-2609v2	8x2.5Gh	32Gb	Linux(Redhat)	r/t	475-machine-rm	S10924124400241	00:25:90:F2:F2:72
+jawar		SuperMicr-XeonE5-2609v2	8x2.5Gh	32Gb	Linux(Redhat)	r/t	475-machine-rm	S10924124400240	00:25:90:F2:F1:A2
+mahler		HP-xw4600-Core2Quad-SAS	4x2.83G	8Gb	Linux(Redhat)	systems	475-machine-rm	2UA9510WGL	00:26:55:46:2D:33	
+iotlab		(iotlab router)		?	?	Linux(custom)	r/t	345		?	d0:27:88:dd:f1:c4
+old-faure	HP-xw4600-Core2Quad-SAS	4x2.83G	8Gb	Linux(Fedora)	systems	475-machine-rm	2UA9510WGe	00:26:55:46:2d:02
+missouri	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Win10		systems	274-lionelle	2UA12414FQ	78:ac:c0:a5:59:58
+poudre		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	systems	335-SE		2UA12414FR	78:ac:c0:a5:59:47
+volga		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Linux(Fedora)	systems	478-systems	2UA12414FP	78:ac:c0:a5:59:59
+massive		HP-Z210-XeonE3-1230	4x3.2G	8Gb	Linux(Fedora)	systems	478-systems	2UA12822RR	2c:27:d7:46:cc:b9
+halloween	Custom-XeonE5410	8x2.3G	16Gb	Linux(Fedora) 	systems	478-systems	Tag=326730	00:30:48:d4:72:b2
+harvard		HP-Z210-XeonE3-1230	4x3.2G	8Gb	Linux(Fedora)	systems	478-systems	2UA12822S6	2c:27:d7:49:84:b2
+blanca		HP-Z210-XeonE3-1230	4x3.2G	8Gb	Linux(Fedora)	r/t	478-systems  	2UA12822SQ	2c:27:d7:49:84:ab
+carstensz	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		r/t	272-bartlett	2UA41924VV	A0-48-1C-AA-11-77
+lhotse		HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		r/t	472-hansenp	2UA41924W3	A0-48-1C-AA-10-A4
+hydra		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Win10		staff	478-systems	2UA0371HK8	D4-85-64-A9-82-65
+vinson		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Win10		staff	210-reception	2UA0371HK7	D4-85-64-A9-82-8A
+old_perseus	HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	scrubbed	staff	478-systems	2UA0371HK6	D4-85-64-AA-08-4F
+warthog		HP-Z200-Xeon3450-SAS	4x2.66G	8Gb	Win10		staff	260-knebl	2UA1071PQM	78-AC-C0-97-44-0A
+coco		HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		r/t	264-denstedt	2UA24106C5	B4-B5-2F-CA-82-A6
+meghan		HP-Z220-XeonE3-1230	4x3.3G	16Gb	Win10		staff	478-systems 	2UA24106C3	B4-B5-2F-CA-83-29
+haydn		HP-xw4600-Core2Duo-SATA	2x2.83G	6Gb	Win7		r/t	439-surplus	2UA8281D47	00-21-5A-61-3B-7E
+
+cs-open121	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DD7	B4-B5-2F-BF-9D-2C
+cs-open122	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DCD	B4-B5-2F-BF-9C-F5
+cs-open123	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DBQ	B4-B5-2F-BF-9D-7A
+cs-open124	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DBT	B4-B5-2F-BF-9D-92
+cs-open125	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DD2	B4-B5-2F-BF-9D-2F
+cs-open126	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DD8	B4-B5-2F-BF-9C-5B
+cs-open127	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DBH	B4-B5-2F-BF-9D-EC
+cs-open128	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DCJ	B4-B5-2F-BF-9C-BB
+cs-open129	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DCX	B4-B5-2F-BF-9D-7B
+cs-open130	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DBS	B4-B5-2F-BF-9D-02
+cs-open131	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DCR	B4-B5-2F-BF-9D-80
+cs-open132	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DC8	B4-B5-2F-BF-9D-8D
+cs-open133	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DCC	B4-B5-2F-BF-9D-5D
+cs-open134	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DCB	B4-B5-2F-BF-9D-58
+cs-open135	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DBM	B4-B5-2F-BF-9D-E0
+cs-open136	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DD5	B4-B5-2F-BF-9D-83
+cs-open137	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DBP	B4-B5-2F-BF-9D-97
+cs-open138	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DBY	B4-B5-2F-BF-9D-3E
+cs-open139	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DCL	B4-B5-2F-BF-9C-FF
+cs-open140	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DC2	B4-B5-2F-BF-9D-88
+cs-open141	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DD0	B4-B5-2F-BF-9D-1B
+cs-open142	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DC6	B4-B5-2F-BF-9D-8C
+cs-open143	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DD3	B4-B5-2F-BF-9D-8B
+cs-open144	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DCH	B4-B5-2F-BF-9D-00
+cs-open145	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DBN	B4-B5-2F-BF-9D-31
+cs-open146	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DC4	B4-B5-2F-BF-9D-E3
+cs-open147	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DBW	B4-B5-2F-BF-9C-E0
+cs-open148	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DC7	B4-B5-2F-BF-9D-65
+cs-open149	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DCP	B4-B5-2F-BF-9C-FE
+cs-open150	HP-Z220-XeonE3-1230	4x3.3G	8Gb	Win10		general	110-open-lab	2UA2390DCN	B4-B5-2F-BF-9C-FB
+cs-open151	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924W2	A0-48-1C-AA-11-8B
+cs-open152	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924VZ	A0-48-1C-A0-5B-D7
+cs-open153	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924W8	A0-48-1C-A6-0B-14
+cs-open154	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WS	A0-48-1C-AA-11-9F
+cs-open155	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WN	A0-48-1C-AA-11-84
+cs-open156	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WG	A0-48-1C-A0-5C-41
+cs-open157	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WK	A0-48-1C-AA-11-8E
+cs-open158	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WQ	A0-48-1C-A0-5C-50
+cs-open159	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WF	A0-48-1C-AA-11-A2
+cs-open160	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WT	A0-48-1C-A0-5C-54
+cs-open161	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924W4	A0-48-1C-AA-10-A3
+cs-open162	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924W1	A0-48-1C-A0-5A-B8
+cs-open163	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WC	A0-48-1C-A0-5A-C6
+cs-open164	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WH	A0-48-1C-A6-0B-52
+cs-open165	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924VY	A0-48-1C-A0-5A-B9
+cs-open166	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924VX	A0-48-1C-A0-5B-4F
+cs-open167	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WM	A0-48-1C-A0-5B-E9
+cs-open168	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924VW	A0-48-1C-A6-0B-27
+cs-open169	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924W5	A0-48-1C-AA-11-8A
+cs-open170	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WD	A0-48-1C-AA-11-EF
+cs-open171	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924VT	A0-48-1C-A6-0B-47
+cs-open172	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924W8	A0-48-1C-A0-5B-CB
+cs-open173	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924W9	A0-48-1C-AA-10-86
+cs-open174	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WB	A0-48-1C-AA-10-87
+cs-open175	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WO	A0-48-1C-AA-11-B1
+cs-open176	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WJ	A0-48-1C-AA-11-E3
+cs-open177	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WP	A0-48-1C-A0-5B-E4
+cs-open178	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924W6	A0-48-1C-AA-11-7E
+cs-open179	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924W7	C4-34-6B-61-E9-86
+cs-open180	HP-Z230-XeonE3-1230v3	4x3.3G	16Gb	Win10		general	110-open-lab	2UA41924WL	A0-48-1C-A6-0A-32
+presley		HP-xw4600-Core2Quad-SAS	4x2.83G	8Gb	Linux(Redhat)	r/t	405-storage	2UA9510WG8	00:26:55:46:2C:FA
+spot		iMac-27inch-Core-i7	4x2.8Gh	16Gb	MacOS		r/t	435-NE		QP0060BS5RU
+ludwig		Mac-Pro			4x2.66G	4Gb	MacOS		r/t	(home)-iray	G87061M8UPZ
+NONAME		Mac-Pro			4x2.66G	4Gb	MacOS		r/t	(home)-indrjait	G87061M9UPZ?
+holst		Power-Mac-G4		2x1Ghz	?	MacOS		r/t	???-ross	7002730494000050
+n/a		iMac-G4			800Mhz	512Mb	MacOS		r/t	(home)-bieman	QT2100X7MDL
+n/a		MacBook Air		1.7Ghz	8GB	MacOS		r/t	chitsaz		C02N32BPG5RP
+jasper		iMac-27inch-Core-i7	3.5Ghz	16Gb	MacOS		r/t	chitsaz		D25N32G9F8JC	06:4D:E9:A9:72:0F
+n/a		Dell-XPS-435T/9000-i7	2.67Ghz	12Gb	Win7(x64)	r/t	364-Pallickara	9KDPVH1
+ciel1		Dell Optimplex 980	N/A	N/A	Linux(custom)	r/t	445-jruiz	not our machine 
+lincoln-old     HP-Z420-XeonE5-2650v2   8x2.6G  32Gb    Linux(Fedora)   general 405-parts	2UA3491215      2c:44:fd:26:8f:6b
+
+LAPTOPS:
+--------
+sachini		HP-EliteBook-850-G1	2.5Ghz 12GB	Win7/Linux	r/t	indrajit	CNU419B3L9
+hercules	HP-EliteBook-8460w	2x2.5G	8GB	Win7		r/t	judith		CNU1520MKN
+??????		HP-EliteBook-850-G3		8GB	Win10		r/t	wakefield	5CG6072FNN
+??????		HP-EliteBook-840-G3			Win10		r/t	say		5CG72578DG	F4:30:B9:CC:94:8C
+air1		MacBook Air-i7		2GHz	8GB	MacOS		r/t	laptop-pool	C02JG1BXDRVG
+air2		MacBook Air-i5		1.7Ghz	4GB	MacOS		r/t	tanyar		C02HM0H4DJWV
+air3		MacBook Air-i7		1.8GHz	4GB	MacOS		r/t	laptop-pool	CO2HK1G1DJWR
+ProBook1	HP-ProBook-640-G1	2.6Ghz 12GB	Win10		r/t	laptop-pool	CNU419CVGQ
+ProBook2	HP-ProBook-640-G1	2.6Ghz 12GB	Win10		r/t	laptop-pool	CNU419CVGJ
+laptop1		HP-ProBook-6460b	2.5Ghz	8GB	Win10		r/t	laptop-pool	CNU2250Q7Y
+laptop2		HP-ProBook-6460b	2.5Ghz	8GB	Win10		r/t	Indrakshi	CNU226025Y
+laptop3		HP-EliteBook-6930p	2x2.8G	3Gb	Win10		r/t	laptop-pool	2CE9230WWR
+Laptop26	HP-EliteBook-6930p	2x2.53G	4Gb	Win10		r/t	user vsp 8.2018	2CE8467X4H
+Laptop24	HP-EliteBook-6930p	2x2.53G	4Gb	Win10 		r/t	dept-pool-#24	2CE8467X4V
+Laptop23	HP-EliteBook-6930p	2x2.53G	4Gb	Win10		r/t	dept-pool-#23	2CE8467X4F
+laptop22	HP-EliteBook-6930p	2x2.53G	4Gb	Win10		r/t	lionelle	2CE8467X4C
+laptop21	HP-EliteBook-6930p	2x2.53G	4Gb	Win10		r/t	dept-pool-#21	2CE8467X4G
+laptop18	HP-EliteBook-6930p	2x2.53G	4Gb	Win10		r/t	trzyna		2CE8467X4D
+laptop17	HP-EliteBook-6930p	2x2.53G	4Gb	Win10		r/t	Wakefield-110	2CE8467X48
+laptop16	HP-EliteBook-6930p	2x2.53G	4Gb	Win10		r/t	dept-pool-#16	2CE8467X4B
+robot12		Dell-Latitude-D620	2x2.16G	2Gb	Win7		r/t	robot-pool-#12	136P1C1-2369426689
+robot11		Dell-Latitude-D620	2x2.16G	2Gb	WXP		r/t	robot-pool-#11	1Z5P1C1-4302664705
+robot9		Dell-Latitude-D620	2x2.16G	2Gb	Win7		r/t	robot-pool-#9	F66P1C1-33025777921
+robot5		Dell-Latitude-D620-PM	2x2.0Gh	1Gb	WXP		r/t	robot-pool-#5	1CNJY91-2941938469
+robot2		Dell-Latitude-D620-PM	2x2.0Gh	1Gb	ubuntu		r/t	Gersch		6BNJY91-13765383973
+laptop17	Dell-Inspiron-6000-PM	2.0Ghz	1Gb	WXP		r/t	dept-pool-#17	333V891-6718241413
+laptop16	Dell-Latitude-D610-PM	2.0Ghz	1Gb	WXP		r/t	dept-pool-#16	BC2C771-24674128237
+laptop15	Dell-Latitude-D610-PM	2.0Ghz	1Gb	WXP		r/t	dept-pool-#15	B62C771-24311331181
+laptop13	Dell-Latitude-D610-PM	2.0Ghz	1Gb	WXP		r/t	dept-pool-#13	d62C771-28664895853
+laptop11	Dell-Latitude-D610-PM	2.0Ghz	1Gb	WXP		r/t	dept-pool-#11	d92c771-28846294381
+laptop10	Dell-Latitude-D610-PM	2.0Ghz	1Gb	WXP		r/t	dept-pool-#10	3d2c771-7320335725
+hippo		Dell-Inspiron-8600	2.0Ghz	2Gb	WXP		r/t	bohm		6WK6L51-15029511301
+vanzant		Dell-Latitude-D400-P4	1.7Ghz	512Mb	WXP		r/t	dept-pool-#6	9770q41-20026095409
+skynard		Dell-Latitude-D400-P4	1.7Ghz	512Mb	WXP		r/t	dept-pool-#5	3770Q41-6965401393
+nash		Dell-Latitude-C400-P3	1.2Ghz	384Mb	WXP		r/t	dept-pool-#2	GFMR021-35773721353
+?		Dell-Inspiron-7500	600Mhz	?	W2K		r/t	468-ghosh	B3M340B
+n/a		Dell-Latitude-D600	?	?	?		r/t	anderson	7TFBN21-17016732793
+
+n/a		MacBook-Pro		4x2.2Gh	4Gb	MacOS		r/t	indrajit	C02GXADJDV7L
+Pro01		MacBook-Pro-i7		4x2.9Gh 8GB	MacOS		r/t	hansenp		C02JK4V2F8V7
+Pro02		MacBook-Pro-i7		4x2Gh	8GB	MacOS		r/t	trzyna		C02MKHEYFD56
+Pro03		MacBook-Pro-i5		2x2.7Gh	8GB	MacOS		r/t	CS-(ldecarli)	C02QXPXFVH3
+Pro04		MacBook-Pro-i7		4x2.6Gh 8GB	MacOS		r/t	abchawla	C02JF0XBDKQ2
+cale		MacBook-Pro		2x2.8Gh	4Gb	MacOS		r/t	ross		W88445CU1GN
+n/a		MacBook-Pro		2x2.66G	4Gb	MacOS		systems	trzyna		W892516A64B
+n/a		MacBook-Pro		2x2.66G	4Gb	MacOS		systems	hansenp		W89250VC64B	
+n/a		MacBook-Pro-13		2x2.53?	4Gb	MacOS		r/t	whitley		W89245M766J
+n/a		MacBook-Pro		2x2.5Gh	4Gb	MacOS		r/t	massey(yanhe)	W882801VYP4
+n/a		MacBook-Pro		2x2.4Gh	4Gb	MacOS		r/t	ghosh		W89201368Q2
+n/a		MacBook			2x2.4Gh	4Gb	MacOS		r/t	bieman		W88520SQ1B5
+n/a		MacBook-Air		2x1.6Gh	2Gb	MacOS		r/t	asa		W881102GY5G
+n/a		MacBook-Air		2x1.6Gh	2Gb	MacOS		r/t	bohm		W892104122D
+n/a		MacBook-Air		1.8Ghi7 4GB	MacOS		r/t	laptop pool	C02HK1G1DJWR
+n/a/		MacBook-Air		2x1.4Gh 2Gb	MacOS		r/t	laptop pool	C02FJOE5DDQW
+n/a		MacBook-Pro		2x2.33G	2Gb	MacOS		r/t	indrajit	W87061HLW0H
+n/a		MacBook-Pro		2x2.33G	2Gb	MacOS		r/t	indrajit	?
+n/a		MacBook-Pro		2.2Ghz	4Gb	MacOS		r/t	mstrout		W87290SXXAH
+n/a		MacBook-Air		2x1.86G	2Gb	MacOS		r/t	indrajit	W89210325LA	
+altan		MacBookPro-1,1-(Intel)	2x2Ghz	2Gb	MacOS		r/t	ross		W86102XAVJ3
+n/a		Power-Book-G5		1.67Ghz	1Gb	MacOS		r/t	svr		W85060VJSQ7
+krishna		Power-Book-G4		1.67Ghz	1Gb	MacOS		r/t	mstrout		W85160BQSQ7
+n/a		iBook-G4-PowerPC	1.5Ghz	1Gb	MacOS		r/t	mstrout		4H5431X8SE6
+krishna		Power-Book-G4		1.67Ghz	512Mb	MacOS		r/t	svr-(rama)	W850918CRG4
+renga		Power-Book-G4		1.67Ghz	512Mb	MacOS		r/t	svr-gra		W850919HRG4
+saito		Power-Book-G4		1.67Ghz	512Mb	MacOS		r/t	svr-gra		W850916XRG4
+colvin		Power-Book-G5		1.5Ghz	1Gb	MacOS		r/t	howe		W843107AQW3
+none		Power-Book-G4		1.5Ghz	1Gb	MacOS		r/t	massey		W84241RDQW3
+(no-name)	Power-Book-G4		1.5Ghz	1Gb	MacOS		r/t	massey(vamsi)	W8447044QW3
+(no-name)	Power-Book-G4-(12")	1.33Ghz	1.25Gb	MacOS		r/t	asa		UV4232M4PLX
+(no-name)	Power-Book-G4		1Ghz	512Mb	MacOS		r/t	indrajit	QT3141R7N4M
+(no-name)	Power-Book-G4		1Ghz	512Mb	MacOS		r/t	iray		QT3141R3N4M
+billyjoel	Power-Book-G4		800Mhz	1Gb	MacOS		r/t	schauble	QT22560ZTLP1
+bream		Power-Book-G3		500Mhz	512Mb	MacOS		r/t	ross		QT0361EXHDS
+fahey		Powerbook-G4-15		1.0Ghz	1Gb	MacOS		r/t	ross		QT24916RNWL
+(n/a)		QNAP TS-859 Pro+ Turbo	NAS	(n/a)	custom		r/t	475-machine-rm	Q121IO1035
+
+------------------------------------------------------------
+USE: general, r/t-(research/teaching), cs110, private (not-owned by CS),
+staff, systems
+OS: HPUX, Solaris, Linux, Linux(Fedora), MacOS, W2K, WXP, Win7 W2003Server, custom
+

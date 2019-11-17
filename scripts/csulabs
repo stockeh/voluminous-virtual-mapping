@@ -1,0 +1,46 @@
+#!/bin/bash
+
+list_machines () {
+	list_general | awk '{
+		if ($7 ~ /^'$1'/) {
+			print $1
+		}
+	}'
+}
+
+list_labs () {
+	list_general | awk '{
+		if (!labs[$7]++) {
+			print $7
+		}
+	}'
+}
+
+list_general () {
+	if [ ! -f machines ]; then
+		wget https://www.cs.colostate.edu/~info/machines
+	fi
+
+#    wget -N https://www.cs.colostate.edu/~info/machines
+
+	awk '{
+		if (/^LAPTOP/) {
+			section++
+		}
+		if (section < 1 && NR > 2 && NF > 0 && $6 ~ /^general/) {
+			print $0
+		}
+	}' machines
+}
+
+
+while getopts "lm:" opt; do
+	case "$opt" in
+	l)
+		list_labs
+		;;
+	m)
+		list_machines $OPTARG
+		;;
+	esac 
+done
