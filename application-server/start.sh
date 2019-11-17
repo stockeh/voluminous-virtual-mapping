@@ -20,9 +20,10 @@ APPLICATION_PROPERTIES="$DIR/conf/application.properties"
 function usage {
 cat << EOF
     
-    script usage: $( basename $0 ) [-o operation]
+    script usage: $( basename $0 ) [-o operation] [-a num servers]
 
     -o operation   : 'execute' or 'compile' and exit
+    -a num servers : integer number of application servers to start - must be > 0
     
 EOF
     exit 1
@@ -32,19 +33,11 @@ function prop {
     grep "${1}" ${APPLICATION_PROPERTIES}|cut -d'=' -f2
 }
 
-function jumpto
-{
-    label=$1
-    cmd=$(sed -n "/$label:/{:a;n;p;ba};" $0 | grep -v ':$')
-    eval "$cmd"
-    exit
-}
-
-NUM_CLIENTS=1
+NUM_SERVERS=1
 OPERATION="compile"
 EXIT=0
 
-while getopts o: option
+while getopts o:a: option
 do
     case "${option}" in
         o) OPERATION=${OPTARG}
@@ -53,6 +46,7 @@ do
             EXIT=1
         fi
         ;;
+        a) NUM_SERVERS=${OPTARG};;
         ?) usage;;
     esac
 done
@@ -80,16 +74,27 @@ gnome-terminal --geometry=170x50 -t "Switch" -e "ssh -t $(prop 'switch.host') cd
 # Launch servers
 
 sleep 3
-server:
 
 SCRIPT="java -cp $JAR_PATH distributed.application.node.Server"
-
 COMMAND='gnome-terminal --geometry=200x40'
-for machine in `cat $MACHINE_LIST`
+NUM_MACHINES=`wc -l < ${MACHINE_LIST}`
+
+if (( NUM_SERVERS > NUM_MACHINES ))
+then
+    NUM_SERVERS=$NUM_MACHINES
+    echo 'resetting num servers to number of machines available:' $NUM_SERVERS
+fi
+
+for i in $(seq 1 $NUM_SERVERS)
 do
-    echo 'logging into '$machine
+    n=$((i % NUM_MACHINES + 1))
+    machine="$(sed -n ${n}'p' < $MACHINE_LIST)"
+
+    title=$machine-$i
     
-    OPTION='--tab -t "'$machine'" -e "ssh -t '$machine' cd '$DIR'; echo '$SCRIPT'; '$SCRIPT'"'
+    echo 'logging into '$machine
+        
+    OPTION='--tab -t "'$title'" -e "ssh -t '$machine' cd '$DIR'; echo '$SCRIPT'; '$SCRIPT'"'
     COMMAND+=" $OPTION"
 done
 
