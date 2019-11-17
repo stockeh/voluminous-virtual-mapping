@@ -43,16 +43,13 @@ server:
 
 SCRIPT="java -cp $JAR_PATH distributed.application.node.Server"
 
-k=1
 COMMAND='gnome-terminal --geometry=200x40'
 for machine in `cat $MACHINE_LIST`
 do
     echo 'logging into '$machine
     
-    OPTION='--tab -t "'$machine'" -e "ssh -t '$machine' cd '$DIR'; sleep '$k'; echo '$SCRIPT'; '$SCRIPT'"'
+    OPTION='--tab -t "'$machine'" -e "ssh -t '$machine' cd '$DIR'; echo '$SCRIPT'; '$SCRIPT'"'
     COMMAND+=" $OPTION"
-    
-    k=`echo $k + 1.50 | bc`
 done
 
 eval $COMMAND &
