@@ -12,9 +12,14 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TimeZone;
+import java.util.concurrent.ThreadLocalRandom;
+
 import distributed.client.metadata.ClientMetadata;
 import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
@@ -105,6 +110,12 @@ public class Client implements Node {
         Files.createDirectory( path, permissions );
         Files.setPosixFilePermissions( path, ownerWritable );
       }
+      Path logPath = Paths.get(logDirectory + File.separator+logFile );
+      LOG.info("Writing log file at " + logPath);
+      Files.deleteIfExists(logPath);
+      Files.createFile( logPath, permissions );
+
+      Files.setPosixFilePermissions( logPath, ownerWritable );
     } catch ( IOException e )
     {
       e.printStackTrace();
@@ -117,10 +128,10 @@ public class Client implements Node {
 
   private void logToDir(String fileName, byte[] content) {
 
-    Set<PosixFilePermission> ownerWritable =
-        PosixFilePermissions.fromString( "rw-rw-rw-" );
-    FileAttribute<?> permissions =
-        PosixFilePermissions.asFileAttribute( ownerWritable );
+//    Set<PosixFilePermission> ownerWritable =
+//        PosixFilePermissions.fromString( "rw-rw-rw-" );
+//    FileAttribute<?> permissions =
+//        PosixFilePermissions.asFileAttribute( ownerWritable );
     
     if ( !fileName.startsWith( File.separator ) )
     {
@@ -130,10 +141,7 @@ public class Client implements Node {
 
     try
     {
-      Files.deleteIfExists( path );
-      Files.createFile( path, permissions );
 
-      Files.setPosixFilePermissions( path, ownerWritable );
       Files.write( path, content, StandardOpenOption.APPEND );
     } catch ( IOException e )
     {
@@ -255,7 +263,7 @@ public class Client implements Node {
         break;
 
       case Protocol.SECTOR_WINDOW_RESPONSE :
-        handelSectorWindowResponse( event );
+        handleSectorWindowResponse( event );
         break;
     }
   }
@@ -266,15 +274,20 @@ public class Client implements Node {
    * 
    * @param event
    */
-  private void handelSectorWindowResponse(Event event) {
+  private void handleSectorWindowResponse(Event event) {
     SectorWindowResponse response = ( SectorWindowResponse ) event;
 
     // TODO: wait for all responses to come in before constructing the
     // window and then write to file?
 
     // LOG.debug( response.numSectors + " -- " );
-    // LOG.info("Logging sector of size " + response.sectorWindow.length +
-    // " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
+//     LOG.info("Logging sector of size " + response.sectorWindow.length +
+//     " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
+    Date date = new Date(response.initialTimestamp);
+    DateFormat formatter = new SimpleDateFormat("HH:mm:ss.SSS");
+    formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+    String dateFormatted = formatter.format(date);
+    LOG.info(String.format("%s-Sector: %s Sector Size:%dx%d", dateFormatted, response.sectorID, response.sectorWindow.length, response.sectorWindow[0].length));
     for ( byte[] row : response.sectorWindow )
     {
       logToDir( logFile, row );

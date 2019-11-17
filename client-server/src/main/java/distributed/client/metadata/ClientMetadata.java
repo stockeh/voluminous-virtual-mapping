@@ -51,7 +51,7 @@ public class ClientMetadata {
   }
 
   public void setNavigation(Sector initialSector, int[] initialPosition) {
-    navigator = new Navigator( initialSector, initialPosition );
+    navigator = new Navigator( initialSector, initialPosition, port );
   }
 
 }

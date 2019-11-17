@@ -52,82 +52,52 @@ public class ServerMetadata {
     return copy;
   }
 
-  public byte[][] getWindow(Set<Sector> sectorIDs, Sector currentSector,
-      int row, int col, int windowSize) {
-    int width = 0;
-    int height = 0;
-    for ( Sector id : sectorIDs )
-    {
-      byte[][] sector = sectors.get( id ).getSector();
-
-      int rowStart = Math.max( 0, row - windowSize );
-      int rowEnd = Math.min( row + windowSize, sector.length );
-      int colStart = Math.max( 0, col - windowSize );
-      int colEnd = Math.min( col + windowSize, sector[ 0 ].length );
-      width += rowEnd - rowStart;
-      height += colEnd - colStart;
-    }
-    byte[][] window = new byte[ width ][ height ];
-
-    for ( Sector id : sectorIDs )
-    {
-      byte[][] sector = sectors.get( id ).getSector();
-      int r = row;
-      int c = col;
-      int xDiff = id.getX() - currentSector.getX();
-      int yDiff = id.getX() - currentSector.getX();
-
-      if ( xDiff < 0 )
-      {
-        r = sector.length + row;
-        if ( Math.abs( xDiff ) > 1 )
-          r += sector.length;
-      } else if ( xDiff > 0 )
-      {
-        r = 0 - row;
-        if ( Math.abs( xDiff ) > 1 )
-          r -= sector.length;
-      }
-
-      if ( yDiff < 0 )
-      {
-        c = sector.length + col;
-        if ( Math.abs( yDiff ) > 1 )
-          c += sector.length;
-      } else if ( yDiff > 0 )
-      {
-        c = 0 - col;
-        if ( Math.abs( yDiff ) > 1 )
-          c -= sector.length;
-
-      }
-      window = getWindow( sector, r, c, windowSize, window );
-    }
-    return window;
-
+  public Set<Sector> getNonMatchingSectors(Set<Sector> requested) {
+    Set<Sector> copy = new HashSet<>( requested );
+    copy.removeAll( getSectorIdentifiers() );
+    return copy;
   }
 
-  private byte[][] getWindow(byte[][] sector, int row, int col, int windowSize,
-      byte[][] window) {
-
-    if ( sector == null )
-    {
-      return window;
-    } else
-    {
-      int rowStart = Math.max( 0, row - windowSize );
-      int rowEnd = Math.min( row + windowSize, sector.length );
-      int colStart = Math.max( 0, col - windowSize );
-      int colEnd = Math.min( col + windowSize, sector[ 0 ].length );
-
-      for ( int i = rowStart; i < rowEnd; i++ )
-      {
-
-        System.arraycopy( sector[ i ], colStart, window[ i - rowStart ], 0,
-            colEnd - colStart );
-      }
-      return window;
+  public byte[][] getWindow(Sector sectorID, Sector currentSector,
+      int row, int col, int windowSize) {
+    int xDiff = sectorID.getX() - currentSector.getX();
+    int yDiff = sectorID.getY() - currentSector.getY();
+    byte[][] sector = sectors.get(sectorID).getSector();
+    if ((xDiff > 0 && currentSector.getX() == 0) || (xDiff < 0 && (currentSector.getX() != Properties.SECTOR_MAP_SIZE - 1 || sectorID.x != 0))) {
+      row = sector.length - 1 + row;
+    } else if ((xDiff != 0)) {
+      row = 0 - row;
     }
+
+    if ((yDiff < 0 && (currentSector.getY() != Properties.SECTOR_MAP_SIZE - 1 || sectorID.y != 0)) || (yDiff > 0 && currentSector.getY() == 0)) {
+      col = sector.length - 1 + col;
+    } else if ((yDiff != 0)) {
+      col = 0 - col;
+
+    }
+
+    int rowStart = Math.max(0, row - windowSize);
+    int rowEnd = Math.min(row + windowSize, sector.length - 1);
+    int colStart = Math.max(0, col - windowSize);
+    int colEnd = Math.min(col + windowSize, sector[0].length - 1);
+    int width = rowEnd - rowStart;
+    int height = colEnd - colStart;
+    if (xDiff == 0) {
+      width++;
+    } else {
+      rowEnd--;
+    }
+    if (yDiff == 0) {
+      height++;
+    }
+
+    byte[][] window = new byte[width][height];
+
+    for (int i = rowStart, j = 0; i <= rowEnd; i++, j++) {
+      System.arraycopy(sector[i], 0, window[j], 0, height);
+    }
+
+    return window;
   }
 
   /**

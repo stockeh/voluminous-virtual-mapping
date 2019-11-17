@@ -35,17 +35,21 @@ public class Navigator implements Runnable {
 
   private double[] velocity;
 
+  public int port;
+
   /**
    * 
    * @param initialSector
    * @param initialPosition
    */
-  public Navigator(Sector initialSector, int[] initialPosition) {
+  public Navigator(Sector initialSector, int[] initialPosition, int port) {
     this.sector = initialSector;
 
     position = new double[] { initialPosition[ 0 ], initialPosition[ 1 ] };
 
     velocity = new double[] { 0, 0 };
+
+    this.port = port;
   }
 
   public int[] getPosition() {
@@ -83,12 +87,12 @@ public class Navigator implements Runnable {
   public void deliver() throws IOException {
     int[] pos = new int[] { ( int ) position[ 0 ], ( int ) position[ 1 ] };
 
-    Set<Sector> sectors = getSectorContributions(pos);
-    
+    Set<Sector> contributions = getSectorContributions( pos );
+    LOG.info(String.format("Position: %d,%d", pos[0], pos[1]));
     primaryServer.getTCPSender()
         .sendData( new SectorWindowRequest( Protocol.SECTOR_WINDOW_REQUEST,
-            Instant.now().toEpochMilli(), sectors, sector,
-            Properties.SECTOR_WINDOW_SIZE, pos ).getBytes() );
+            Instant.now().toEpochMilli(), contributions, sector,
+            Properties.SECTOR_WINDOW_SIZE, pos, contributions.size(), port ).getBytes() );
   }
 
   /**
@@ -226,9 +230,9 @@ public class Navigator implements Runnable {
    */
   public void run() {
 
-    double deltaT = 0.1; // Euler integration time step
+    double deltaT = 0.2; // Euler integration time step
 
-    int[] actions = new int[] { 0, 1 };
+    int[] actions = new int[] { -1, 0 , 1 };
     int x = actions[ ThreadLocalRandom.current().nextInt( actions.length ) ];
     int y = actions[ ThreadLocalRandom.current().nextInt( actions.length ) ];
 

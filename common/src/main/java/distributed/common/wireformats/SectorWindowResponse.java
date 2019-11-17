@@ -2,18 +2,24 @@ package distributed.common.wireformats;
 
 import distributed.common.util.MessageMarshaller;
 import distributed.common.util.MessageUnMarshaller;
+import distributed.common.util.Sector;
 
 import java.io.IOException;
+import java.util.Set;
 
 public class SectorWindowResponse implements Event{
   public int type;
   public byte[][] sectorWindow;
   public int numSectors;
+  public long initialTimestamp;
+  public Sector sectorID;
 
-  public SectorWindowResponse(int type, byte[][] sectorWindow, int numSectors) {
+  public SectorWindowResponse(int type, byte[][] sectorWindow, int numSectors, long initialTimestamp, Sector sectorID) {
     this.type = type;
     this.sectorWindow = sectorWindow;
     this.numSectors = numSectors;
+    this.initialTimestamp = initialTimestamp;
+    this.sectorID = sectorID;
   }
 
   public SectorWindowResponse(byte[] marshalledBytes) throws IOException {

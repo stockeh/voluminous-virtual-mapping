@@ -60,6 +60,9 @@ public class EventFactory implements Factory {
       case Protocol.SECTOR_WINDOW_RESPONSE :
         return new SectorWindowResponse( marshalledBytes );
 
+      case Protocol.SECTOR_WINDOW_REQUEST:
+        return new SectorWindowRequest( marshalledBytes );
+
       default :
         LOG.error( "Event could not be created. "
             + ByteBuffer.wrap( marshalledBytes ).getInt() );

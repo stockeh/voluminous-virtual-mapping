@@ -51,6 +51,7 @@ public class Server implements Node {
 
   private final ServerMetadata metadata;
 
+  private TCPConnection switchConnection;
   // Metrics
   static final MetricRegistry metrics = new MetricRegistry();
 
@@ -149,6 +150,8 @@ public class Server implements Node {
     GenericMessage request = new GenericMessage( Protocol.REGISTER_SERVER_REQUEST, metadata.getIdentifier() );
     connection.getTCPSender().sendData( request.getBytes() );
 
+    switchConnection = connection;
+
     ServerHeartbeatManager serverHeartbeatManager = new ServerHeartbeatManager( connection, metadata );
     Timer timer = new Timer();
     // 15 seconds intervals in milliseconds
@@ -210,19 +213,55 @@ public class Server implements Node {
     }
   }
 
-  private void handleSectorWindowRequest(Event event, TCPConnection connection) {
-    SectorWindowRequest request = ( SectorWindowRequest ) event;
-    Set<Sector> matchingSectors = metadata.getMatchingSectors( request.getSectors() );
-    byte[][] window = metadata.getWindow( matchingSectors, request.currentSector, request.position[ 0 ],
-        request.position[ 1 ], request.windowSize );
-    try
-    {
-      connection.getTCPSender().sendData(
-          new SectorWindowResponse( Protocol.SECTOR_WINDOW_RESPONSE, window, request.getSectors().size() ).getBytes() );
-    } catch ( IOException e )
-    {
-      LOG.error( "Unable to reply to Client for window request. " + e.toString() );
+  private void forwardSectorWindowRequests(Set<Sector> sectors, SectorWindowRequest request, TCPConnection connection) {
+    request.sectors = sectors;
+    request.host = connection.getEndHost();
+    try {
+      switchConnection.getTCPSender().sendData(request.getBytes());
+    } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  private void handleSectorWindowRequest(Event event,
+      TCPConnection connection) {
+    TCPConnection clientConnection;
+    SectorWindowRequest request = (SectorWindowRequest) event;
+    if (request.loadSector) {
+      for (Sector toLoad : request.sectors) {
+        loadFile(toLoad);
+      }
+    }
+
+    if (!request.host.isEmpty()) {
+      try {
+        LOG.info("Creating new connection with client: " + request.host + ":" + request.port);
+        clientConnection = new TCPConnection(this, new Socket(request.host, request.port), EventFactory.getInstance());
+        clientConnection.startReceiver();
+
+      } catch (IOException e) {
+        clientConnection = connection;
+        e.printStackTrace();
+      }
+    } else {
+      clientConnection = connection;
+    }
+
+    Set<Sector> matchingSectors =
+            metadata.getMatchingSectors(request.getSectors());
+    Set<Sector> nonMatchingSectors = metadata.getNonMatchingSectors(request.getSectors());
+    for (Sector sector : matchingSectors) {
+      byte[][] window =
+              metadata.getWindow(sector, request.currentSector,
+                      request.position[0], request.position[1], request.windowSize);
+      try {
+        clientConnection.getTCPSender()
+                .sendData(new SectorWindowResponse(Protocol.SECTOR_WINDOW_RESPONSE,
+                        window, request.getSectors().size(), request.initialTimestamp, sector).getBytes());
+      } catch (IOException e) {
+        LOG.error("Unable to reply to Client for window request. " + e.toString());
+        e.printStackTrace();
+      }
     }
   }
 
@@ -231,6 +270,7 @@ public class Server implements Node {
    * @param sector
    */
   private void loadFile(Sector sector) {
+    LOG.info("Loading Sector: " + sector);
     if ( metadata.containsSector( sector ) )
     {
       LOG.info( "Server already contains sector, not reloading" );
@@ -248,6 +288,8 @@ public class Server implements Node {
     }
   }
 
+
+
   /**
    * 
    * @param event
@@ -260,8 +302,11 @@ public class Server implements Node {
 
     try
     {
-      connection.getTCPSender().sendData( new GenericMessage( Protocol.SERVER_INITIALIZED,
-          metadata.getIdentifier() + Constants.SEPERATOR + request.sector.toString() ).getBytes() );
+      int type = request.type == Protocol.GET_SECTOR_REQUEST ? Protocol.SERVER_INITIALIZED : Protocol.SECTOR_LOADED;
+      connection.getTCPSender()
+          .sendData( new GenericMessage(  type,
+              metadata.getIdentifier() + Constants.SEPERATOR
+                  + request.sector.toString() ).getBytes() );
     } catch ( IOException e )
     {
       LOG.error( "Unable to respond to Switch for load file request. " + e.toString() );

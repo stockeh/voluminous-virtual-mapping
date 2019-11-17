@@ -10,9 +10,9 @@ public class NavigatorTest {
 
   @Test
   public void testGetSectorContributions() {
-
+    int port = 42134;
     Sector initial = new Sector( 0, 0 );
-    Navigator n = new Navigator( initial, new int[] { 5000, 5000 } );
+    Navigator n = new Navigator( initial, new int[] { 5000, 5000 }, port );
     n.setSectorBoundarySize( 10000 );
     n.setSectorMapSize( 4 );
 
@@ -22,7 +22,7 @@ public class NavigatorTest {
     assertEquals( expected, n.getSectorContributions( n.getPosition() ) );
 
     initial = new Sector( 0, 0 );
-    n = new Navigator( initial, new int[] { 0, 5000 } );
+    n = new Navigator( initial, new int[] { 0, 5000 }, port );
     n.setSectorBoundarySize( 10000 );
     n.setSectorMapSize( 4 );
 
@@ -33,7 +33,7 @@ public class NavigatorTest {
     assertEquals( expected, n.getSectorContributions( n.getPosition() ) );
 
     initial = new Sector( 0, 0 );
-    n = new Navigator( initial, new int[] { 9999, 9999 } );
+    n = new Navigator( initial, new int[] { 9999, 9999 }, port );
     n.setSectorBoundarySize( 10000 );
     n.setSectorMapSize( 4 );
 
@@ -46,7 +46,7 @@ public class NavigatorTest {
     assertEquals( expected, n.getSectorContributions( n.getPosition() ) );
     
     initial = new Sector( 0, 0 );
-    n = new Navigator( initial, new int[] { 0, 0 } );
+    n = new Navigator( initial, new int[] { 0, 0 }, port );
     n.setSectorBoundarySize( 10000 );
     n.setSectorMapSize( 4 );
 
