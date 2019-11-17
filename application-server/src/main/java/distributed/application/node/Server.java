@@ -263,6 +263,7 @@ public class Server implements Node {
         e.printStackTrace();
       }
     }
+    forwardSectorWindowRequests(nonMatchingSectors, request, connection);
   }
 
   /**
