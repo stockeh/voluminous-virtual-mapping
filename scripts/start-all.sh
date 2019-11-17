@@ -11,7 +11,7 @@ APPLICATION_PROPERTIES="$DIR/../application-server/conf/application.properties"
 function usage {
 cat << EOF
     
-    script usage: $( basename $0 ) [-o operation] [-c num clients] [-s num sector]
+    script usage: $( basename $0 ) [-o operation] [-a num servers] [-c num clients] [-s num sector]
     -o operation   : 'execute' to skip compilation of app server and client
     -a num servers : integer number of application servers to start - must be > 0
     -c num clients : integer number of clients to start in configuration - must be > s
