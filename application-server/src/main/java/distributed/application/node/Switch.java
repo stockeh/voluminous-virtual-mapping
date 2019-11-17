@@ -198,7 +198,7 @@ public class Switch implements Node {
       if(!metadata.sectorIsAvailable(sector)) {
         GenericSectorMessage message = new GenericSectorMessage(Protocol.LOAD_SECTOR, sector);
         try {
-          metadata.getSectorDestination(sector).getTCPSender().sendData(message.getBytes());
+          metadata.getTCPConnection(metadata.getSectorDestination(sector)).getTCPSender().sendData(message.getBytes());
         } catch (IOException e) {
           e.printStackTrace();
         }

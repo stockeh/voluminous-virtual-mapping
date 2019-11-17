@@ -189,6 +189,10 @@ public class SwitchMetadata {
         new ServerInformation( connection ) );
   }
 
+  public TCPConnection getTCPConnection(String server) {
+    return serverConnections.get(server).getConnection();
+  }
+
   /**
    * 
    * @param message
