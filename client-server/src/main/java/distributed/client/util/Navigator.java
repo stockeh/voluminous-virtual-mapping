@@ -35,17 +35,25 @@ public class Navigator implements Runnable {
 
   private double[] velocity;
 
+  public int port;
+
   /**
    * 
    * @param initialSector
    * @param initialPosition
    */
-  public Navigator(Sector initialSector, int[] initialPosition) {
+  public Navigator(Sector initialSector, int[] initialPosition, int port) {
     this.sector = initialSector;
 
     position = new double[] { initialPosition[ 0 ], initialPosition[ 1 ] };
 
     velocity = new double[] { 0, 0 };
+
+    this.port = port;
+  }
+
+  public int[] getPosition() {
+    return new int[] { ( int ) position[ 0 ], ( int ) position[ 1 ] };
   }
 
   public void setSectorMapSize(int sectorMapSize) {
@@ -58,7 +66,7 @@ public class Navigator implements Runnable {
 
   /**
    * 
-   * @return the sector that was originally specified by the client
+   * @return the sector the client is currently in
    */
   public Sector getInitialSector() {
     return sector;
@@ -80,22 +88,81 @@ public class Navigator implements Runnable {
     int[] pos = new int[] { ( int ) position[ 0 ], ( int ) position[ 1 ] };
 
     Set<Sector> contributions = getSectorContributions( pos );
+    LOG.info(String.format("Position: %d,%d", pos[0], pos[1]));
     primaryServer.getTCPSender()
         .sendData( new SectorWindowRequest( Protocol.SECTOR_WINDOW_REQUEST,
             Instant.now().toEpochMilli(), contributions, sector,
-            Properties.SECTOR_WINDOW_SIZE, pos, contributions.size() ).getBytes() );
+            Properties.SECTOR_WINDOW_SIZE, pos, contributions.size(), port ).getBytes() );
   }
 
   /**
-   * @param pos
-   * 
+   * @param pos of the client at time <t>T</t>
    * 
    */
   public Set<Sector> getSectorContributions(int[] pos) {
     Set<Sector> sectors = new HashSet<>();
-
-
     sectors.add( sector );
+
+    boolean north = false, east = false, south = false, west = false;
+
+    // North
+    if ( position[ 1 ] + Properties.SECTOR_WINDOW_SIZE > sectorBoundarySize
+        - 1 )
+    {
+      north = true;
+      sectors.add( new Sector( sector.x,
+          Math.floorMod( sector.y + 1, sectorMapSize ) ) );
+    }
+
+    // East
+    if ( position[ 0 ] + Properties.SECTOR_WINDOW_SIZE > sectorBoundarySize
+        - 1 )
+    {
+      east = true;
+      sectors.add( new Sector( Math.floorMod( sector.x + 1, sectorMapSize ),
+          sector.y ) );
+    }
+
+    // South
+    if ( position[ 1 ] - Properties.SECTOR_WINDOW_SIZE < 0 )
+    {
+      south = true;
+      sectors.add( new Sector( sector.x,
+          Math.floorMod( sector.y - 1, sectorMapSize ) ) );
+    }
+
+    // West
+    if ( position[ 0 ] - Properties.SECTOR_WINDOW_SIZE < 0 )
+    {
+      west = true;
+      sectors.add( new Sector( Math.floorMod( sector.x - 1, sectorMapSize ),
+          sector.y ) );
+    }
+
+    // Diagonals
+    if ( north && east )
+    {
+      sectors.add( new Sector( Math.floorMod( sector.y + 1, sectorMapSize ),
+          Math.floorMod( sector.y + 1, sectorMapSize ) ) );
+    }
+    if ( south && east )
+    {
+      sectors.add( new Sector( Math.floorMod( sector.y + 1, sectorMapSize ),
+          Math.floorMod( sector.y - 1, sectorMapSize ) ) );
+    }
+    
+    if ( south && west )
+    {
+      sectors.add( new Sector( Math.floorMod( sector.y - 1, sectorMapSize ),
+          Math.floorMod( sector.y - 1, sectorMapSize ) ) );
+    }
+
+    if ( north && west )
+    {
+      sectors.add( new Sector( Math.floorMod( sector.y - 1, sectorMapSize ),
+          Math.floorMod( sector.y + 1, sectorMapSize ) ) );
+    }
+    
     return sectors;
   }
 
@@ -163,9 +230,9 @@ public class Navigator implements Runnable {
    */
   public void run() {
 
-    double deltaT = 0.1; // Euler integration time step
+    double deltaT = 0.2; // Euler integration time step
 
-    int[] actions = new int[] { 0, 1 };
+    int[] actions = new int[] { -1, 0 , 1 };
     int x = actions[ ThreadLocalRandom.current().nextInt( actions.length ) ];
     int y = actions[ ThreadLocalRandom.current().nextInt( actions.length ) ];
 

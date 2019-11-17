@@ -10,6 +10,14 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+  test {
+    resources {
+      srcDir "conf"
+    }
+  }
+}
+
 configurations {
     libs
 }

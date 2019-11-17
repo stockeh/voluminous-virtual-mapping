@@ -110,6 +110,12 @@ public class Client implements Node {
         Files.createDirectory( path, permissions );
         Files.setPosixFilePermissions( path, ownerWritable );
       }
+      Path logPath = Paths.get(logDirectory + File.separator+logFile );
+      LOG.info("Writing log file at " + logPath);
+      Files.deleteIfExists(logPath);
+      Files.createFile( logPath, permissions );
+
+      Files.setPosixFilePermissions( logPath, ownerWritable );
     } catch ( IOException e )
     {
       e.printStackTrace();
@@ -122,10 +128,10 @@ public class Client implements Node {
 
   private void logToDir(String fileName, byte[] content) {
 
-    Set<PosixFilePermission> ownerWritable =
-        PosixFilePermissions.fromString( "rw-rw-rw-" );
-    FileAttribute<?> permissions =
-        PosixFilePermissions.asFileAttribute( ownerWritable );
+//    Set<PosixFilePermission> ownerWritable =
+//        PosixFilePermissions.fromString( "rw-rw-rw-" );
+//    FileAttribute<?> permissions =
+//        PosixFilePermissions.asFileAttribute( ownerWritable );
     
     if ( !fileName.startsWith( File.separator ) )
     {
@@ -135,10 +141,7 @@ public class Client implements Node {
 
     try
     {
-      Files.deleteIfExists( path );
-      Files.createFile( path, permissions );
 
-      Files.setPosixFilePermissions( path, ownerWritable );
       Files.write( path, content, StandardOpenOption.APPEND );
     } catch ( IOException e )
     {

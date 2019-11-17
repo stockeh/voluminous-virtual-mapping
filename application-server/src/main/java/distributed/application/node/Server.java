@@ -164,7 +164,6 @@ public class Server implements Node {
         registerServerResponseHandler( event, connection );
         break;
 
-      case Protocol.SECTOR_LOADED:
       case Protocol.GET_SECTOR_REQUEST :
         getSectorRequestHandler( event, connection );
         break;
@@ -177,7 +176,6 @@ public class Server implements Node {
 
   private void forwardSectorWindowRequests(Set<Sector> sectors, SectorWindowRequest request, TCPConnection connection) {
     request.sectors = sectors;
-    request.port = connection.getSocket().getPort();
     request.host = connection.getEndHost();
     try {
       switchConnection.getTCPSender().sendData(request.getBytes());
@@ -188,6 +186,7 @@ public class Server implements Node {
 
   private void handleSectorWindowRequest(Event event,
       TCPConnection connection) {
+    TCPConnection clientConnection;
     SectorWindowRequest request = ( SectorWindowRequest ) event;
     if(request.loadSector) {
       for(Sector toLoad : request.sectors) {
@@ -195,16 +194,29 @@ public class Server implements Node {
       }
     }
 
+    if(!request.host.isEmpty()) {
+      try {
+        LOG.info("Creating new connection with client: " + request.host+":"+request.port);
+        clientConnection = new TCPConnection(this, new Socket(request.host, request.port), EventFactory.getInstance());
+        clientConnection.startReceiver();
+
+      } catch (IOException e) {
+        clientConnection = connection;
+        e.printStackTrace();
+      }
+    }else {
+      clientConnection = connection;
+    }
+
     Set<Sector> matchingSectors =
         metadata.getMatchingSectors( request.getSectors() );
-
     Set<Sector> nonMatchingSectors = metadata.getNonMatchingSectors( request.getSectors() );
     for(Sector sector : matchingSectors) {
       byte[][] window =
               metadata.getWindow(sector, request.currentSector,
                       request.position[0], request.position[1], request.windowSize);
       try {
-        connection.getTCPSender()
+        clientConnection.getTCPSender()
                 .sendData(new SectorWindowResponse(Protocol.SECTOR_WINDOW_RESPONSE,
                         window, request.getSectors().size(), request.initialTimestamp, sector).getBytes());
       } catch (IOException e) {
@@ -212,7 +224,7 @@ public class Server implements Node {
         e.printStackTrace();
       }
     }
-    forwardSectorWindowRequests(nonMatchingSectors, request, connection);
+    forwardSectorWindowRequests(nonMatchingSectors, request, clientConnection);
   }
 
   /**
@@ -220,6 +232,7 @@ public class Server implements Node {
    * @param sector
    */
   private void loadFile(Sector sector) {
+    LOG.info("Loading Sector: " + sector);
     if ( metadata.containsSector( sector ) )
     {
       LOG.info( "Server already contains sector, not reloading" );

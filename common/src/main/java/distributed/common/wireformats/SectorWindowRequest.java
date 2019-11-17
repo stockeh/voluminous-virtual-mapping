@@ -54,8 +54,8 @@ public class SectorWindowRequest implements Event {
 
   public SectorWindowRequest(int type, long initialTimestamp,
                              Set<Sector> sectors, Sector currentSector, int windowSize,
-                             int[] position, int numRequestedSectors) {
-    this(type, initialTimestamp, sectors, currentSector, windowSize, position, numRequestedSectors, "", 0, false);
+                             int[] position, int numRequestedSectors, int port) {
+    this(type, initialTimestamp, sectors, currentSector, windowSize, position, numRequestedSectors, "", port, false);
   }
 
   /**
