@@ -1,18 +1,27 @@
 package distributed.application.node;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.Timer;
+import java.util.concurrent.TimeUnit;
+import com.codahale.metrics.CsvReporter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
+import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import distributed.application.heartbeat.ServerHeartbeatManager;
 import distributed.application.io.DFS;
 import distributed.application.metadata.ServerMetadata;
 import distributed.application.util.Constants;
 import distributed.application.util.Functions;
+import distributed.application.util.ProcessCpuTicksGauge;
 import distributed.application.util.Properties;
 import distributed.application.wireformats.EventFactory;
 import distributed.common.node.Node;
@@ -34,8 +43,7 @@ import distributed.common.wireformats.SectorWindowResponse;
  */
 public class Server implements Node {
 
-  private static final Logger LOG =
-      Logger.getInstance( Properties.SYSTEM_LOG_LEVEL );
+  private static final Logger LOG = Logger.getInstance( Properties.SYSTEM_LOG_LEVEL );
 
   private static final String EXIT = "exit";
 
@@ -44,6 +52,8 @@ public class Server implements Node {
   private final ServerMetadata metadata;
 
   private TCPConnection switchConnection;
+  // Metrics
+  static final MetricRegistry metrics = new MetricRegistry();
 
 
   /**
@@ -63,29 +73,67 @@ public class Server implements Node {
    * into the server network.
    *
    * @param args
+   * @throws UnknownHostException
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws UnknownHostException {
+    // metrics
+    startMetrics();
+
     try ( ServerSocket serverSocket = new ServerSocket( 0 ) )
     {
-      Server node = new Server( InetAddress.getLocalHost().getHostName(),
-          serverSocket.getLocalPort() );
+      Server node = new Server( InetAddress.getLocalHost().getHostName(), serverSocket.getLocalPort() );
 
-      LOG.info( "Server node starting up at: " + new Date() + ", on "
-          + node.metadata.getIdentifier() );
+      LOG.info( "Server node starting up at: " + new Date() + ", on " + node.metadata.getIdentifier() );
 
-      ( new Thread(
-          new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
-          "Server Thread" ) ).start();
+      ( new Thread( new TCPServerThread( node, serverSocket, EventFactory.getInstance() ), "Server Thread" ) ).start();
 
       node.discoverSwitchConnection();
 
       node.interact();
     } catch ( IOException e )
     {
-      LOG.error(
-          "Unable to successfully start server. Exiting. " + e.toString() );
+      LOG.error( "Unable to successfully start server. Exiting. " + e.toString() );
       System.exit( 1 );
     }
+  }
+  
+  private static void startMetrics() throws UnknownHostException {
+    // metrics
+    // metrics.register( "gc", new GarbageCollectorMetricSet() );
+    metrics.register( "threads", new CachedThreadStatesGaugeSet( 10, TimeUnit.SECONDS ) );
+    metrics.register( "memory", new MemoryUsageGaugeSet() );
+
+    try
+    {
+      metrics.register( "jvm.process.cpu.seconds", new ProcessCpuTicksGauge() );
+    } catch ( ClassNotFoundException | IOException e )
+    {
+      LOG.error( "Unable to load ProcessCpuTicksGauge class for CPU metrics. " + e.toString() );
+      e.printStackTrace();
+    }
+
+    // ConsoleReporter reporter = ConsoleReporter.forRegistry(metrics)
+    // .convertRatesTo(TimeUnit.SECONDS)
+    // .convertDurationsTo(TimeUnit.MILLISECONDS)
+    // .build();
+    // reporter.start(1, TimeUnit.SECONDS);
+
+    File dir = new File(
+        System.getProperty( "user.home" ) + "/vvm/servers/" + InetAddress.getLocalHost().getHostName() + "/");
+
+    if( dir.exists()) {
+      distributed.common.util.Functions.deleteDirectory(dir.toPath());
+    }
+    if ( !dir.exists() && !dir.mkdirs() )
+    {
+      LOG.error( "Cannot create directory " + dir.getAbsoluteFile() );
+    }
+
+    LOG.info( "Created dir " + dir );
+
+    CsvReporter reporter = CsvReporter.forRegistry( metrics ).formatFor( Locale.US ).convertRatesTo( TimeUnit.SECONDS )
+        .convertDurationsTo( TimeUnit.MILLISECONDS ).build( dir );
+    reporter.start( 1, TimeUnit.SECONDS );
   }
 
   /**
@@ -95,20 +143,16 @@ public class Server implements Node {
    *         the network
    */
   private void discoverSwitchConnection() throws IOException {
-    Socket socketToSwitch =
-        new Socket( Properties.SWITCH_HOST, Properties.SWITCH_PORT );
-    TCPConnection connection =
-        new TCPConnection( this, socketToSwitch, EventFactory.getInstance() );
+    Socket socketToSwitch = new Socket( Properties.SWITCH_HOST, Properties.SWITCH_PORT );
+    TCPConnection connection = new TCPConnection( this, socketToSwitch, EventFactory.getInstance() );
     connection.startReceiver();
 
-    GenericMessage request = new GenericMessage(
-        Protocol.REGISTER_SERVER_REQUEST, metadata.getIdentifier() );
+    GenericMessage request = new GenericMessage( Protocol.REGISTER_SERVER_REQUEST, metadata.getIdentifier() );
     connection.getTCPSender().sendData( request.getBytes() );
 
     switchConnection = connection;
 
-    ServerHeartbeatManager serverHeartbeatManager =
-        new ServerHeartbeatManager( connection, metadata );
+    ServerHeartbeatManager serverHeartbeatManager = new ServerHeartbeatManager( connection, metadata );
     Timer timer = new Timer();
     // 15 seconds intervals in milliseconds
     timer.schedule( serverHeartbeatManager, 1000, 15000 );
@@ -120,9 +164,7 @@ public class Server implements Node {
    * 
    */
   private void interact() {
-    System.out.println(
-        "\nInput a command to interact with processes. Input 'help' for a "
-            + "list of commands.\n" );
+    System.out.println( "\nInput a command to interact with processes. Input 'help' for a " + "list of commands.\n" );
     boolean running = true;
     while ( running )
     {
@@ -141,14 +183,11 @@ public class Server implements Node {
           break;
 
         default :
-          LOG.error(
-              "Unable to process. Please enter a valid command! Input 'help'"
-                  + " for options." );
+          LOG.error( "Unable to process. Please enter a valid command! Input 'help'" + " for options." );
           break;
       }
     }
-    LOG.info(
-        metadata.getIdentifier() + " has unregistered and is terminating." );
+    LOG.info( metadata.getIdentifier() + " has unregistered and is terminating." );
     System.exit( 0 );
   }
 
@@ -187,16 +226,16 @@ public class Server implements Node {
   private void handleSectorWindowRequest(Event event,
       TCPConnection connection) {
     TCPConnection clientConnection;
-    SectorWindowRequest request = ( SectorWindowRequest ) event;
-    if(request.loadSector) {
-      for(Sector toLoad : request.sectors) {
+    SectorWindowRequest request = (SectorWindowRequest) event;
+    if (request.loadSector) {
+      for (Sector toLoad : request.sectors) {
         loadFile(toLoad);
       }
     }
 
-    if(!request.host.isEmpty()) {
+    if (!request.host.isEmpty()) {
       try {
-        LOG.info("Creating new connection with client: " + request.host+":"+request.port);
+        LOG.info("Creating new connection with client: " + request.host + ":" + request.port);
         clientConnection = new TCPConnection(this, new Socket(request.host, request.port), EventFactory.getInstance());
         clientConnection.startReceiver();
 
@@ -204,14 +243,14 @@ public class Server implements Node {
         clientConnection = connection;
         e.printStackTrace();
       }
-    }else {
+    } else {
       clientConnection = connection;
     }
 
     Set<Sector> matchingSectors =
-        metadata.getMatchingSectors( request.getSectors() );
-    Set<Sector> nonMatchingSectors = metadata.getNonMatchingSectors( request.getSectors() );
-    for(Sector sector : matchingSectors) {
+            metadata.getMatchingSectors(request.getSectors());
+    Set<Sector> nonMatchingSectors = metadata.getNonMatchingSectors(request.getSectors());
+    for (Sector sector : matchingSectors) {
       byte[][] window =
               metadata.getWindow(sector, request.currentSector,
                       request.position[0], request.position[1], request.windowSize);
@@ -224,7 +263,6 @@ public class Server implements Node {
         e.printStackTrace();
       }
     }
-    forwardSectorWindowRequests(nonMatchingSectors, request, clientConnection);
   }
 
   /**
@@ -271,8 +309,7 @@ public class Server implements Node {
                   + request.sector.toString() ).getBytes() );
     } catch ( IOException e )
     {
-      LOG.error( "Unable to respond to Switch for load file request. "
-          + e.toString() );
+      LOG.error( "Unable to respond to Switch for load file request. " + e.toString() );
       e.printStackTrace();
     }
   }
@@ -283,16 +320,13 @@ public class Server implements Node {
    * @param event
    * @param connection
    */
-  private void registerServerResponseHandler(Event event,
-      TCPConnection connection) {
-    if ( Boolean.parseBoolean(
-        ( ( GenericMessage ) event ).getMessage() ) == Constants.SUCCESS )
+  private void registerServerResponseHandler(Event event, TCPConnection connection) {
+    if ( Boolean.parseBoolean( ( ( GenericMessage ) event ).getMessage() ) == Constants.SUCCESS )
     {
       LOG.info( "The server successfuly connected with the switch!" );
     } else
     {
-      LOG.error(
-          "The server was NOT able to connect with the switch successfully. Exiting!" );
+      LOG.error( "The server was NOT able to connect with the switch successfully. Exiting!" );
       connection.close();
       System.exit( 1 );
     }
@@ -305,8 +339,7 @@ public class Server implements Node {
   private void displayHelp() {
     StringBuilder sb = new StringBuilder();
 
-    sb.append( "\n\t" ).append( EXIT )
-        .append( "\t\t: gracefully leave the network.\n" );
+    sb.append( "\n\t" ).append( EXIT ).append( "\t\t: gracefully leave the network.\n" );
 
     System.out.println( sb.toString() );
   }
