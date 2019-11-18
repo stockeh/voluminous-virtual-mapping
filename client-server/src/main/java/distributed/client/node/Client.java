@@ -19,7 +19,6 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ThreadLocalRandom;
-
 import distributed.client.metadata.ClientMetadata;
 import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
@@ -110,9 +109,9 @@ public class Client implements Node {
         Files.createDirectory( path, permissions );
         Files.setPosixFilePermissions( path, ownerWritable );
       }
-      Path logPath = Paths.get(logDirectory + File.separator+logFile );
-      LOG.info("Writing log file at " + logPath);
-      Files.deleteIfExists(logPath);
+      Path logPath = Paths.get( logDirectory + File.separator + logFile );
+      LOG.info( "Writing log file at " + logPath );
+      Files.deleteIfExists( logPath );
       Files.createFile( logPath, permissions );
 
       Files.setPosixFilePermissions( logPath, ownerWritable );
@@ -128,11 +127,6 @@ public class Client implements Node {
 
   private void logToDir(String fileName, byte[] content) {
 
-//    Set<PosixFilePermission> ownerWritable =
-//        PosixFilePermissions.fromString( "rw-rw-rw-" );
-//    FileAttribute<?> permissions =
-//        PosixFilePermissions.asFileAttribute( ownerWritable );
-    
     if ( !fileName.startsWith( File.separator ) )
     {
       fileName = File.separator + fileName;
@@ -141,10 +135,10 @@ public class Client implements Node {
 
     try
     {
-
       Files.write( path, content, StandardOpenOption.APPEND );
     } catch ( IOException e )
     {
+      LOG.error( "Unable to write to \tmp logs. " + e.toString() );
       e.printStackTrace();
     }
   }
@@ -281,13 +275,17 @@ public class Client implements Node {
     // window and then write to file?
 
     // LOG.debug( response.numSectors + " -- " );
-//     LOG.info("Logging sector of size " + response.sectorWindow.length +
-//     " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
-    Date date = new Date(response.initialTimestamp);
-    DateFormat formatter = new SimpleDateFormat("HH:mm:ss.SSS");
-    formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-    String dateFormatted = formatter.format(date);
-    LOG.info(String.format("%s-Sector: %s Sector Size:%dx%d", dateFormatted, response.sectorID, response.sectorWindow.length, response.sectorWindow[0].length));
+    // LOG.info("Logging sector of size " + response.sectorWindow.length +
+    // " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
+    Date date = new Date( response.initialTimestamp );
+    DateFormat formatter = new SimpleDateFormat( "HH:mm:ss.SSS" );
+    formatter.setTimeZone( TimeZone.getTimeZone( "UTC" ) );
+
+    String dateFormatted = formatter.format( date );
+
+    LOG.info( String.format( "%s-Sector: %s Sector Size:%dx%d", dateFormatted,
+        response.sectorID, response.sectorWindow.length,
+        response.sectorWindow[ 0 ].length ) );
     for ( byte[] row : response.sectorWindow )
     {
       logToDir( logFile, row );

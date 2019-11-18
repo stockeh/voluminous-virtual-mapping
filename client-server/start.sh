@@ -14,8 +14,8 @@ cat << EOF
 
     -o operation   : 'execute' or 'compile' and exit
     -n num clients : integer number of clients to start in configuration
-    -s sector      : x,y coordinate of sector w/o spaces
-    -p position    : x,y coordinate of position w/o spaces
+    -s sector      : r,c coordinate of sector w/o spaces
+    -p position    : r,c coordinate of position w/o spaces
     
 EOF
     exit 1
