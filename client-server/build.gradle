@@ -23,6 +23,11 @@ configurations {
 }
 
 dependencies {
+    libs (
+            [group: 'io.dropwizard.metrics', name: 'metrics-core', version: '4.1.1'],
+            [group: 'io.dropwizard.metrics', name: 'metrics-jvm', version: '4.1.1']
+    )
+
     testImplementation 'junit:junit:4.12'
     compile project(':common')
     libs files('../common/build/libs/common-1.0-SNAPSHOT.jar')
