@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import distributed.application.util.Properties;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
+import sun.rmi.runtime.Log;
 
 /**
  * Class to maintain the information needed for a given server. This
@@ -60,38 +61,46 @@ public class ServerMetadata {
 
   public byte[][] getWindow(Sector sectorID, Sector currentSector,
       int row, int col, int windowSize) {
-    int xDiff = sectorID.getX() - currentSector.getX();
-    int yDiff = sectorID.getY() - currentSector.getY();
+    int r = row;
+    int c = col;
+    int rowDiff = sectorID.getX() - currentSector.getX(); //
+    int colDiff = sectorID.getY() - currentSector.getY(); //2-0
     byte[][] sector = sectors.get(sectorID).getSector();
-    if ((xDiff > 0 && currentSector.getX() == 0) || (xDiff < 0 && (currentSector.getX() != Properties.SECTOR_MAP_SIZE - 1 || sectorID.x != 0))) {
-      row = sector.length - 1 + row;
-    } else if ((xDiff != 0)) {
-      row = 0 - row;
+    if(rowDiff > 0) {
+      row = 0 - (Properties.SECTOR_BOUNDARY_SIZE-row);
+    }else if(rowDiff < 0){
+      row = Properties.SECTOR_BOUNDARY_SIZE+row;
     }
 
-    if ((yDiff < 0 && (currentSector.getY() != Properties.SECTOR_MAP_SIZE - 1 || sectorID.y != 0)) || (yDiff > 0 && currentSector.getY() == 0)) {
-      col = sector.length - 1 + col;
-    } else if ((yDiff != 0)) {
-      col = 0 - col;
+    if(colDiff > 0) {
+        col = 0 - (Properties.SECTOR_BOUNDARY_SIZE-col);
+    }else if(colDiff < 0) {
+      col = Properties.SECTOR_BOUNDARY_SIZE+col;
 
     }
+
 
     int rowStart = Math.max(0, row - windowSize);
-    int rowEnd = Math.min(row + windowSize, sector.length - 1);
+    int rowEnd = Math.min(row + windowSize, Properties.SECTOR_BOUNDARY_SIZE - 1);
     int colStart = Math.max(0, col - windowSize);
-    int colEnd = Math.min(col + windowSize, sector[0].length - 1);
+    int colEnd = Math.min(col + windowSize, Properties.SECTOR_BOUNDARY_SIZE - 1);
     int width = rowEnd - rowStart;
     int height = colEnd - colStart;
-    if (xDiff == 0) {
+    if (rowDiff == 0) {
       width++;
     } else {
       rowEnd--;
     }
-    if (yDiff == 0) {
+    if (colDiff == 0) {
       height++;
     }
-
-    byte[][] window = new byte[width][height];
+    byte[][] window;
+    try {
+      window = new byte[width][height];
+    }catch(NegativeArraySizeException nase) {
+      LOG.info("r,c" + r + "," + c + " Row: " + row + " Col: " + col + " current: " + currentSector + " otherSector: " + sectorID);
+      throw nase;
+    }
 
     for (int i = rowStart, j = 0; i <= rowEnd; i++, j++) {
       System.arraycopy(sector[i], 0, window[j], 0, height);
