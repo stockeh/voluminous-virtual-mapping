@@ -325,7 +325,7 @@ public class Server implements Node {
       try {
         clientConnection.getTCPSender()
                 .sendData(new SectorWindowResponse(Protocol.SECTOR_WINDOW_RESPONSE,
-                        window, request.getSectors().size(), request.initialTimestamp, sector).getBytes());
+                        window, request.getSectors().size(), request.initialTimestamp, sector, request.position).getBytes());
       } catch (IOException e) {
         LOG.error("Unable to reply to Client for window request. " + e.toString());
         e.printStackTrace();

@@ -54,10 +54,12 @@ public class Client implements Node {
 
   private final String logDirectory;
   private final String logFile;
-  
+
   // metrics
   private final MetricRegistry metrics = new MetricRegistry();
-  private final Timer timer = metrics.timer(MetricRegistry.name(Client.class, "sector-req"));
+  private final Timer timer =
+      metrics.timer( MetricRegistry.name( Client.class, "sector-req" ) );
+
 
   private static final Comparator<SectorWindowResponse> rowComparator = Comparator.comparingInt(swr->swr.sectorID.x);
   private static final Comparator<SectorWindowResponse> colComparator = Comparator.comparingInt(swr->swr.sectorID.y);
@@ -84,7 +86,8 @@ public class Client implements Node {
       initialSector.update( Integer.parseInt( s[ 0 ] ),
           Integer.parseInt( s[ 1 ] ) );
     }
-    int[] initialPosition = new int[] { 0, 0 };
+    int[] initialPosition = new int[] { Properties.SECTOR_WINDOW_SIZE,
+        Properties.SECTOR_WINDOW_SIZE };
     if ( args.length > 1 )
     {
       String[] s = args[ 1 ].split( "," );
@@ -100,7 +103,7 @@ public class Client implements Node {
         + temp.substring( temp.lastIndexOf( File.separator ) + 1 );
     logFile = metadata.getConnection() + ".log";
   }
-  
+
   private void startMetrics() throws UnknownHostException {
     // ConsoleReporter reporter = ConsoleReporter.forRegistry(metrics)
     // .convertRatesTo(TimeUnit.SECONDS)
@@ -108,11 +111,12 @@ public class Client implements Node {
     // .build();
     // reporter.start(1, TimeUnit.SECONDS);
 
-    File dir = new File(
-        System.getProperty( "user.home" ) + "/vvm/clients/" + metadata.getConnection() + "/");
+    File dir = new File( System.getProperty( "user.home" ) + "/vvm/clients/"
+        + metadata.getConnection() + "/" );
 
-    if( dir.exists()) {
-      distributed.common.util.Functions.deleteDirectory(dir.toPath());
+    if ( dir.exists() )
+    {
+      distributed.common.util.Functions.deleteDirectory( dir.toPath() );
     }
     if ( !dir.exists() && !dir.mkdirs() )
     {
@@ -121,7 +125,8 @@ public class Client implements Node {
 
     LOG.info( "Created dir " + dir );
 
-    CsvReporter reporter = CsvReporter.forRegistry( metrics ).formatFor( Locale.US ).convertRatesTo( TimeUnit.SECONDS )
+    CsvReporter reporter = CsvReporter.forRegistry( metrics )
+        .formatFor( Locale.US ).convertRatesTo( TimeUnit.SECONDS )
         .convertDurationsTo( TimeUnit.MILLISECONDS ).build( dir );
     reporter.start( 1, TimeUnit.SECONDS );
   }
@@ -142,9 +147,9 @@ public class Client implements Node {
         Files.createDirectory( path, permissions );
         Files.setPosixFilePermissions( path, ownerWritable );
       }
-      Path logPath = Paths.get(logDirectory + File.separator+logFile );
-      LOG.info("Writing log file at " + logPath);
-      Files.deleteIfExists(logPath);
+      Path logPath = Paths.get( logDirectory + File.separator + logFile );
+      LOG.info( "Writing log file at " + logPath );
+      Files.deleteIfExists( logPath );
       Files.createFile( logPath, permissions );
 
       Files.setPosixFilePermissions( logPath, ownerWritable );
@@ -160,11 +165,6 @@ public class Client implements Node {
 
   private void logToDir(String fileName, byte[] content) {
 
-//    Set<PosixFilePermission> ownerWritable =
-//        PosixFilePermissions.fromString( "rw-rw-rw-" );
-//    FileAttribute<?> permissions =
-//        PosixFilePermissions.asFileAttribute( ownerWritable );
-    
     if ( !fileName.startsWith( File.separator ) )
     {
       fileName = File.separator + fileName;
@@ -173,10 +173,10 @@ public class Client implements Node {
 
     try
     {
-
       Files.write( path, content, StandardOpenOption.APPEND );
     } catch ( IOException e )
     {
+      LOG.error( "Unable to write to \tmp logs. " + e.toString() );
       e.printStackTrace();
     }
   }

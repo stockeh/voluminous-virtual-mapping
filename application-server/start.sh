@@ -20,11 +20,12 @@ APPLICATION_PROPERTIES="$DIR/conf/application.properties"
 function usage {
 cat << EOF
     
-    script usage: $( basename $0 ) [-o operation] [-a num servers]
+    script usage: $( basename $0 ) [-o operation] [-a num servers] [-h help]
 
     -o operation   : 'execute' or 'compile' and exit
     -a num servers : integer number of application servers to start - must be > 0
-    
+    -h help        : print the usage message
+        
 EOF
     exit 1
 }
@@ -37,7 +38,7 @@ NUM_SERVERS=1
 OPERATION="compile"
 EXIT=0
 
-while getopts o:a: option
+while getopts o:a:h: option
 do
     case "${option}" in
         o) OPERATION=${OPTARG}
@@ -47,6 +48,7 @@ do
         fi
         ;;
         a) NUM_SERVERS=${OPTARG};;
+        h) usage;;
         ?) usage;;
     esac
 done

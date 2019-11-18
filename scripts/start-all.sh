@@ -11,12 +11,13 @@ APPLICATION_PROPERTIES="$DIR/../application-server/conf/application.properties"
 function usage {
 cat << EOF
     
-    script usage: $( basename $0 ) [-o operation] [-a num servers] [-c num clients] [-s num sector]
+    script usage: $( basename $0 ) [-o operation] [-a num servers] [-c num clients] [-s num sector] [-h help]
     -o operation   : 'execute' to skip compilation of app server and client
     -a num servers : integer number of application servers to start - must be > 0
     -c num clients : integer number of clients to start in configuration - must be > s
     -s num sector  : integer number of sectors to start clients in - must be < c
-
+    -h help        : print the usage message
+    
 EOF
     exit 1
 }
@@ -35,7 +36,7 @@ NUM_SECTORS=1
 SECTOR_BOUNDARY_SIZE=$(prop "sector.boundary.size")
 SECTOR_MAP_SIZE=$(prop "sector.map.size")
 
-while getopts o:a:c:s: option
+while getopts o:a:c:s:h: option
 do
     case "${option}" in
         o)
@@ -47,6 +48,7 @@ do
         a) NUM_SERVERS=${OPTARG};;
         c) NUM_CLIENTS=${OPTARG};;
         s) NUM_SECTORS=${OPTARG};;
+        h) usage;;
         ?) usage;;
     esac
 done
