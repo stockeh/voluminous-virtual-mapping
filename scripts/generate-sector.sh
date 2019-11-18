@@ -6,8 +6,9 @@ APPLICATION_PROPERTIES="$PWD/../application-server/conf/application.properties"
 function usage {
 cat << EOF
     
-    script usage: $( basename $0 ) [-o operation]
+    script usage: $( basename $0 ) [-o operation] [-h help]
     -o operation   : 'random' / 'grid' to specify how the map is formatted.
+    -h help        : print the usage message
     
 EOF
     exit 1
@@ -37,10 +38,11 @@ echo 'tmp: ' $TMP_FILE ', dir: ' $DIRNAME ', file: ' $FILENAME
 
 OPERATION="random"
 
-while getopts o: option
+while getopts o:h: option
 do
     case "${option}" in
         o) OPERATION=${OPTARG};;
+        h) usage;;
         ?) usage;;
     esac
 done

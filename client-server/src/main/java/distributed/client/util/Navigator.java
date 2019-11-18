@@ -46,10 +46,12 @@ public class Navigator implements Runnable {
     this.sector = initialSector;
 
     position = new double[] { initialPosition[ 0 ], initialPosition[ 1 ] };
-
     velocity = new double[] { 0, 0 };
 
     this.port = port;
+
+    checkBoundaries( 0 );
+    checkBoundaries( 1 );
   }
 
   public int[] getPosition() {
@@ -88,11 +90,12 @@ public class Navigator implements Runnable {
     int[] pos = new int[] { ( int ) position[ 0 ], ( int ) position[ 1 ] };
 
     Set<Sector> contributions = getSectorContributions( pos );
-    LOG.info(String.format("Position: %d,%d", pos[0], pos[1]));
+    LOG.info( String.format( "Position: %d,%d", pos[ 0 ], pos[ 1 ] ) );
     primaryServer.getTCPSender()
         .sendData( new SectorWindowRequest( Protocol.SECTOR_WINDOW_REQUEST,
             Instant.now().toEpochMilli(), contributions, sector,
-            Properties.SECTOR_WINDOW_SIZE, pos, contributions.size(), port ).getBytes() );
+            Properties.SECTOR_WINDOW_SIZE, pos, contributions.size(), port )
+                .getBytes() );
   }
 
   /**
@@ -106,63 +109,55 @@ public class Navigator implements Runnable {
     boolean north = false, east = false, south = false, west = false;
 
     // North
-    if ( position[ 1 ] + Properties.SECTOR_WINDOW_SIZE > sectorBoundarySize
-        - 1 )
+    if ( sector.getX() != 0
+        && position[ 0 ] - Properties.SECTOR_WINDOW_SIZE < 0 )
     {
       north = true;
-      sectors.add( new Sector( sector.x,
-          Math.floorMod( sector.y + 1, sectorMapSize ) ) );
+      sectors.add( new Sector( sector.x - 1, sector.y ) );
     }
 
     // East
-    if ( position[ 0 ] + Properties.SECTOR_WINDOW_SIZE > sectorBoundarySize
-        - 1 )
+    if ( sector.getY() != sectorMapSize - 1 && position[ 1 ]
+        + Properties.SECTOR_WINDOW_SIZE > sectorBoundarySize - 1 )
     {
       east = true;
-      sectors.add( new Sector( Math.floorMod( sector.x + 1, sectorMapSize ),
-          sector.y ) );
+      sectors.add( new Sector( sector.x, sector.y + 1 ) );
     }
 
     // South
-    if ( position[ 1 ] - Properties.SECTOR_WINDOW_SIZE < 0 )
+    if ( sector.getX() != sectorMapSize - 1 && position[ 0 ]
+        + Properties.SECTOR_WINDOW_SIZE > sectorBoundarySize - 1 )
     {
       south = true;
-      sectors.add( new Sector( sector.x,
-          Math.floorMod( sector.y - 1, sectorMapSize ) ) );
+      sectors.add( new Sector( sector.x + 1, sector.y ) );
     }
 
     // West
-    if ( position[ 0 ] - Properties.SECTOR_WINDOW_SIZE < 0 )
+    if ( sector.getY() != 0
+        && position[ 1 ] - Properties.SECTOR_WINDOW_SIZE < 0 )
     {
       west = true;
-      sectors.add( new Sector( Math.floorMod( sector.x - 1, sectorMapSize ),
-          sector.y ) );
+      sectors.add( new Sector( sector.x, sector.y - 1 ) );
     }
 
     // Diagonals
     if ( north && east )
     {
-      sectors.add( new Sector( Math.floorMod( sector.y + 1, sectorMapSize ),
-          Math.floorMod( sector.y + 1, sectorMapSize ) ) );
+      sectors.add( new Sector( sector.x - 1, sector.y + 1 ) );
     }
     if ( south && east )
     {
-      sectors.add( new Sector( Math.floorMod( sector.y + 1, sectorMapSize ),
-          Math.floorMod( sector.y - 1, sectorMapSize ) ) );
+      sectors.add( new Sector( sector.x + 1, sector.y + 1 ) );
     }
-    
     if ( south && west )
     {
-      sectors.add( new Sector( Math.floorMod( sector.y - 1, sectorMapSize ),
-          Math.floorMod( sector.y - 1, sectorMapSize ) ) );
+      sectors.add( new Sector( sector.x + 1, sector.y - 1 ) );
     }
-
     if ( north && west )
     {
-      sectors.add( new Sector( Math.floorMod( sector.y - 1, sectorMapSize ),
-          Math.floorMod( sector.y + 1, sectorMapSize ) ) );
+      sectors.add( new Sector( sector.x - 1, sector.y - 1 ) );
     }
-    
+
     return sectors;
   }
 
@@ -185,34 +180,32 @@ public class Navigator implements Runnable {
 
     int temp = sectorLocation;
 
-    if ( position[ cord ] < 0 )
+    if ( sectorLocation == 0 || sectorLocation == sectorMapSize - 1 )
     {
-      double n = sectorBoundarySize + position[ cord ];
-      position[ cord ] =
-          n > sectorBoundarySize - 1 ? sectorBoundarySize - 1 : n;
-
-      if ( sectorLocation == 0 )
+      if ( sectorLocation == 0
+          && position[ cord ] < Properties.SECTOR_WINDOW_SIZE )
       {
-        temp = sectorMapSize - 1;
-      } else
+        position[ cord ] = Properties.SECTOR_WINDOW_SIZE;
+        velocity[ cord ] = -velocity[ cord ];
+      } else if ( sectorLocation == sectorMapSize - 1
+          && position[ cord ] > sectorBoundarySize
+              + Properties.SECTOR_WINDOW_SIZE - 1 )
       {
-        temp -= 1;
+        position[ cord ] = sectorBoundarySize - Properties.SECTOR_WINDOW_SIZE;
+        velocity[ cord ] = -velocity[ cord ];
       }
-
-    } else if ( position[ cord ] > sectorBoundarySize - 1 )
+    } else
     {
-      double n = position[ cord ] - sectorBoundarySize - 1;
-      position[ cord ] = n < 0 ? 0 : n;
-
-      if ( sectorLocation == sectorMapSize - 1 )
+      if ( position[ cord ] < 0 )
       {
-        temp = 0;
-      } else
+        position[ cord ] = sectorBoundarySize + position[ cord ] - 1;
+        --temp;
+      } else if ( position[ cord ] > sectorBoundarySize - 1 )
       {
-        temp += 1;
+        position[ cord ] -= sectorBoundarySize;
+        ++temp;
       }
     }
-
     if ( cord == 0 )
     {
       sector.setX( temp );
@@ -232,9 +225,9 @@ public class Navigator implements Runnable {
 
     double deltaT = 0.2; // Euler integration time step
 
-    int[] actions = new int[] { -1, 0 , 1 };
-    int x = actions[ ThreadLocalRandom.current().nextInt( actions.length ) ];
-    int y = actions[ ThreadLocalRandom.current().nextInt( actions.length ) ];
+    int[] actions = new int[] { -1, 0, 1 };
+    int r = actions[ ThreadLocalRandom.current().nextInt( actions.length ) ];
+    int c = actions[ ThreadLocalRandom.current().nextInt( actions.length ) ];
 
     int count = 0;
     try
@@ -245,8 +238,8 @@ public class Navigator implements Runnable {
         if ( ++count > 25 )
         {
           count = 0;
-          x = actions[ ThreadLocalRandom.current().nextInt( actions.length ) ];
-          y = actions[ ThreadLocalRandom.current().nextInt( actions.length ) ];
+          r = actions[ ThreadLocalRandom.current().nextInt( actions.length ) ];
+          c = actions[ ThreadLocalRandom.current().nextInt( actions.length ) ];
         }
 
         // Update position
@@ -254,8 +247,8 @@ public class Navigator implements Runnable {
         position[ 1 ] += deltaT * velocity[ 1 ];
 
         // Update velocity. Includes friction.
-        velocity[ 0 ] += deltaT * ( 2 * x - 0.2 * velocity[ 0 ] );
-        velocity[ 1 ] += deltaT * ( 2 * y - 0.2 * velocity[ 1 ] );
+        velocity[ 0 ] += deltaT * ( 2 * r - 0.2 * velocity[ 0 ] );
+        velocity[ 1 ] += deltaT * ( 2 * c - 0.2 * velocity[ 1 ] );
 
         checkBoundaries( 0 );
         checkBoundaries( 1 );

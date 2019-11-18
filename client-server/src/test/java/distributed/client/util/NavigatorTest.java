@@ -41,7 +41,6 @@ public class NavigatorTest {
 
     expected = new HashSet<>();
     expected.add( initial );
-    expected.add( new Sector( 3, 0 ) );
 
     System.out.println( "position: " + Arrays.toString( n.getPosition() )
         + ", sector: " + initial );
@@ -82,16 +81,16 @@ public class NavigatorTest {
 
     assertEquals( expected, actual );
 
-    initial = new Sector( 0, 0 );
+    initial = new Sector( 2, 2 );
     n = new Navigator( initial, new int[] { 0, 0 }, port );
     n.setSectorBoundarySize( 10000 );
     n.setSectorMapSize( 4 );
 
     expected = new HashSet<>();
     expected.add( initial );
-    expected.add( new Sector( 3, 0 ) );
-    expected.add( new Sector( 0, 3 ) );
-    expected.add( new Sector( 3, 3 ) );
+    expected.add( new Sector( 3, 2 ) );
+    expected.add( new Sector( 2, 3 ) );
+    expected.add( new Sector( 2, 2 ) );
 
     System.out.println( "position: " + Arrays.toString( n.getPosition() )
         + ", sector: " + initial );

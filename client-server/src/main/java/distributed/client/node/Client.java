@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,11 +15,16 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+import com.codahale.metrics.CsvReporter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import distributed.client.metadata.ClientMetadata;
 import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
@@ -53,6 +59,12 @@ public class Client implements Node {
   private final String logDirectory;
   private final String logFile;
 
+  // metrics
+  private final MetricRegistry metrics = new MetricRegistry();
+  private final Timer timer =
+      metrics.timer( MetricRegistry.name( Client.class, "sector-req" ) );
+
+
   /**
    * Default constructor - creates a new server tying the
    * <b>host:port</b> combination for the node as the identifier for
@@ -75,7 +87,8 @@ public class Client implements Node {
       initialSector.update( Integer.parseInt( s[ 0 ] ),
           Integer.parseInt( s[ 1 ] ) );
     }
-    int[] initialPosition = new int[] { 0, 0 };
+    int[] initialPosition = new int[] { Properties.SECTOR_WINDOW_SIZE,
+        Properties.SECTOR_WINDOW_SIZE };
     if ( args.length > 1 )
     {
       String[] s = args[ 1 ].split( "," );
@@ -92,6 +105,32 @@ public class Client implements Node {
     logFile = metadata.getConnection() + ".log";
   }
 
+  private void startMetrics() throws UnknownHostException {
+    // ConsoleReporter reporter = ConsoleReporter.forRegistry(metrics)
+    // .convertRatesTo(TimeUnit.SECONDS)
+    // .convertDurationsTo(TimeUnit.MILLISECONDS)
+    // .build();
+    // reporter.start(1, TimeUnit.SECONDS);
+
+    File dir = new File( System.getProperty( "user.home" ) + "/vvm/clients/"
+        + metadata.getConnection() + "/" );
+
+    if ( dir.exists() )
+    {
+      distributed.common.util.Functions.deleteDirectory( dir.toPath() );
+    }
+    if ( !dir.exists() && !dir.mkdirs() )
+    {
+      LOG.error( "Cannot create directory " + dir.getAbsoluteFile() );
+    }
+
+    LOG.info( "Created dir " + dir );
+
+    CsvReporter reporter = CsvReporter.forRegistry( metrics )
+        .formatFor( Locale.US ).convertRatesTo( TimeUnit.SECONDS )
+        .convertDurationsTo( TimeUnit.MILLISECONDS ).build( dir );
+    reporter.start( 1, TimeUnit.SECONDS );
+  }
 
   private void createLoggingDir() {
 
@@ -160,6 +199,7 @@ public class Client implements Node {
           + node.metadata.getNavigator() );
 
       node.createLoggingDir();
+      node.startMetrics();
 
       ( new Thread(
           new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
@@ -270,6 +310,10 @@ public class Client implements Node {
    */
   private void handleSectorWindowResponse(Event event) {
     SectorWindowResponse response = ( SectorWindowResponse ) event;
+
+    // metrics
+    timer.update( Instant.now().toEpochMilli() - response.initialTimestamp,
+        TimeUnit.MILLISECONDS );
 
     // TODO: wait for all responses to come in before constructing the
     // window and then write to file?

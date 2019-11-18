@@ -10,12 +10,13 @@ CLIENT_PROPERTIES="$DIR/conf/client.properties"
 function usage {
 cat << EOF
     
-    script usage: $( basename $0 ) [-o operation] [-n num clients] [-s sector] [-p position]
+    script usage: $( basename $0 ) [-o operation] [-n num clients] [-s sector] [-p position] [-h help]
 
     -o operation   : 'execute' or 'compile' and exit
     -n num clients : integer number of clients to start in configuration
     -s sector      : r,c coordinate of sector w/o spaces
     -p position    : r,c coordinate of position w/o spaces
+    -h help        : print the usage message
     
 EOF
     exit 1
@@ -31,7 +32,7 @@ NUM_CLIENTS=1
 OPERATION="compile"
 EXIT=0
 
-while getopts o:n:s:p: option
+while getopts o:n:s:p:h: option
 do
     case "${option}" in
         o) OPERATION=${OPTARG}
@@ -43,6 +44,7 @@ do
         n) NUM_CLIENTS=${OPTARG};;
         s) SECTOR=${OPTARG};;
         p) POSITION=${OPTARG};;
+        h) usage;;
         ?) usage;;
     esac
 done
