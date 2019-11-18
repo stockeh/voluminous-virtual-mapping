@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import distributed.application.util.Properties;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
-import sun.rmi.runtime.Log;
 
 /**
  * Class to maintain the information needed for a given server. This

@@ -16,11 +16,7 @@ import java.nio.file.attribute.PosixFilePermissions;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.MetricRegistry;
@@ -62,8 +58,10 @@ public class Client implements Node {
   // metrics
   private final MetricRegistry metrics = new MetricRegistry();
   private final Timer timer = metrics.timer(MetricRegistry.name(Client.class, "sector-req"));
-  
 
+  private static final Comparator<SectorWindowResponse> rowComparator = Comparator.comparingInt(swr->swr.sectorID.x);
+  private static final Comparator<SectorWindowResponse> colComparator = Comparator.comparingInt(swr->swr.sectorID.y);
+  private static final Comparator<SectorWindowResponse> rowColComparator = rowComparator.thenComparing(colComparator);
   /**
    * Default constructor - creates a new server tying the
    * <b>host:port</b> combination for the node as the identifier for
@@ -303,6 +301,56 @@ public class Client implements Node {
     }
   }
 
+  private byte[][] constructSectorInOrder(List<SectorWindowResponse> responses) {
+    byte[][] sectorWindow = new byte[Properties.SECTOR_WINDOW_SIZE*2+1][Properties.SECTOR_WINDOW_SIZE*2+1];
+    responses.sort(rowColComparator);
+
+    int row = 0;
+    int col = 0;
+    for(int i = 0; i < responses.size(); i++) {
+      SectorWindowResponse response = responses.get(i);
+      for(byte[] sectorRow : response.sectorWindow) {
+        System.arraycopy(sectorRow, 0, sectorWindow[row], col, sectorRow.length);
+        row++;
+      }
+      if(responses.size() == 4) {
+        if(i == 0) {
+          row = 0;
+          col = response.sectorWindow[0].length;
+        }else {
+          row = response.sectorWindow.length;
+          if(i == 1) col = 0;
+          else col = response.sectorWindow[0].length;
+        }
+      }else if(responses.size() == 2) {
+        if(response.sectorWindow.length == Properties.SECTOR_WINDOW_SIZE*2+1) {
+          row = 0;
+          col = response.sectorWindow[0].length;
+        }else {
+          row = response.sectorWindow.length;
+          col = 0;
+        }
+      }
+    }
+
+    return sectorWindow;
+  }
+
+  private void reconstructSectorFromResponses(List<SectorWindowResponse> responses) {
+
+    timer.update( Instant.now().toEpochMilli() - responses.get(responses.size()-1).initialTimestamp,
+            TimeUnit.MILLISECONDS );
+
+    // TODO: wait for all responses to come in before constructing the
+
+    byte[][] sectorWindow = constructSectorInOrder(responses);
+    for ( byte[] row : sectorWindow )
+    {
+      logToDir( logFile, row );
+    }
+    logToDir( logFile, "\n" );
+  }
+
   /**
    * Manage the response from the server(s) containing the bytes of the
    * requested window.
@@ -311,29 +359,23 @@ public class Client implements Node {
    */
   private void handleSectorWindowResponse(Event event) {
     SectorWindowResponse response = ( SectorWindowResponse ) event;
-    
-    // metrics
-    timer.update( Instant.now().toEpochMilli() - response.initialTimestamp, TimeUnit.MILLISECONDS );
-
-    // TODO: wait for all responses to come in before constructing the
-    // window and then write to file?
-
-    // LOG.debug( response.numSectors + " -- " );
-//     LOG.info("Logging sector of size " + response.sectorWindow.length +
-//     " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
     Date date = new Date(response.initialTimestamp);
     DateFormat formatter = new SimpleDateFormat("HH:mm:ss.SSS");
     formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
     String dateFormatted = formatter.format(date);
-    LOG.info(String.format("%s-Sector: %s Sector Size:%dx%d", dateFormatted, response.sectorID, response.sectorWindow.length, response.sectorWindow[0].length));
-    for ( byte[] row : response.sectorWindow )
-    {
-      logToDir( logFile, row );
+    LOG.info(String.format("%s-Sector: %s Sector Size:%dx%d", dateFormatted, response.sectorID,
+            response.sectorWindow.length, response.sectorWindow[0].length));
+
+    List<SectorWindowResponse> responses;
+    if(response.numSectors == 1) {
+      responses = new ArrayList<>();
+      responses.add(response);
+    }else if(metadata.addResponse(response)){
+      responses = metadata.getAndRemove(response.initialTimestamp);
+    }else {
+      return;
     }
-    logToDir( logFile, "\n" );
-    // LOG.debug( response.numSectors + " -- " );
-    // LOG.info("Logging sector of size " + response.sectorWindow.length +
-    // " to " + Properties.SECTOR_LOGGING_DIR + "sector.log");
+    reconstructSectorFromResponses(responses);
   }
 
   /**
