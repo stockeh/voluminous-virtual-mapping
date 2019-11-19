@@ -53,6 +53,10 @@ do
     esac
 done
 
+# Delete Application Server Directory
+# DANGER!!!!!
+rm -rf ~/vvm/servers
+
 # Statup Application
 
 echo 'STARTING APPLICATION SERVER'
@@ -94,6 +98,10 @@ SECTORS=($(printf "%s\n" "${SECTORS[@]}" | shuf))
 
 RATIO=$((NUM_CLIENTS / NUM_SECTORS))
 REM=$((NUM_CLIENTS % NUM_SECTORS))
+
+# Delete Client Directoryes
+# DANGER!!!!!
+rm -rf ~/vvm/clients
 
 echo 'STARTING CLIENTS'
 pushd "$DIR/../client-server/"
