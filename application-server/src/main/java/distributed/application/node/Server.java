@@ -221,14 +221,14 @@ public class Server implements Node {
     Set<Sector> toPrefetch = new HashSet<>();
     int preMult = Properties.SECTOR_PREFETCH_MULTIPLIER*windowSize;
     if(position[0]+preMult >= Properties.SECTOR_BOUNDARY_SIZE) {
-      int x = current.x == Properties.SECTOR_MAP_SIZE-1 ? 0 : current.x+1;
+      int x = current.x == Properties.SECTOR_MAP_SIZE-1 ? current.x-1 : current.x+1;
       int y = current.y;
       Sector sector = new Sector(x, y);
       if(!toPrefetch.contains(sector)) {
         toPrefetch.add(sector);
       }
       if(position[1]+preMult >= Properties.SECTOR_BOUNDARY_SIZE) {
-        y = current.y == Properties.SECTOR_MAP_SIZE-1 ? 0 : current.y+1;
+        y = current.y == Properties.SECTOR_MAP_SIZE-1 ? current.y-1 : current.y+1;
         sector = new Sector(x, y);
         if(!mySectors.contains(sector)) {
           toPrefetch.add(sector);
@@ -237,14 +237,14 @@ public class Server implements Node {
     }
 
     if(position[0]-preMult <= 0) {
-      int x = current.x == 0 ? Properties.SECTOR_MAP_SIZE-1 : current.x-1;
+      int x = current.x == 0 ? current.x+1 : current.x-1;
       int y = current.y;
       Sector sector = new Sector(x, y);
       if(!toPrefetch.contains(sector)) {
         toPrefetch.add(sector);
       }
       if(position[1]-preMult <= 0) {
-        y = current.y == 0 ? Properties.SECTOR_MAP_SIZE-1 : current.y-1;
+        y = current.y == 0 ? current.y+1 : current.y-1;
         sector = new Sector(x, y);
         if(!mySectors.contains(sector)) {
           toPrefetch.add(sector);
@@ -254,13 +254,13 @@ public class Server implements Node {
 
     if(position[1]+preMult >= Properties.SECTOR_BOUNDARY_SIZE) {
       int x = current.x;
-      int y = current.y == Properties.SECTOR_MAP_SIZE-1 ? 0 : current.y+1;
+      int y = current.y == Properties.SECTOR_MAP_SIZE-1 ? current.y-1 : current.y+1;
       Sector sector = new Sector(x, y);
       if(!mySectors.contains(sector)) {
         toPrefetch.add(sector);
       }
       if(position[0]+preMult >= Properties.SECTOR_BOUNDARY_SIZE) {
-        x = current.x == Properties.SECTOR_MAP_SIZE-1 ? 0 : current.x+1;
+        x = current.x == Properties.SECTOR_MAP_SIZE-1 ? current.x-1 : current.x+1;
         sector = new Sector(x, y);
         if(!mySectors.contains(sector)) {
           toPrefetch.add(sector);
@@ -270,13 +270,13 @@ public class Server implements Node {
 
     if(position[1]-preMult <= 0) {
       int x = current.x;
-      int y = current.y == 0 ? Properties.SECTOR_MAP_SIZE-1 : current.y-1;
+      int y = current.y == 0 ? current.y+1 : current.y-1;
       Sector sector = new Sector(x, y);
       if(!mySectors.contains(sector)) {
         toPrefetch.add(sector);
       }
       if(position[0]-preMult <= 0) {
-        x = current.x == 0 ? Properties.SECTOR_MAP_SIZE-1  : current.x-1;
+        x = current.x == 0 ? current.x+1  : current.x-1;
         sector = new Sector(x, y);
         if(!mySectors.contains(sector)) {
           toPrefetch.add(sector);

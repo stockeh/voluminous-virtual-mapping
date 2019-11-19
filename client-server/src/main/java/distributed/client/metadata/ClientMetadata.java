@@ -2,6 +2,12 @@ package distributed.client.metadata;
 
 import distributed.client.util.Navigator;
 import distributed.common.util.Sector;
+import distributed.common.wireformats.SectorWindowResponse;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Class to maintain the information needed for a given server. This
@@ -19,6 +25,8 @@ public class ClientMetadata {
   private final int port;
 
   private Navigator navigator;
+
+  private final HashMap<Long, List<SectorWindowResponse>> responseMap = new HashMap<>();
 
   public String getHost() {
     return host;
@@ -52,6 +60,20 @@ public class ClientMetadata {
 
   public void setNavigation(Sector initialSector, int[] initialPosition) {
     navigator = new Navigator( initialSector, initialPosition, port );
+  }
+
+  public boolean addResponse(SectorWindowResponse response) {
+    synchronized (responseMap) {
+      responseMap.putIfAbsent(response.initialTimestamp, new ArrayList<>());
+      responseMap.get(response.initialTimestamp).add(response);
+      return responseMap.get(response.initialTimestamp).size() == response.numSectors;
+    }
+  }
+
+  public List<SectorWindowResponse> getAndRemove(long timestamp) {
+    synchronized (responseMap) {
+      return responseMap.remove(timestamp);
+    }
   }
 
 }
