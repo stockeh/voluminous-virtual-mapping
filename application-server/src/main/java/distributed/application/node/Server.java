@@ -206,6 +206,7 @@ public class Server implements Node {
   }
 
   private void forwardSectorWindowRequests(Set<Sector> sectors, SectorWindowRequest request, TCPConnection connection) {
+    if(request.updatePrimaryServer) LOG.info("FORWARDING: " + request.updatePrimaryServer);
     request.sectors = sectors;
     request.host = connection.getEndHost();
     try {
@@ -303,7 +304,7 @@ public class Server implements Node {
 
     if (!request.host.isEmpty()) {
       try {
-        LOG.info("Creating new connection with client: " + request.host + ":" + request.port);
+//        LOG.info("Creating new connection with client: " + request.host + ":" + request.port);
         clientConnection = new TCPConnection(this, new Socket(request.host, request.port), EventFactory.getInstance());
         clientConnection.startReceiver();
 
@@ -313,6 +314,9 @@ public class Server implements Node {
       }
     } else {
       clientConnection = connection;
+      if(!metadata.containsSector(request.currentSector)) {
+        request.updatePrimaryServer = true;
+      }
     }
 
     Set<Sector> matchingSectors =
@@ -323,9 +327,13 @@ public class Server implements Node {
               metadata.getWindow(sector, request.currentSector,
                       request.position[0], request.position[1], request.windowSize);
       try {
+
+        boolean updatePrimary = request.updatePrimaryServer && sector.toString().equals(request.currentSector.toString());
+        if(updatePrimary)
+          LOG.info("UPDATING: " + request.currentSector + " ID: " + metadata.getIdentifier());
         clientConnection.getTCPSender()
                 .sendData(new SectorWindowResponse(Protocol.SECTOR_WINDOW_RESPONSE,
-                        window, request.getSectors().size(), request.initialTimestamp, sector, request.position).getBytes());
+                        window, request.getSectors().size(), request.initialTimestamp, sector, request.position, updatePrimary).getBytes());
       } catch (IOException e) {
         LOG.error("Unable to reply to Client for window request. " + e.toString());
         e.printStackTrace();
