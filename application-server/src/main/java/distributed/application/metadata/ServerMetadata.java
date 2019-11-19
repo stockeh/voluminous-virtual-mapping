@@ -66,15 +66,15 @@ public class ServerMetadata {
     int colDiff = sectorID.getY() - currentSector.getY(); //2-0
     byte[][] sector = sectors.get(sectorID).getSector();
     if(rowDiff > 0) {
-      row = 0 - (Properties.SECTOR_BOUNDARY_SIZE-row);
+      row = (0 - (Properties.SECTOR_BOUNDARY_SIZE-1-row));
     }else if(rowDiff < 0){
-      row = Properties.SECTOR_BOUNDARY_SIZE+row;
+      row = (Properties.SECTOR_BOUNDARY_SIZE-1+row);
     }
 
     if(colDiff > 0) {
-        col = 0 - (Properties.SECTOR_BOUNDARY_SIZE-col);
+        col = (0 - (Properties.SECTOR_BOUNDARY_SIZE-1-col));
     }else if(colDiff < 0) {
-      col = Properties.SECTOR_BOUNDARY_SIZE+col;
+      col = (Properties.SECTOR_BOUNDARY_SIZE-1+col);
 
     }
 
@@ -85,21 +85,17 @@ public class ServerMetadata {
     int colEnd = Math.min(col + windowSize, Properties.SECTOR_BOUNDARY_SIZE - 1);
     int width = rowEnd - rowStart;
     int height = colEnd - colStart;
-    if (rowDiff == 0) {
-      height++;
-    } else {
+    if(rowDiff == 0 ) {
+      width++;
+    }else {
       rowEnd--;
     }
-    if (colDiff == 0) {
-      width++;
+    if(colDiff == 0 ) {
+      height++;
     }
-    byte[][] window;
-    try {
-      window = new byte[width][height];
-    }catch(NegativeArraySizeException nase) {
-      LOG.info("r,c" + r + "," + c + " Row: " + row + " Col: " + col + " current: " + currentSector + " otherSector: " + sectorID);
-      throw nase;
-    }
+    LOG.debug("r,c: " + r + "," + c + " ROW,COL: " + row + "," + col + " CURRENT: " + currentSector + " SECTOR: " + sectorID + " row: " + rowStart + "," + rowEnd + " col: " + colStart + "," + colEnd + " h,w: " + height + "," + width);
+    byte[][] window = new byte[width][height];
+
 
     for (int i = rowStart, j = 0; i <= rowEnd; i++, j++) {
       System.arraycopy(sector[i], 0, window[j], 0, height);

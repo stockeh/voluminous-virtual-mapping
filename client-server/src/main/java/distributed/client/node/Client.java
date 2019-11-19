@@ -318,7 +318,7 @@ public class Client implements Node {
           row = 0;
           col = response.sectorWindow[0].length;
         }else {
-          row = response.sectorWindow.length;
+          row = responses.get(0).sectorWindow.length;
           if(i == 1) col = 0;
           else col = response.sectorWindow[0].length;
         }
@@ -363,7 +363,7 @@ public class Client implements Node {
     DateFormat formatter = new SimpleDateFormat("HH:mm:ss.SSS");
     formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
     String dateFormatted = formatter.format(date);
-    LOG.info(String.format("%s-Sector: %s Sector Size:%dx%d", dateFormatted, response.sectorID,
+    LOG.debug(String.format("%s-Sector: %s Sector Size:%dx%d", dateFormatted, response.sectorID,
             response.sectorWindow.length, response.sectorWindow[0].length));
 
     List<SectorWindowResponse> responses;
