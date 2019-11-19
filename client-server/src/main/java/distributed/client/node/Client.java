@@ -56,14 +56,15 @@ public class Client implements Node {
   private final String logFile;
 
   // metrics
-  private final MetricRegistry metrics = new MetricRegistry();
-  private final Timer timer =
-      metrics.timer( MetricRegistry.name( Client.class, "sector-req" ) );
+  private Timer timer;
 
+  private static final Comparator<SectorWindowResponse> rowComparator =
+      Comparator.comparingInt( swr -> swr.sectorID.x );
+  private static final Comparator<SectorWindowResponse> colComparator =
+      Comparator.comparingInt( swr -> swr.sectorID.y );
+  private static final Comparator<SectorWindowResponse> rowColComparator =
+      rowComparator.thenComparing( colComparator );
 
-  private static final Comparator<SectorWindowResponse> rowComparator = Comparator.comparingInt(swr->swr.sectorID.x);
-  private static final Comparator<SectorWindowResponse> colComparator = Comparator.comparingInt(swr->swr.sectorID.y);
-  private static final Comparator<SectorWindowResponse> rowColComparator = rowComparator.thenComparing(colComparator);
   /**
    * Default constructor - creates a new server tying the
    * <b>host:port</b> combination for the node as the identifier for
@@ -105,11 +106,6 @@ public class Client implements Node {
   }
 
   private void startMetrics() throws UnknownHostException {
-    // ConsoleReporter reporter = ConsoleReporter.forRegistry(metrics)
-    // .convertRatesTo(TimeUnit.SECONDS)
-    // .convertDurationsTo(TimeUnit.MILLISECONDS)
-    // .build();
-    // reporter.start(1, TimeUnit.SECONDS);
 
     File dir = new File( System.getProperty( "user.home" ) + "/vvm/clients/"
         + metadata.getConnection() + "/" );
@@ -125,6 +121,9 @@ public class Client implements Node {
 
     LOG.info( "Created dir " + dir );
 
+    MetricRegistry metrics = new MetricRegistry();
+    timer = metrics.timer( MetricRegistry.name( Client.class, "sector-req" ) );
+    
     CsvReporter reporter = CsvReporter.forRegistry( metrics )
         .formatFor( Locale.US ).convertRatesTo( TimeUnit.SECONDS )
         .convertDurationsTo( TimeUnit.MILLISECONDS ).build( dir );
@@ -198,7 +197,6 @@ public class Client implements Node {
           + node.metadata.getNavigator() );
 
       node.createLoggingDir();
-      node.startMetrics();
 
       ( new Thread(
           new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
@@ -301,32 +299,46 @@ public class Client implements Node {
     }
   }
 
-  private byte[][] constructSectorInOrder(List<SectorWindowResponse> responses) {
-    byte[][] sectorWindow = new byte[Properties.SECTOR_WINDOW_SIZE*2+1][Properties.SECTOR_WINDOW_SIZE*2+1];
-    responses.sort(rowColComparator);
+  private byte[][] constructSectorInOrder(
+      List<SectorWindowResponse> responses) {
+    byte[][] sectorWindow = new byte[ Properties.SECTOR_WINDOW_SIZE * 2
+        + 1 ][ Properties.SECTOR_WINDOW_SIZE * 2 + 1 ];
+    responses.sort( rowColComparator );
 
     int row = 0;
     int col = 0;
-    for(int i = 0; i < responses.size(); i++) {
-      SectorWindowResponse response = responses.get(i);
-      for(byte[] sectorRow : response.sectorWindow) {
-        System.arraycopy(sectorRow, 0, sectorWindow[row], col, sectorRow.length);
+    for ( int i = 0; i < responses.size(); i++ )
+    {
+      SectorWindowResponse response = responses.get( i );
+      for ( byte[] sectorRow : response.sectorWindow )
+      {
+        System.arraycopy( sectorRow, 0, sectorWindow[ row ], col,
+            sectorRow.length );
         row++;
       }
-      if(responses.size() == 4) {
-        if(i == 0) {
+      if ( responses.size() == 4 )
+      {
+        if ( i == 0 )
+        {
           row = 0;
-          col = response.sectorWindow[0].length;
-        }else {
-          row = responses.get(0).sectorWindow.length;
-          if(i == 1) col = 0;
-          else col = response.sectorWindow[0].length;
+          col = response.sectorWindow[ 0 ].length;
+        } else
+        {
+          row = responses.get( 0 ).sectorWindow.length;
+          if ( i == 1 )
+            col = 0;
+          else
+            col = response.sectorWindow[ 0 ].length;
         }
-      }else if(responses.size() == 2) {
-        if(response.sectorWindow.length == Properties.SECTOR_WINDOW_SIZE*2+1) {
+      } else if ( responses.size() == 2 )
+      {
+        if ( response.sectorWindow.length == Properties.SECTOR_WINDOW_SIZE * 2
+            + 1 )
+        {
           row = 0;
-          col = response.sectorWindow[0].length;
-        }else {
+          col = response.sectorWindow[ 0 ].length;
+        } else
+        {
           row = response.sectorWindow.length;
           col = 0;
         }
@@ -336,14 +348,15 @@ public class Client implements Node {
     return sectorWindow;
   }
 
-  private void reconstructSectorFromResponses(List<SectorWindowResponse> responses) {
+  private void reconstructSectorFromResponses(
+      List<SectorWindowResponse> responses) {
 
-    timer.update( Instant.now().toEpochMilli() - responses.get(responses.size()-1).initialTimestamp,
-            TimeUnit.MILLISECONDS );
+    timer.update(
+        Instant.now().toEpochMilli()
+            - responses.get( responses.size() - 1 ).initialTimestamp,
+        TimeUnit.MILLISECONDS );
 
-    // TODO: wait for all responses to come in before constructing the
-
-    byte[][] sectorWindow = constructSectorInOrder(responses);
+    byte[][] sectorWindow = constructSectorInOrder( responses );
     for ( byte[] row : sectorWindow )
     {
       logToDir( logFile, row );
@@ -359,23 +372,27 @@ public class Client implements Node {
    */
   private void handleSectorWindowResponse(Event event) {
     SectorWindowResponse response = ( SectorWindowResponse ) event;
-    Date date = new Date(response.initialTimestamp);
-    DateFormat formatter = new SimpleDateFormat("HH:mm:ss.SSS");
-    formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-    String dateFormatted = formatter.format(date);
-    LOG.debug(String.format("%s-Sector: %s Sector Size:%dx%d", dateFormatted, response.sectorID,
-            response.sectorWindow.length, response.sectorWindow[0].length));
+    Date date = new Date( response.initialTimestamp );
+    DateFormat formatter = new SimpleDateFormat( "HH:mm:ss.SSS" );
+    formatter.setTimeZone( TimeZone.getTimeZone( "UTC" ) );
+    String dateFormatted = formatter.format( date );
+    LOG.debug( String.format( "%s-Sector: %s Sector Size:%dx%d", dateFormatted,
+        response.sectorID, response.sectorWindow.length,
+        response.sectorWindow[ 0 ].length ) );
 
     List<SectorWindowResponse> responses;
-    if(response.numSectors == 1) {
+    if ( response.numSectors == 1 )
+    {
       responses = new ArrayList<>();
-      responses.add(response);
-    }else if(metadata.addResponse(response)){
-      responses = metadata.getAndRemove(response.initialTimestamp);
-    }else {
+      responses.add( response );
+    } else if ( metadata.addResponse( response ) )
+    {
+      responses = metadata.getAndRemove( response.initialTimestamp );
+    } else
+    {
       return;
     }
-    reconstructSectorFromResponses(responses);
+    reconstructSectorFromResponses( responses );
   }
 
   /**
@@ -413,6 +430,16 @@ public class Client implements Node {
 
     LOG.info( "Client successfully connected to the server: "
         + response.serverToConnect );
+
+    try
+    {
+      startMetrics();
+    } catch ( UnknownHostException e )
+    {
+      LOG.error( "Unable to start client logging. " + e.toString() );
+      e.printStackTrace();
+    }
+    
     ( new Thread( metadata.getNavigator(), "Navigation Thread" ) ).start();
   }
 
