@@ -34,6 +34,7 @@ public class NavigatorTest {
     System.out.println();
 
     assertEquals( expected, actual );
+    /** -------------------------------------------------- */
 
     initial = new Sector( 0, 0 );
     n = new Navigator( initial, new int[] { 0, 5000 }, port );
@@ -56,6 +57,7 @@ public class NavigatorTest {
     System.out.println();
 
     assertEquals( expected, actual );
+    /** -------------------------------------------------- */
 
     initial = new Sector( 0, 0 );
     n = new Navigator( initial, new int[] { 9999, 9999 }, port );
@@ -81,6 +83,7 @@ public class NavigatorTest {
     System.out.println();
 
     assertEquals( expected, actual );
+    /** -------------------------------------------------- */
 
     initial = new Sector( 2, 2 );
     n = new Navigator( initial, new int[] { 0, 0 }, port );
@@ -92,6 +95,30 @@ public class NavigatorTest {
     expected.add( new Sector( 2, 1 ) );
     expected.add( new Sector( 1, 2 ) );
     expected.add( new Sector( 1, 1 ) );
+
+    System.out.println( "position: " + Arrays.toString( n.getPosition() )
+        + ", sector: " + initial );
+
+    actual = n.getSectorContributions( n.getPosition() );
+    System.out.print( "Expected: " );
+    actual.forEach( v -> System.out.print( v + ", " ) );
+
+    System.out.print( "\nActual: " );
+    actual.forEach( v -> System.out.print( v + ", " ) );
+    System.out.println();
+    System.out.println();
+
+    assertEquals( expected, actual );
+    /** -------------------------------------------------- */
+
+    initial = new Sector( 0, 3 );
+    n = new Navigator( initial, new int[] { 0, 0 }, port );
+    n.setSectorBoundarySize( 10000 );
+    n.setSectorMapSize( 4 );
+
+    expected = new HashSet<>();
+    expected.add( initial );
+    expected.add( new Sector( 0, 2 ) );
 
     System.out.println( "position: " + Arrays.toString( n.getPosition() )
         + ", sector: " + initial );
@@ -144,7 +171,6 @@ public class NavigatorTest {
 
     assertArrayEquals( new int[] { 0, 0 }, n.getPosition() );
     assertEquals( new Sector( 1, 1 ), n.getInitialSector() );
-    /** -------------------------------------------------- */
   }
 
 }
