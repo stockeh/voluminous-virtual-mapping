@@ -17,7 +17,10 @@ import java.net.Socket;
 public class TCPSender {
 
   protected DataOutputStream dout;
+  private int port;
+  private String host;
 
+  public String getDestination() { return host + ":" + port; }
   /**
    * Default constructor - Initialize the TCPSender data output stream
    * information from the <code>socket</code>.
@@ -27,6 +30,8 @@ public class TCPSender {
    */
   public TCPSender(Socket socket) throws IOException {
     this.dout = new DataOutputStream( socket.getOutputStream() );
+    this.port = socket.getPort();
+    this.host = socket.getInetAddress().getCanonicalHostName();
   }
 
   /**

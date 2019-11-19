@@ -33,13 +33,15 @@ public class SectorWindowRequest implements Event {
 
   public boolean loadSector;
 
+  public boolean updatePrimaryServer;
+
   /**
    * Constructor without assigned message
    * 
    */
   public SectorWindowRequest(int type, long initialTimestamp,
       Set<Sector> sectors, Sector currentSector, int windowSize,
-      int[] position, int numRequestedSectors, String host, int port, boolean loadSector) {
+      int[] position, int numRequestedSectors, String host, int port, boolean loadSector, boolean updatePrimaryServer) {
     this.type = type;
     this.initialTimestamp = initialTimestamp;
     this.sectors = sectors;
@@ -50,12 +52,14 @@ public class SectorWindowRequest implements Event {
     this.host = host;
     this.port = port;
     this.loadSector = loadSector;
+    this.updatePrimaryServer = updatePrimaryServer;
   }
+
 
   public SectorWindowRequest(int type, long initialTimestamp,
                              Set<Sector> sectors, Sector currentSector, int windowSize,
                              int[] position, int numRequestedSectors, int port) {
-    this(type, initialTimestamp, sectors, currentSector, windowSize, position, numRequestedSectors, "", port, false);
+    this(type, initialTimestamp, sectors, currentSector, windowSize, position, numRequestedSectors, "", port, false, false);
   }
 
   /**
@@ -67,6 +71,7 @@ public class SectorWindowRequest implements Event {
    */
   public SectorWindowRequest(byte[] marshalledBytes) throws IOException {
     MessageUnMarshaller.readEvent( getClass(), this, marshalledBytes );
+
   }
 
   /**
