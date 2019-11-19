@@ -16,11 +16,13 @@ import java.nio.file.attribute.PosixFilePermissions;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import com.codahale.metrics.CsvReporter;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TimeZone;
 import distributed.client.metadata.ClientMetadata;
 import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
@@ -52,18 +54,16 @@ public class Client implements Node {
 
   private final ClientMetadata metadata;
 
-  private final String logDirectory;
-  private final String logFile;
+  private Path pathToRequestMetrics;
+  private Path pathToTmpLogFile;
 
-  // metrics
-  private final MetricRegistry metrics = new MetricRegistry();
-  private final Timer timer =
-      metrics.timer( MetricRegistry.name( Client.class, "sector-req" ) );
+  private static final Comparator<SectorWindowResponse> rowComparator =
+      Comparator.comparingInt( swr -> swr.sectorID.x );
+  private static final Comparator<SectorWindowResponse> colComparator =
+      Comparator.comparingInt( swr -> swr.sectorID.y );
+  private static final Comparator<SectorWindowResponse> rowColComparator =
+      rowComparator.thenComparing( colComparator );
 
-
-  private static final Comparator<SectorWindowResponse> rowComparator = Comparator.comparingInt(swr->swr.sectorID.x);
-  private static final Comparator<SectorWindowResponse> colComparator = Comparator.comparingInt(swr->swr.sectorID.y);
-  private static final Comparator<SectorWindowResponse> rowColComparator = rowComparator.thenComparing(colComparator);
   /**
    * Default constructor - creates a new server tying the
    * <b>host:port</b> combination for the node as the identifier for
@@ -99,17 +99,13 @@ public class Client implements Node {
     this.metadata.setNavigation( initialSector, initialPosition );
 
     String temp = System.getProperty( "user.home" );
-    logDirectory = Properties.SECTOR_LOGGING_DIR + "_"
+    String logDirectory = Properties.SECTOR_LOGGING_DIR + "_"
         + temp.substring( temp.lastIndexOf( File.separator ) + 1 );
-    logFile = metadata.getConnection() + ".log";
+    pathToTmpLogFile =
+        Paths.get( logDirectory, metadata.getConnection() + ".log" );
   }
 
-  private void startMetrics() throws UnknownHostException {
-    // ConsoleReporter reporter = ConsoleReporter.forRegistry(metrics)
-    // .convertRatesTo(TimeUnit.SECONDS)
-    // .convertDurationsTo(TimeUnit.MILLISECONDS)
-    // .build();
-    // reporter.start(1, TimeUnit.SECONDS);
+  private void createFolderMetrics() throws UnknownHostException {
 
     File dir = new File( System.getProperty( "user.home" ) + "/vvm/clients/"
         + metadata.getConnection() + "/" );
@@ -125,10 +121,19 @@ public class Client implements Node {
 
     LOG.info( "Created dir " + dir );
 
-    CsvReporter reporter = CsvReporter.forRegistry( metrics )
-        .formatFor( Locale.US ).convertRatesTo( TimeUnit.SECONDS )
-        .convertDurationsTo( TimeUnit.MILLISECONDS ).build( dir );
-    reporter.start( 1, TimeUnit.SECONDS );
+    pathToRequestMetrics =
+        Paths.get( dir.getAbsolutePath(), "client-metrics.csv" );
+    try
+    {
+      Files.createFile( pathToRequestMetrics );
+    } catch ( IOException e )
+    {
+      LOG.error( "Unable to create path to " + pathToRequestMetrics.toString()
+          + ", " + e.toString() );
+      e.printStackTrace();
+    }
+    String header = "initial_timestamp,duration\n";
+    logToDir( pathToRequestMetrics, header.getBytes() );
   }
 
   private void createLoggingDir() {
@@ -139,44 +144,32 @@ public class Client implements Node {
         PosixFilePermissions.asFileAttribute( ownerWritable );
     try
     {
-      Path path = Paths.get( logDirectory );
+      Path path = pathToTmpLogFile.getParent();
       LOG.info( "Setting up logging directory at " + path );
-      // Functions.deleteDirectory( path );
       if ( !Files.isDirectory( path ) )
       {
         Files.createDirectory( path, permissions );
         Files.setPosixFilePermissions( path, ownerWritable );
       }
-      Path logPath = Paths.get( logDirectory + File.separator + logFile );
-      LOG.info( "Writing log file at " + logPath );
-      Files.deleteIfExists( logPath );
-      Files.createFile( logPath, permissions );
+      LOG.info( "Writing log file at " + pathToTmpLogFile );
+      Files.deleteIfExists( pathToTmpLogFile );
+      Files.createFile( pathToTmpLogFile, permissions );
 
-      Files.setPosixFilePermissions( logPath, ownerWritable );
+      Files.setPosixFilePermissions( pathToTmpLogFile, ownerWritable );
     } catch ( IOException e )
     {
       e.printStackTrace();
     }
   }
 
-  private void logToDir(String filename, String data) {
-    logToDir( filename, data.getBytes() );
-  }
-
-  private void logToDir(String fileName, byte[] content) {
-
-    if ( !fileName.startsWith( File.separator ) )
-    {
-      fileName = File.separator + fileName;
-    }
-    Path path = Paths.get( logDirectory + fileName );
-
+  private void logToDir(Path path, byte[] content) {
     try
     {
       Files.write( path, content, StandardOpenOption.APPEND );
     } catch ( IOException e )
     {
-      LOG.error( "Unable to write to \tmp logs. " + e.toString() );
+      LOG.error(
+          "Unable to write to " + path.toString() + ": " + e.toString() );
       e.printStackTrace();
     }
   }
@@ -198,7 +191,6 @@ public class Client implements Node {
           + node.metadata.getNavigator() );
 
       node.createLoggingDir();
-      node.startMetrics();
 
       ( new Thread(
           new TCPServerThread( node, serverSocket, EventFactory.getInstance() ),
@@ -301,32 +293,46 @@ public class Client implements Node {
     }
   }
 
-  private byte[][] constructSectorInOrder(List<SectorWindowResponse> responses) {
-    byte[][] sectorWindow = new byte[Properties.SECTOR_WINDOW_SIZE*2+1][Properties.SECTOR_WINDOW_SIZE*2+1];
-    responses.sort(rowColComparator);
+  private byte[][] constructSectorInOrder(
+      List<SectorWindowResponse> responses) {
+    byte[][] sectorWindow = new byte[ Properties.SECTOR_WINDOW_SIZE * 2
+        + 1 ][ Properties.SECTOR_WINDOW_SIZE * 2 + 1 ];
+    responses.sort( rowColComparator );
 
     int row = 0;
     int col = 0;
-    for(int i = 0; i < responses.size(); i++) {
-      SectorWindowResponse response = responses.get(i);
-      for(byte[] sectorRow : response.sectorWindow) {
-        System.arraycopy(sectorRow, 0, sectorWindow[row], col, sectorRow.length);
+    for ( int i = 0; i < responses.size(); i++ )
+    {
+      SectorWindowResponse response = responses.get( i );
+      for ( byte[] sectorRow : response.sectorWindow )
+      {
+        System.arraycopy( sectorRow, 0, sectorWindow[ row ], col,
+            sectorRow.length );
         row++;
       }
-      if(responses.size() == 4) {
-        if(i == 0) {
+      if ( responses.size() == 4 )
+      {
+        if ( i == 0 )
+        {
           row = 0;
-          col = response.sectorWindow[0].length;
-        }else {
-          row = responses.get(0).sectorWindow.length;
-          if(i == 1) col = 0;
-          else col = response.sectorWindow[0].length;
+          col = response.sectorWindow[ 0 ].length;
+        } else
+        {
+          row = responses.get( 0 ).sectorWindow.length;
+          if ( i == 1 )
+            col = 0;
+          else
+            col = response.sectorWindow[ 0 ].length;
         }
-      }else if(responses.size() == 2) {
-        if(response.sectorWindow.length == Properties.SECTOR_WINDOW_SIZE*2+1) {
+      } else if ( responses.size() == 2 )
+      {
+        if ( response.sectorWindow.length == Properties.SECTOR_WINDOW_SIZE * 2
+            + 1 )
+        {
           row = 0;
-          col = response.sectorWindow[0].length;
-        }else {
+          col = response.sectorWindow[ 0 ].length;
+        } else
+        {
           row = response.sectorWindow.length;
           col = 0;
         }
@@ -336,19 +342,25 @@ public class Client implements Node {
     return sectorWindow;
   }
 
-  private void reconstructSectorFromResponses(List<SectorWindowResponse> responses) {
+  private void reconstructSectorFromResponses(
+      List<SectorWindowResponse> responses) {
 
-    timer.update( Instant.now().toEpochMilli() - responses.get(responses.size()-1).initialTimestamp,
-            TimeUnit.MILLISECONDS );
+    long initialtime = responses.get( responses.size() - 1 ).initialTimestamp;
 
-    // TODO: wait for all responses to come in before constructing the
+    long latencyDifference = Instant.now().toEpochMilli() - initialtime;
 
-    byte[][] sectorWindow = constructSectorInOrder(responses);
+    // initial_timestamp,difference
+    StringBuilder sb = new StringBuilder();
+    sb.append( initialtime ).append( "," ).append( latencyDifference )
+        .append( "\n" );
+    logToDir( pathToRequestMetrics, sb.toString().getBytes() );
+
+    byte[][] sectorWindow = constructSectorInOrder( responses );
     for ( byte[] row : sectorWindow )
     {
-      logToDir( logFile, row );
+      logToDir( pathToTmpLogFile, row );
     }
-    logToDir( logFile, "\n" );
+    logToDir( pathToTmpLogFile, "\n".getBytes() );
   }
 
   /**
@@ -359,25 +371,30 @@ public class Client implements Node {
    */
   private void handleSectorWindowResponse(Event event, TCPConnection connection) {
     SectorWindowResponse response = ( SectorWindowResponse ) event;
-    Date date = new Date(response.initialTimestamp);
-    DateFormat formatter = new SimpleDateFormat("HH:mm:ss.SSS");
-    formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-    String dateFormatted = formatter.format(date);
-    LOG.debug(String.format("%s-Sector: %s Sector Size:%dx%d", dateFormatted, response.sectorID,
-            response.sectorWindow.length, response.sectorWindow[0].length));
+    Date date = new Date( response.initialTimestamp );
+    DateFormat formatter = new SimpleDateFormat( "HH:mm:ss.SSS" );
+    formatter.setTimeZone( TimeZone.getTimeZone( "UTC" ) );
+    String dateFormatted = formatter.format( date );
+    LOG.debug( String.format( "%s-Sector: %s Sector Size:%dx%d", dateFormatted,
+        response.sectorID, response.sectorWindow.length,
+        response.sectorWindow[ 0 ].length ) );
 
     if(response.updatePrimaryServer) metadata.getNavigator().updatePrimaryServer(connection);
     List<SectorWindowResponse> responses;
-    if(response.numSectors == 1) {
+    if ( response.numSectors == 1 )
+    {
       responses = new ArrayList<>();
-      responses.add(response);
-    }else if(metadata.addResponse(response)){
-      responses = metadata.getAndRemove(response.initialTimestamp);
-    }else {
+      responses.add( response );
+    } else if ( metadata.addResponse( response ) )
+    {
+      responses = metadata.getAndRemove( response.initialTimestamp );
+    } else
+    {
       return;
     }
 
-    reconstructSectorFromResponses(responses);
+    reconstructSectorFromResponses( responses );
+
   }
 
   /**
@@ -415,6 +432,16 @@ public class Client implements Node {
 
     LOG.info( "Client successfully connected to the server: "
         + response.serverToConnect );
+
+    try
+    {
+      createFolderMetrics();
+    } catch ( UnknownHostException e )
+    {
+      LOG.error( "Unable to start client logging. " + e.toString() );
+      e.printStackTrace();
+    }
+
     ( new Thread( metadata.getNavigator(), "Navigation Thread" ) ).start();
   }
 
