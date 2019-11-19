@@ -90,7 +90,7 @@ public class Navigator implements Runnable {
     int[] pos = new int[] { ( int ) position[ 0 ], ( int ) position[ 1 ] };
 
     Set<Sector> contributions = getSectorContributions( pos );
-    LOG.info( String.format( "Position: %d,%d", pos[ 0 ], pos[ 1 ] ) );
+    LOG.info( String.format( "Position: %d,%d, Sector: %d,%d", pos[ 0 ], pos[ 1 ] , sector.x, sector.y) );
     primaryServer.getTCPSender()
         .sendData( new SectorWindowRequest( Protocol.SECTOR_WINDOW_REQUEST,
             Instant.now().toEpochMilli(), contributions, sector,

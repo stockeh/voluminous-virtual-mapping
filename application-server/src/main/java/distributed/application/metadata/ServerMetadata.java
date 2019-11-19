@@ -86,12 +86,12 @@ public class ServerMetadata {
     int width = rowEnd - rowStart;
     int height = colEnd - colStart;
     if (rowDiff == 0) {
-      width++;
+      height++;
     } else {
       rowEnd--;
     }
     if (colDiff == 0) {
-      height++;
+      width++;
     }
     byte[][] window;
     try {

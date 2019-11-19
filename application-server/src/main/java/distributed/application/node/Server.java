@@ -321,7 +321,7 @@ public class Server implements Node {
     for (Sector sector : matchingSectors) {
       byte[][] window =
               metadata.getWindow(sector, request.currentSector,
-                      request.position[1], request.position[0], request.windowSize);
+                      request.position[0], request.position[1], request.windowSize);
       try {
         clientConnection.getTCPSender()
                 .sendData(new SectorWindowResponse(Protocol.SECTOR_WINDOW_RESPONSE,
