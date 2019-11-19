@@ -24,11 +24,11 @@ public class Navigator implements Runnable {
       Logger.getInstance( Properties.SYSTEM_LOG_LEVEL );
 
   /**
-   * Default to check initialization until client receives update
-   * from server
+   * Default to check initialization until client receives update from
+   * server
    */
-  private int sectorBoundarySize = 30_000;
-  private int sectorMapSize = 0;
+  private int sectorBoundarySize = Integer.MAX_VALUE;
+  private int sectorMapSize = Integer.MAX_VALUE;
 
   private TCPConnection primaryServer;
 
@@ -171,7 +171,6 @@ public class Navigator implements Runnable {
    * @param cord
    */
   public void checkBoundaries(int cord) {
-
     int sectorLocation;
     if ( cord == 0 )
     {
@@ -181,33 +180,43 @@ public class Navigator implements Runnable {
       sectorLocation = sector.getY();
     }
 
-    int temp = sectorLocation;
-
-    if ( sectorLocation == 0 || sectorLocation == sectorMapSize - 1 )
+    // North // West
+    if ( sectorLocation == 0 )
     {
-      if ( sectorLocation == 0
-          && position[ cord ] < Properties.SECTOR_WINDOW_SIZE )
+      if ( position[ cord ] < Properties.SECTOR_WINDOW_SIZE )
       {
         position[ cord ] = Properties.SECTOR_WINDOW_SIZE;
-        velocity[ cord ] = -velocity[ cord ];
-      } else if ( sectorLocation == sectorMapSize - 1
-          && position[ cord ] > sectorBoundarySize
-              + Properties.SECTOR_WINDOW_SIZE - 1 )
+        if ( velocity[ cord ] < 0 )
+        {
+          velocity[ cord ] = -velocity[ cord ];
+        }
+      }
+    }
+
+    // South // East
+    if ( sectorLocation == sectorMapSize - 1 )
+    {
+      if ( position[ cord ] > sectorBoundarySize
+          - Properties.SECTOR_WINDOW_SIZE )
       {
         position[ cord ] = sectorBoundarySize - Properties.SECTOR_WINDOW_SIZE;
-        velocity[ cord ] = -velocity[ cord ];
+        if ( velocity[ cord ] > 0 )
+        {
+          velocity[ cord ] = -velocity[ cord ];
+        }
       }
-    } else
+    }
+
+    int temp = sectorLocation;
+
+    if ( position[ cord ] < 0 )
     {
-      if ( position[ cord ] < 0 )
-      {
-        position[ cord ] = sectorBoundarySize + position[ cord ] - 1;
-        --temp;
-      } else if ( position[ cord ] > sectorBoundarySize - 1 )
-      {
-        position[ cord ] -= sectorBoundarySize;
-        ++temp;
-      }
+      position[ cord ] = sectorBoundarySize + position[ cord ] - 1;
+      --temp;
+    } else if ( position[ cord ] > sectorBoundarySize - 1 )
+    {
+      position[ cord ] -= sectorBoundarySize;
+      ++temp;
     }
     if ( cord == 0 )
     {
@@ -225,6 +234,9 @@ public class Navigator implements Runnable {
    * 
    */
   public void run() {
+
+    checkBoundaries( 0 );
+    checkBoundaries( 1 );
 
     double deltaT = 0.2; // Euler integration time step
 
@@ -255,11 +267,13 @@ public class Navigator implements Runnable {
 
         checkBoundaries( 0 );
         checkBoundaries( 1 );
-
-        deliver();
-        TimeUnit.MILLISECONDS.sleep( 1000 );
+        System.out.println( "sec: " + sector + ", pos: " + ( int ) position[ 0 ]
+            + "," + ( int ) position[ 1 ] + ", vel: "
+            + Arrays.toString( velocity ) );
+        // deliver();
+        TimeUnit.MILLISECONDS.sleep( 100 );
       }
-    } catch ( InterruptedException | IOException e )
+    } catch ( InterruptedException e )
     {
       LOG.error( "Client stopped moving. " + e.toString() );
       e.printStackTrace();
