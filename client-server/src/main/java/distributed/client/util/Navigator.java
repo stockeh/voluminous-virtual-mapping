@@ -23,9 +23,12 @@ public class Navigator implements Runnable {
   private static final Logger LOG =
       Logger.getInstance( Properties.SYSTEM_LOG_LEVEL );
 
-  private int sectorBoundarySize;
-
-  private int sectorMapSize;
+  /**
+   * Default to check initialization until client receives update
+   * from server
+   */
+  private int sectorBoundarySize = 30_000;
+  private int sectorMapSize = 0;
 
   private TCPConnection primaryServer;
 

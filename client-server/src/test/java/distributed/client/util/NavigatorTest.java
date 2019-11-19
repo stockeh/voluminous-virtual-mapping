@@ -1,5 +1,6 @@
 package distributed.client.util;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -88,9 +89,9 @@ public class NavigatorTest {
 
     expected = new HashSet<>();
     expected.add( initial );
-    expected.add( new Sector( 3, 2 ) );
-    expected.add( new Sector( 2, 3 ) );
-    expected.add( new Sector( 2, 2 ) );
+    expected.add( new Sector( 2, 1 ) );
+    expected.add( new Sector( 1, 2 ) );
+    expected.add( new Sector( 1, 1 ) );
 
     System.out.println( "position: " + Arrays.toString( n.getPosition() )
         + ", sector: " + initial );
@@ -105,6 +106,45 @@ public class NavigatorTest {
     System.out.println();
 
     assertEquals( expected, actual );
+  }
+
+  @Test
+  public void testCheckBoundries() {
+    int port = 42134;
+    Sector initial = new Sector( 0, 0 );
+    Navigator n = new Navigator( initial, new int[] { 5000, 5000 }, port );
+    n.setSectorBoundarySize( 10000 );
+    n.setSectorMapSize( 4 );
+
+    assertArrayEquals( new int[] { 5000, 5000 }, n.getPosition() );
+    assertEquals( new Sector( 0, 0 ), n.getInitialSector() );
+    /** -------------------------------------------------- */
+    initial = new Sector( 0, 0 );
+    n = new Navigator( initial, new int[] { 0, 0 }, port );
+    n.setSectorBoundarySize( 10000 );
+    n.setSectorMapSize( 4 );
+
+    assertArrayEquals( new int[] { Properties.SECTOR_WINDOW_SIZE,
+        Properties.SECTOR_WINDOW_SIZE }, n.getPosition() );
+    assertEquals( new Sector( 0, 0 ), n.getInitialSector() );
+    /** -------------------------------------------------- */
+    initial = new Sector( 0, 0 );
+    n = new Navigator( initial, new int[] { 0, 0 }, port );
+    n.setSectorBoundarySize( 10000 );
+    n.setSectorMapSize( 4 );
+
+    assertArrayEquals( new int[] { Properties.SECTOR_WINDOW_SIZE,
+        Properties.SECTOR_WINDOW_SIZE }, n.getPosition() );
+    assertEquals( new Sector( 0, 0 ), n.getInitialSector() );
+    /** -------------------------------------------------- */
+    initial = new Sector( 1, 1 );
+    n = new Navigator( initial, new int[] { 0, 0 }, port );
+    n.setSectorBoundarySize( 10000 );
+    n.setSectorMapSize( 4 );
+
+    assertArrayEquals( new int[] { 0, 0 }, n.getPosition() );
+    assertEquals( new Sector( 1, 1 ), n.getInitialSector() );
+    /** -------------------------------------------------- */
   }
 
 }
