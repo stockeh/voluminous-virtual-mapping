@@ -16,11 +16,13 @@ import java.nio.file.attribute.PosixFilePermissions;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import com.codahale.metrics.CsvReporter;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TimeZone;
 import distributed.client.metadata.ClientMetadata;
 import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
@@ -52,11 +54,8 @@ public class Client implements Node {
 
   private final ClientMetadata metadata;
 
-  private final String logDirectory;
-  private final String logFile;
-
-  // metrics
-  private Timer timer;
+  private Path pathToRequestMetrics;
+  private Path pathToTmpLogFile;
 
   private static final Comparator<SectorWindowResponse> rowComparator =
       Comparator.comparingInt( swr -> swr.sectorID.x );
@@ -100,12 +99,13 @@ public class Client implements Node {
     this.metadata.setNavigation( initialSector, initialPosition );
 
     String temp = System.getProperty( "user.home" );
-    logDirectory = Properties.SECTOR_LOGGING_DIR + "_"
+    String logDirectory = Properties.SECTOR_LOGGING_DIR + "_"
         + temp.substring( temp.lastIndexOf( File.separator ) + 1 );
-    logFile = metadata.getConnection() + ".log";
+    pathToTmpLogFile =
+        Paths.get( logDirectory, metadata.getConnection() + ".log" );
   }
 
-  private void startMetrics() throws UnknownHostException {
+  private void createFolderMetrics() throws UnknownHostException {
 
     File dir = new File( System.getProperty( "user.home" ) + "/vvm/clients/"
         + metadata.getConnection() + "/" );
@@ -121,13 +121,19 @@ public class Client implements Node {
 
     LOG.info( "Created dir " + dir );
 
-    MetricRegistry metrics = new MetricRegistry();
-    timer = metrics.timer( MetricRegistry.name( Client.class, "sector-req" ) );
-    
-    CsvReporter reporter = CsvReporter.forRegistry( metrics )
-        .formatFor( Locale.US ).convertRatesTo( TimeUnit.SECONDS )
-        .convertDurationsTo( TimeUnit.MILLISECONDS ).build( dir );
-    reporter.start( 1, TimeUnit.SECONDS );
+    pathToRequestMetrics =
+        Paths.get( dir.getAbsolutePath(), "client-metrics.csv" );
+    try
+    {
+      Files.createFile( pathToRequestMetrics );
+    } catch ( IOException e )
+    {
+      LOG.error( "Unable to create path to " + pathToRequestMetrics.toString()
+          + ", " + e.toString() );
+      e.printStackTrace();
+    }
+    String header = "initial_timestamp,duration\n";
+    logToDir( pathToRequestMetrics, header.getBytes() );
   }
 
   private void createLoggingDir() {
@@ -138,44 +144,32 @@ public class Client implements Node {
         PosixFilePermissions.asFileAttribute( ownerWritable );
     try
     {
-      Path path = Paths.get( logDirectory );
+      Path path = pathToTmpLogFile.getParent();
       LOG.info( "Setting up logging directory at " + path );
-      // Functions.deleteDirectory( path );
       if ( !Files.isDirectory( path ) )
       {
         Files.createDirectory( path, permissions );
         Files.setPosixFilePermissions( path, ownerWritable );
       }
-      Path logPath = Paths.get( logDirectory + File.separator + logFile );
-      LOG.info( "Writing log file at " + logPath );
-      Files.deleteIfExists( logPath );
-      Files.createFile( logPath, permissions );
+      LOG.info( "Writing log file at " + pathToTmpLogFile );
+      Files.deleteIfExists( pathToTmpLogFile );
+      Files.createFile( pathToTmpLogFile, permissions );
 
-      Files.setPosixFilePermissions( logPath, ownerWritable );
+      Files.setPosixFilePermissions( pathToTmpLogFile, ownerWritable );
     } catch ( IOException e )
     {
       e.printStackTrace();
     }
   }
 
-  private void logToDir(String filename, String data) {
-    logToDir( filename, data.getBytes() );
-  }
-
-  private void logToDir(String fileName, byte[] content) {
-
-    if ( !fileName.startsWith( File.separator ) )
-    {
-      fileName = File.separator + fileName;
-    }
-    Path path = Paths.get( logDirectory + fileName );
-
+  private void logToDir(Path path, byte[] content) {
     try
     {
       Files.write( path, content, StandardOpenOption.APPEND );
     } catch ( IOException e )
     {
-      LOG.error( "Unable to write to \tmp logs. " + e.toString() );
+      LOG.error(
+          "Unable to write to " + path.toString() + ": " + e.toString() );
       e.printStackTrace();
     }
   }
@@ -351,17 +345,22 @@ public class Client implements Node {
   private void reconstructSectorFromResponses(
       List<SectorWindowResponse> responses) {
 
-    timer.update(
-        Instant.now().toEpochMilli()
-            - responses.get( responses.size() - 1 ).initialTimestamp,
-        TimeUnit.MILLISECONDS );
+    long initialtime = responses.get( responses.size() - 1 ).initialTimestamp;
+
+    long latencyDifference = Instant.now().toEpochMilli() - initialtime;
+
+    // initial_timestamp,difference
+    StringBuilder sb = new StringBuilder();
+    sb.append( initialtime ).append( "," ).append( latencyDifference )
+        .append( "\n" );
+    logToDir( pathToRequestMetrics, sb.toString().getBytes() );
 
     byte[][] sectorWindow = constructSectorInOrder( responses );
     for ( byte[] row : sectorWindow )
     {
-      logToDir( logFile, row );
+      logToDir( pathToTmpLogFile, row );
     }
-    logToDir( logFile, "\n" );
+    logToDir( pathToTmpLogFile, "\n".getBytes() );
   }
 
   /**
@@ -433,13 +432,13 @@ public class Client implements Node {
 
     try
     {
-      startMetrics();
+      createFolderMetrics();
     } catch ( UnknownHostException e )
     {
       LOG.error( "Unable to start client logging. " + e.toString() );
       e.printStackTrace();
     }
-    
+
     ( new Thread( metadata.getNavigator(), "Navigation Thread" ) ).start();
   }
 

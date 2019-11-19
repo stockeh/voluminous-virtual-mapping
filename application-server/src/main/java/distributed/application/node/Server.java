@@ -89,8 +89,6 @@ public class Server implements Node {
   }
   
   private static void startMetrics() throws UnknownHostException {
-    // metrics
-    // metrics.register( "gc", new GarbageCollectorMetricSet() );
     metrics.register( "threads", new CachedThreadStatesGaugeSet( 10, TimeUnit.SECONDS ) );
     metrics.register( "memory", new MemoryUsageGaugeSet() );
 
@@ -102,12 +100,6 @@ public class Server implements Node {
       LOG.error( "Unable to load ProcessCpuTicksGauge class for CPU metrics. " + e.toString() );
       e.printStackTrace();
     }
-
-    // ConsoleReporter reporter = ConsoleReporter.forRegistry(metrics)
-    // .convertRatesTo(TimeUnit.SECONDS)
-    // .convertDurationsTo(TimeUnit.MILLISECONDS)
-    // .build();
-    // reporter.start(1, TimeUnit.SECONDS);
 
     File dir = new File(
         System.getProperty( "user.home" ) + "/vvm/servers/" + InetAddress.getLocalHost().getHostName() + "/");
