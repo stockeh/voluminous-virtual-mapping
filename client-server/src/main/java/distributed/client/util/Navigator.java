@@ -69,6 +69,13 @@ public class Navigator implements Runnable {
     this.sectorBoundarySize = sectorBoundarySize;
   }
 
+  public void updatePrimaryServer(TCPConnection connection) {
+    synchronized (primaryServer) {
+        primaryServer = connection;
+        LOG.info("Updated Primary Server to: " + connection.getTCPSender().getDestination());
+    }
+  }
+
   /**
    * 
    * @return the sector the client is currently in
@@ -82,7 +89,7 @@ public class Navigator implements Runnable {
    * @param connection to the initial Server
    */
   public void setInitialServerConnection(TCPConnection connection) {
-    primaryServer = connection;
+      primaryServer = connection;
   }
 
   /**
@@ -93,13 +100,14 @@ public class Navigator implements Runnable {
     int[] pos = new int[] { ( int ) position[ 0 ], ( int ) position[ 1 ] };
 
     Set<Sector> contributions = getSectorContributions( pos );
-    LOG.info( String.format( "Position: (%d, %d), Sector: (%d, %d)", pos[ 0 ],
-        pos[ 1 ], sector.x, sector.y ) );
-    primaryServer.getTCPSender()
-        .sendData( new SectorWindowRequest( Protocol.SECTOR_WINDOW_REQUEST,
-            Instant.now().toEpochMilli(), contributions, sector,
-            Properties.SECTOR_WINDOW_SIZE, pos, contributions.size(), port )
-                .getBytes() );
+    LOG.info( String.format( "Position: %d,%d, Sector: %d,%d", pos[ 0 ], pos[ 1 ] , sector.x, sector.y) );
+    synchronized (primaryServer) {
+      primaryServer.getTCPSender()
+              .sendData(new SectorWindowRequest(Protocol.SECTOR_WINDOW_REQUEST,
+                      Instant.now().toEpochMilli(), contributions, sector,
+                      Properties.SECTOR_WINDOW_SIZE, pos, contributions.size(), port)
+                      .getBytes());
+    }
   }
 
   /**

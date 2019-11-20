@@ -288,7 +288,7 @@ public class Client implements Node {
         break;
 
       case Protocol.SECTOR_WINDOW_RESPONSE :
-        handleSectorWindowResponse( event );
+        handleSectorWindowResponse( event, connection);
         break;
     }
   }
@@ -369,7 +369,7 @@ public class Client implements Node {
    * 
    * @param event
    */
-  private void handleSectorWindowResponse(Event event) {
+  private void handleSectorWindowResponse(Event event, TCPConnection connection) {
     SectorWindowResponse response = ( SectorWindowResponse ) event;
     Date date = new Date( response.initialTimestamp );
     DateFormat formatter = new SimpleDateFormat( "HH:mm:ss.SSS" );
@@ -379,6 +379,7 @@ public class Client implements Node {
         response.sectorID, response.sectorWindow.length,
         response.sectorWindow[ 0 ].length ) );
 
+    if(response.updatePrimaryServer) metadata.getNavigator().updatePrimaryServer(connection);
     List<SectorWindowResponse> responses;
     if ( response.numSectors == 1 )
     {
@@ -391,7 +392,9 @@ public class Client implements Node {
     {
       return;
     }
+
     reconstructSectorFromResponses( responses );
+
   }
 
   /**

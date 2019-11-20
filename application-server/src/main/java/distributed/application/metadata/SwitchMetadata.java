@@ -37,6 +37,10 @@ public class SwitchMetadata {
 
 //  private final Set<String> requestedFiles;
 
+  private static final Comparator<Map.Entry<String,ServerInformation>> cSectors = Comparator.comparing( s -> s.getValue().getNumSectors());
+  private static final Comparator<Map.Entry<String,ServerInformation>> cRand = Comparator.comparing( s -> s.getValue().getRandomComparable());
+  private static final Comparator<Map.Entry<String,ServerInformation>> cBoth = cSectors.thenComparing(cRand);
+
   private final String identifier;
 
   /**
@@ -111,9 +115,7 @@ public class SwitchMetadata {
   public synchronized String getSectorDestination(Sector sector) {
 
     List<Map.Entry<String, ServerInformation>> serverSet = new ArrayList<>(serverConnections.entrySet());
-    Comparator<Map.Entry<String,ServerInformation>> cSectors = Comparator.comparing( s -> s.getValue().getNumSectors());
-    Comparator<Map.Entry<String,ServerInformation>> cRand = Comparator.comparing( s -> s.getValue().getRandomComparable());
-    Comparator<Map.Entry<String,ServerInformation>> cBoth = cSectors.thenComparing(cRand);
+
     serverSet.sort(cBoth);
 
     String server = serverSet.get(0).getKey();
@@ -201,6 +203,7 @@ public class SwitchMetadata {
       ApplicationHeartbeat message) {
     ServerInformation info = serverConnections.get( message.getIdentifier() );
     info.updateServerInformation( message );
+    serverConnections.put( message.getIdentifier(), info);
 
     // add sectors to map
     for ( Sector sector : message.getSectorIdentifiers() )

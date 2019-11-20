@@ -157,7 +157,7 @@ public class Switch implements Node {
       sectors.add(sector);
       SectorWindowRequest sectorWindowRequest = new SectorWindowRequest(request.type, request.initialTimestamp,
               sectors, request.currentSector, request.windowSize, request.position, request.numRequestedSectors,
-              request.host, request.port, false);
+              request.host, request.port, false, request.updatePrimaryServer);
       metadata.forwardRequestToServer( sector, sectorWindowRequest );
 
     }

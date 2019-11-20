@@ -19,14 +19,17 @@ public class SectorWindowResponse implements Event {
 
   public int[] position;
 
+  public boolean updatePrimaryServer;
+
   public SectorWindowResponse(int type, byte[][] sectorWindow, int numSectors,
-      long initialTimestamp, Sector sectorID, int[] position) {
+      long initialTimestamp, Sector sectorID, int[] position, boolean updatePrimaryServer) {
     this.type = type;
     this.sectorWindow = sectorWindow;
     this.numSectors = numSectors;
     this.initialTimestamp = initialTimestamp;
     this.sectorID = sectorID;
     this.position = position;
+    this.updatePrimaryServer = updatePrimaryServer;
   }
 
   public SectorWindowResponse(byte[] marshalledBytes) throws IOException {
