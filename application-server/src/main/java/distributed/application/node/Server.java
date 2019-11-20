@@ -198,7 +198,6 @@ public class Server implements Node {
   }
 
   private void forwardSectorWindowRequests(Set<Sector> sectors, SectorWindowRequest request, TCPConnection connection) {
-    if(request.updatePrimaryServer) LOG.info("FORWARDING: " + request.updatePrimaryServer);
     request.sectors = sectors;
     request.host = connection.getEndHost();
     try {
@@ -276,7 +275,7 @@ public class Server implements Node {
     }
 
     try {
-      switchConnection.getTCPSender().sendData(new PrefetchSectorRequest(Protocol.PREFETCH_SECTORS, toPrefetch).getBytes());
+      if(toPrefetch.size() > 0) switchConnection.getTCPSender().sendData(new PrefetchSectorRequest(Protocol.PREFETCH_SECTORS, toPrefetch).getBytes());
     } catch (IOException e) {
       LOG.error( "Unable to connect with the switch to prefetch sector request. " + e.toString() );
       e.printStackTrace();
@@ -330,7 +329,7 @@ public class Server implements Node {
         e.printStackTrace();
       }
     }
-    forwardSectorWindowRequests(nonMatchingSectors, request, connection);
+    if(nonMatchingSectors.size() > 0) forwardSectorWindowRequests(nonMatchingSectors, request, connection);
     handleSectorPrefetching(matchingSectors, request.position, request.windowSize, request.currentSector);
   }
 
