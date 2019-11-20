@@ -1,5 +1,6 @@
 package distributed.common.transport;
 
+import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -29,7 +30,7 @@ public class TCPSender {
    * @throws IOException
    */
   public TCPSender(Socket socket) throws IOException {
-    this.dout = new DataOutputStream( socket.getOutputStream() );
+    this.dout = new DataOutputStream( new BufferedOutputStream ( socket.getOutputStream() ));
     this.port = socket.getPort();
     this.host = socket.getInetAddress().getCanonicalHostName();
   }

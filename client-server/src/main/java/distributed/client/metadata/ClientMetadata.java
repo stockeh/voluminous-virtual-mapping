@@ -1,13 +1,11 @@
 package distributed.client.metadata;
 
-import distributed.client.util.Navigator;
-import distributed.common.util.Sector;
-import distributed.common.wireformats.SectorWindowResponse;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import distributed.client.util.Navigator;
+import distributed.common.util.Sector;
+import distributed.common.wireformats.SectorWindowResponse;
 
 /**
  * Class to maintain the information needed for a given server. This

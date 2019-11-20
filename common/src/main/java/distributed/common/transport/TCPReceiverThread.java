@@ -1,5 +1,6 @@
 package distributed.common.transport;
 
+import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -48,7 +49,7 @@ public class TCPReceiverThread implements Runnable {
     this.node = node;
     this.socket = socket;
     this.connection = connection;
-    this.din = new DataInputStream( socket.getInputStream() );
+    this.din = new DataInputStream( new BufferedInputStream( socket.getInputStream() ));
     this.factory = factory;
   }
 
