@@ -278,7 +278,7 @@ public class Server implements Node {
     try {
       switchConnection.getTCPSender().sendData(new PrefetchSectorRequest(Protocol.PREFETCH_SECTORS, toPrefetch).getBytes());
     } catch (IOException e) {
-      LOG.error( "Unable to connect with the swith to prefetch sector request. " + e.toString() );
+      LOG.error( "Unable to connect with the switch to prefetch sector request. " + e.toString() );
       e.printStackTrace();
     }
   }
