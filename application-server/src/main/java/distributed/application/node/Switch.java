@@ -3,9 +3,12 @@ package distributed.application.node;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.*;
-
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
 import distributed.application.metadata.ServerInformation;
 import distributed.application.metadata.SwitchMetadata;
 import distributed.application.util.Constants;
@@ -17,7 +20,14 @@ import distributed.common.transport.TCPConnection;
 import distributed.common.transport.TCPServerThread;
 import distributed.common.util.Logger;
 import distributed.common.util.Sector;
-import distributed.common.wireformats.*;
+import distributed.common.wireformats.ClientDiscoverRequest;
+import distributed.common.wireformats.ClientDiscoverResponse;
+import distributed.common.wireformats.Event;
+import distributed.common.wireformats.GenericMessage;
+import distributed.common.wireformats.GenericSectorMessage;
+import distributed.common.wireformats.PrefetchSectorRequest;
+import distributed.common.wireformats.Protocol;
+import distributed.common.wireformats.SectorWindowRequest;
 
 /**
  *

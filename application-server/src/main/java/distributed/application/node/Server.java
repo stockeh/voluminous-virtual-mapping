@@ -208,8 +208,6 @@ public class Server implements Node {
     }
   }
 
-
-
   private void handleSectorPrefetching(Set<Sector> mySectors, int[] position, int windowSize, Sector current) {
     Set<Sector> toPrefetch = new HashSet<>();
     int preMult = Properties.SECTOR_PREFETCH_MULTIPLIER*windowSize;
@@ -280,6 +278,7 @@ public class Server implements Node {
     try {
       switchConnection.getTCPSender().sendData(new PrefetchSectorRequest(Protocol.PREFETCH_SECTORS, toPrefetch).getBytes());
     } catch (IOException e) {
+      LOG.error( "Unable to connect with the swith to prefetch sector request. " + e.toString() );
       e.printStackTrace();
     }
   }
@@ -357,8 +356,6 @@ public class Server implements Node {
       e.printStackTrace();
     }
   }
-
-
 
   /**
    * 
