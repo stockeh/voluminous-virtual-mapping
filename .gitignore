@@ -16,5 +16,5 @@
 *bin
 
 *.idea/
-
+*.ipynb_checkpoints
 *out
