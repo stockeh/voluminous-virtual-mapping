@@ -356,11 +356,11 @@ public class Client implements Node {
     logToDir( pathToRequestMetrics, sb.toString().getBytes() );
 
     byte[][] sectorWindow = constructSectorInOrder( responses );
-    for ( byte[] row : sectorWindow )
-    {
-      logToDir( pathToTmpLogFile, row );
-    }
-    logToDir( pathToTmpLogFile, "\n".getBytes() );
+//    for ( byte[] row : sectorWindow )
+//    {
+//      logToDir( pathToTmpLogFile, row );
+//    }
+//    logToDir( pathToTmpLogFile, "\n".getBytes() );
   }
 
   /**
@@ -407,6 +407,7 @@ public class Client implements Node {
   private void connectToServer(Event event, TCPConnection connection) {
     ClientDiscoverResponse response = ( ClientDiscoverResponse ) event;
 
+    if(response.serverToConnect.isEmpty()) System.exit(1);
     String[] connectionIdentifier = response.serverToConnect.split( ":" );
     metadata.getNavigator().setSectorMapSize( response.mapSize );
     metadata.getNavigator().setSectorBoundarySize( response.sectorSize );
