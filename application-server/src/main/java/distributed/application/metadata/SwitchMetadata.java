@@ -34,6 +34,9 @@ public class SwitchMetadata {
   private final Map<String, List<TCPConnection>> clientConnections;
 
   private final Comparator<String> cSectors;
+  private final Comparator<String> cThreads;
+  private final Comparator<String> cBoth;
+
 //  private static final Comparator<Map.Entry<String,ServerInformation>> cSectors = Comparator.comparing( s -> s.getValue().getNumSectors());
 //  private static final Comparator<Map.Entry<String,ServerInformation>> cRand = Comparator.comparing( s -> s.getValue().getRandomComparable());
 //  private static final Comparator<Map.Entry<String,ServerInformation>> cBoth = cSectors.thenComparing(cRand);
@@ -49,7 +52,9 @@ public class SwitchMetadata {
     this.availableSectors = new HashMap<>();
     this.clientConnections = new HashMap<>();
     this.serverSet = new ArrayList<>();
-    cSectors = Comparator.comparing( s -> serverConnections.get(s).getNumSectors());
+    cSectors = Comparator.comparingInt( s -> serverConnections.get(s).getNumSectors());
+    cThreads = Comparator.comparingInt(s -> serverConnections.get(s).getThreadCount());
+    cBoth = cThreads.thenComparing(cSectors);
     this.identifier = host + ":" + port;
   }
 
@@ -104,7 +109,7 @@ public class SwitchMetadata {
       server = getSectorDestination(sector);
       loadSectors = true;
     }
-
+    if(server == null) return;
     TCPConnection serverConnection = serverConnections.get(server).getConnection();
     request.loadSector = loadSectors;
     try {
@@ -118,23 +123,41 @@ public class SwitchMetadata {
 
 //    List<Map.Entry<String, ServerInformation>> serverSet = new ArrayList<>(serverConnections.entrySet());
 
-    serverSet.sort(cSectors);
+    serverSet.sort(cBoth);
 
     String server = serverSet.remove(0);
     serverSet.add(server);
+    if(serverConnections.get(server).getThreadCount() >= Properties.MAX_SERVER_THREADS) return null;
     availableSectors.put(sector, new HashSet<>(Arrays.asList( server )));
     return server;
   }
 
+  public synchronized String instructServerToPullSector(Sector sector, TCPConnection clientConnection) throws IOException {
+    String server = getSectorDestination(sector);
+    if(server == null) return "";
+    LOG.info( "Instruct " + server + " to pull new sector ( "
+            + sector.toString() + " )." );
+
+    // Instruct server to pull new sector
+    GenericSectorMessage request =
+            new GenericSectorMessage( Protocol.GET_SECTOR_REQUEST, sector );
+    serverConnections.get( server ).getConnection().getTCPSender()
+            .sendData( request.getBytes() );
+
+    addClientConnection( sector, server, clientConnection );
+    return null;
+  }
+
   public synchronized String getServer(Sector sector, TCPConnection clientConnection)
       throws IOException {
-    String server;
     if ( availableSectors.containsKey( sector ) )
     {
 
       // TODO load balance servers
-      Set<String> servers = availableSectors.get( sector );
-      server = servers.iterator().next();
+      List<String> servers = new ArrayList<>(availableSectors.get( sector ));
+      servers.sort(cBoth);
+      String server = servers.get(0);
+      if(serverConnections.get(server).getThreadCount() >= Properties.MAX_SERVER_THREADS) return instructServerToPullSector(sector, clientConnection);
 
       if(clientConnections.containsKey(server+Constants.SEPERATOR+sector.toString())) {
         addClientConnection( sector, server, clientConnection );
@@ -145,18 +168,7 @@ public class SwitchMetadata {
     {
       // return random server
       // TODO load balance servers
-      server = getSectorDestination(sector);
-      LOG.info( "Instruct " + server + " to pull new sector ( "
-          + sector.toString() + " )." );
-
-      // Instruct server to pull new sector
-      GenericSectorMessage request =
-              new GenericSectorMessage( Protocol.GET_SECTOR_REQUEST, sector );
-      serverConnections.get( server ).getConnection().getTCPSender()
-          .sendData( request.getBytes() );
-
-      addClientConnection( sector, server, clientConnection );
-      return null;
+     return instructServerToPullSector(sector, clientConnection);
     }
   }
 

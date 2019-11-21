@@ -31,4 +31,6 @@ public interface Properties {
   final int SECTOR_MAP_SIZE = Integer.parseInt(Configurations.getInstance(CONF_NAME).getProperty("sector.map.size"));
 
   final int SECTOR_PREFETCH_MULTIPLIER = Integer.parseInt(Configurations.getInstance(CONF_NAME).getProperty("sector.prefetch.window.multiplier"));
+
+  final int MAX_SERVER_THREADS = Integer.parseInt(Configurations.getInstance(CONF_NAME).getProperty("max.server.threads"));
 }

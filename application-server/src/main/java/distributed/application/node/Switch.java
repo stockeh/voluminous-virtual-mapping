@@ -269,7 +269,14 @@ public class Switch implements Node {
 
       if ( keyForClientToConnect != null )
       {
-        serverIsReadyForClient( keyForClientToConnect );
+        if( keyForClientToConnect.isEmpty() ) {
+          connection.getTCPSender()
+                  .sendData( new ClientDiscoverResponse(
+                          Protocol.CLIENT_DISCOVER_RESPONSE, Properties.SECTOR_MAP_SIZE,
+                          Properties.SECTOR_BOUNDARY_SIZE, "" ).getBytes() );
+        }else {
+          serverIsReadyForClient(keyForClientToConnect);
+        }
       }
 
     } catch ( Exception e )
