@@ -214,13 +214,13 @@ public class Server implements Node {
       int x = current.x == Properties.SECTOR_MAP_SIZE-1 ? current.x-1 : current.x+1;
       int y = current.y;
       Sector sector = new Sector(x, y);
-      if(!toPrefetch.contains(sector)) {
+      if(!toPrefetch.contains(sector) && !mySectors.contains(sector)) {
         toPrefetch.add(sector);
       }
       if(position[1]+preMult >= Properties.SECTOR_BOUNDARY_SIZE) {
         y = current.y == Properties.SECTOR_MAP_SIZE-1 ? current.y-1 : current.y+1;
         sector = new Sector(x, y);
-        if(!mySectors.contains(sector)) {
+        if(!toPrefetch.contains(sector) && !mySectors.contains(sector)) {
           toPrefetch.add(sector);
         }
       }
@@ -230,13 +230,13 @@ public class Server implements Node {
       int x = current.x == 0 ? current.x+1 : current.x-1;
       int y = current.y;
       Sector sector = new Sector(x, y);
-      if(!toPrefetch.contains(sector)) {
+      if(!toPrefetch.contains(sector) && !mySectors.contains(sector)) {
         toPrefetch.add(sector);
       }
       if(position[1]-preMult <= 0) {
         y = current.y == 0 ? current.y+1 : current.y-1;
         sector = new Sector(x, y);
-        if(!mySectors.contains(sector)) {
+        if(!toPrefetch.contains(sector) && !mySectors.contains(sector)) {
           toPrefetch.add(sector);
         }
       }
@@ -246,13 +246,13 @@ public class Server implements Node {
       int x = current.x;
       int y = current.y == Properties.SECTOR_MAP_SIZE-1 ? current.y-1 : current.y+1;
       Sector sector = new Sector(x, y);
-      if(!mySectors.contains(sector)) {
+      if(!toPrefetch.contains(sector) && !mySectors.contains(sector)) {
         toPrefetch.add(sector);
       }
       if(position[0]+preMult >= Properties.SECTOR_BOUNDARY_SIZE) {
         x = current.x == Properties.SECTOR_MAP_SIZE-1 ? current.x-1 : current.x+1;
         sector = new Sector(x, y);
-        if(!mySectors.contains(sector)) {
+        if(!toPrefetch.contains(sector) && !mySectors.contains(sector)) {
           toPrefetch.add(sector);
         }
       }
@@ -262,13 +262,13 @@ public class Server implements Node {
       int x = current.x;
       int y = current.y == 0 ? current.y+1 : current.y-1;
       Sector sector = new Sector(x, y);
-      if(!mySectors.contains(sector)) {
+      if(!toPrefetch.contains(sector) && !mySectors.contains(sector)) {
         toPrefetch.add(sector);
       }
       if(position[0]-preMult <= 0) {
         x = current.x == 0 ? current.x+1  : current.x-1;
         sector = new Sector(x, y);
-        if(!mySectors.contains(sector)) {
+        if(!toPrefetch.contains(sector) && !mySectors.contains(sector)) {
           toPrefetch.add(sector);
         }
       }
@@ -309,10 +309,11 @@ public class Server implements Node {
       }
     }
 
-    Set<Sector> matchingSectors =
-            metadata.getMatchingSectors(request.getSectors());
-    Set<Sector> nonMatchingSectors = metadata.getNonMatchingSectors(request.getSectors());
-    for (Sector sector : matchingSectors) {
+//    Set<Sector> matchingSectors =
+//            metadata.getMatchingSectors(request.getSectors());
+//    Set<Sector> nonMatchingSectors = metadata.getNonMatchingSectors(request.getSectors());
+    for (Sector sector : request.getSectors()) {
+      if(!metadata.containsSector(sector)) continue;
       byte[][] window =
               metadata.getWindow(sector, request.currentSector,
                       request.position[0], request.position[1], request.windowSize);
@@ -329,8 +330,10 @@ public class Server implements Node {
         e.printStackTrace();
       }
     }
-    if(nonMatchingSectors.size() > 0) forwardSectorWindowRequests(nonMatchingSectors, request, connection);
-    handleSectorPrefetching(matchingSectors, request.position, request.windowSize, request.currentSector);
+
+    handleSectorPrefetching(request.sectors, request.position, request.windowSize, request.currentSector);
+    request.sectors.removeAll(metadata.getSectorIdentifiers());
+    forwardSectorWindowRequests(request.sectors, request, connection);
   }
 
   /**
