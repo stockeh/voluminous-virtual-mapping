@@ -3,6 +3,7 @@ package distributed.application.metadata;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import distributed.application.wireformats.ApplicationHeartbeat;
 import distributed.common.transport.TCPConnection;
@@ -58,4 +59,9 @@ public class ServerInformation {
   public int getNumSectors() { return this.sectorIdentifiers.size(); }
 
   public int getRandomComparable() { return ThreadLocalRandom.current().nextInt(); }
+
+  public String toString() {
+    return connection.getTCPSender().getDestination() + " SECTORS: " + sectorIdentifiers.stream()
+            .map(Sector::toString).collect(Collectors.joining(","));
+  }
 }

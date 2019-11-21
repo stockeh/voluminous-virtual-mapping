@@ -1,14 +1,8 @@
 package distributed.application.metadata;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
 import distributed.application.util.Constants;
 import distributed.application.util.Properties;
 import distributed.application.wireformats.ApplicationHeartbeat;
@@ -33,16 +27,16 @@ public class SwitchMetadata {
 
   // server identifier, server information
   private final Map<String, ServerInformation> serverConnections;
+  private final List<String> serverSet;
   // sector identifier, server identifier
   private final Map<Sector, Set<String>> availableSectors;
   // server\tsector identifier, client connections
   private final Map<String, List<TCPConnection>> clientConnections;
 
-//  private final Set<String> requestedFiles;
-
-  private static final Comparator<Map.Entry<String,ServerInformation>> cSectors = Comparator.comparing( s -> s.getValue().getNumSectors());
-  private static final Comparator<Map.Entry<String,ServerInformation>> cRand = Comparator.comparing( s -> s.getValue().getRandomComparable());
-  private static final Comparator<Map.Entry<String,ServerInformation>> cBoth = cSectors.thenComparing(cRand);
+  private final Comparator<String> cSectors;
+//  private static final Comparator<Map.Entry<String,ServerInformation>> cSectors = Comparator.comparing( s -> s.getValue().getNumSectors());
+//  private static final Comparator<Map.Entry<String,ServerInformation>> cRand = Comparator.comparing( s -> s.getValue().getRandomComparable());
+//  private static final Comparator<Map.Entry<String,ServerInformation>> cBoth = cSectors.thenComparing(cRand);
 
   private final String identifier;
 
@@ -54,6 +48,8 @@ public class SwitchMetadata {
     this.serverConnections = new HashMap<>();
     this.availableSectors = new HashMap<>();
     this.clientConnections = new HashMap<>();
+    this.serverSet = new ArrayList<>();
+    cSectors = Comparator.comparing( s -> serverConnections.get(s).getNumSectors());
     this.identifier = host + ":" + port;
   }
 
@@ -72,11 +68,14 @@ public class SwitchMetadata {
   private String addClientConnection(Sector sector, String server,
       TCPConnection clientConnection) {
     String key = server + Constants.SEPERATOR + sector.toString();
+
+
     synchronized ( clientConnections )
     {
       clientConnections.computeIfAbsent( key, v -> new ArrayList<>() )
           .add( clientConnection );
     }
+
     return key;
   }
 
@@ -117,11 +116,12 @@ public class SwitchMetadata {
 
   public synchronized String getSectorDestination(Sector sector) {
 
-    List<Map.Entry<String, ServerInformation>> serverSet = new ArrayList<>(serverConnections.entrySet());
+//    List<Map.Entry<String, ServerInformation>> serverSet = new ArrayList<>(serverConnections.entrySet());
 
-    serverSet.sort(cBoth);
+    serverSet.sort(cSectors);
 
-    String server = serverSet.get(0).getKey();
+    String server = serverSet.remove(0);
+    serverSet.add(server);
     availableSectors.put(sector, new HashSet<>(Arrays.asList( server )));
     return server;
   }
@@ -190,6 +190,7 @@ public class SwitchMetadata {
    */
   public synchronized ServerInformation addServerConnection(String identifier,
       TCPConnection connection) {
+    serverSet.add(identifier);
     return serverConnections.put( identifier,
         new ServerInformation( connection ) );
   }
@@ -198,6 +199,14 @@ public class SwitchMetadata {
     return serverConnections.get(server).getConnection();
   }
 
+
+  private void logConnections() {
+    LOG.debug("HEARTBEAT:\n");
+    for(Map.Entry<String, ServerInformation> entry : serverConnections.entrySet()) {
+      LOG.debug("SERVER INFO: " + entry.getValue().toString());
+    }
+    LOG.debug("\n");
+  }
   /**
    * 
    * @param message
@@ -217,9 +226,11 @@ public class SwitchMetadata {
       } else
       {
         availableSectors.put( sector,
-            new HashSet<>( Arrays.asList( message.getIdentifier() ) ) );
+            new HashSet<>(Collections.singletonList(message.getIdentifier())) );
       }
     }
+
+    logConnections();
 
   }
 
