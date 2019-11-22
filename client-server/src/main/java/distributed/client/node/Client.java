@@ -20,9 +20,15 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
+import com.codahale.metrics.CsvReporter;
+import com.codahale.metrics.Histogram;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SlidingTimeWindowArrayReservoir;
 import distributed.client.metadata.ClientMetadata;
 import distributed.client.util.Properties;
 import distributed.client.wireformats.EventFactory;
@@ -53,6 +59,8 @@ public class Client implements Node {
   private static final String HELP = "help";
 
   private final ClientMetadata metadata;
+
+  private Histogram histogram;
 
   private Path pathToRequestMetrics;
   private Path pathToTmpLogFile;
@@ -132,8 +140,19 @@ public class Client implements Node {
           + ", " + e.toString() );
       e.printStackTrace();
     }
-    String header = "initial_timestamp,duration\n";
-    logToDir( pathToRequestMetrics, header.getBytes() );
+    // String header = "initial_timestamp,duration\n";
+    // logToDir( pathToRequestMetrics, header.getBytes() );
+
+    MetricRegistry metrics = new MetricRegistry();
+    histogram = new Histogram(
+        new SlidingTimeWindowArrayReservoir( 1, TimeUnit.SECONDS ) );
+
+    metrics.register( "client-latency", histogram );
+
+    CsvReporter reporter = CsvReporter.forRegistry( metrics )
+        .formatFor( Locale.US ).convertRatesTo( TimeUnit.SECONDS )
+        .convertDurationsTo( TimeUnit.MILLISECONDS ).build( dir );
+    reporter.start( 1, TimeUnit.SECONDS );
   }
 
   private void createLoggingDir() {
@@ -162,6 +181,12 @@ public class Client implements Node {
     }
   }
 
+  /**
+   * DANGER! This operation is slow due to Disk I/O
+   * 
+   * @param path
+   * @param content
+   */
   private void logToDir(Path path, byte[] content) {
     try
     {
@@ -288,7 +313,7 @@ public class Client implements Node {
         break;
 
       case Protocol.SECTOR_WINDOW_RESPONSE :
-        handleSectorWindowResponse( event, connection);
+        handleSectorWindowResponse( event, connection );
         break;
     }
   }
@@ -349,18 +374,22 @@ public class Client implements Node {
 
     long latencyDifference = Instant.now().toEpochMilli() - initialtime;
 
+    histogram.update( latencyDifference );
+
     // initial_timestamp,difference
-    StringBuilder sb = new StringBuilder();
-    sb.append( initialtime ).append( "," ).append( latencyDifference )
-        .append( "\n" );
-    logToDir( pathToRequestMetrics, sb.toString().getBytes() );
+    // StringBuilder sb = new StringBuilder();
+    // sb.append( initialtime ).append( "," ).append( latencyDifference )
+    // .append( "\n" );
+    // logToDir( pathToRequestMetrics, sb.toString().getBytes() );
 
     byte[][] sectorWindow = constructSectorInOrder( responses );
-//    for ( byte[] row : sectorWindow )
-//    {
-//      logToDir( pathToTmpLogFile, row );
-//    }
-//    logToDir( pathToTmpLogFile, "\n".getBytes() );
+    LOG.debug( "Reconstructed Sector: " + sectorWindow.length + "x"
+        + sectorWindow[ 0 ].length );
+    // for ( byte[] row : sectorWindow )
+    // {
+    // logToDir( pathToTmpLogFile, row );
+    // }
+    // logToDir( pathToTmpLogFile, "\n".getBytes() );
   }
 
   /**
@@ -369,7 +398,8 @@ public class Client implements Node {
    * 
    * @param event
    */
-  private void handleSectorWindowResponse(Event event, TCPConnection connection) {
+  private void handleSectorWindowResponse(Event event,
+      TCPConnection connection) {
     SectorWindowResponse response = ( SectorWindowResponse ) event;
     Date date = new Date( response.initialTimestamp );
     DateFormat formatter = new SimpleDateFormat( "HH:mm:ss.SSS" );
@@ -379,7 +409,8 @@ public class Client implements Node {
         response.sectorID, response.sectorWindow.length,
         response.sectorWindow[ 0 ].length ) );
 
-    if(response.updatePrimaryServer) metadata.getNavigator().updatePrimaryServer(connection);
+    if ( response.updatePrimaryServer )
+      metadata.getNavigator().updatePrimaryServer( connection );
     List<SectorWindowResponse> responses;
     if ( response.numSectors == 1 )
     {
@@ -407,7 +438,8 @@ public class Client implements Node {
   private void connectToServer(Event event, TCPConnection connection) {
     ClientDiscoverResponse response = ( ClientDiscoverResponse ) event;
 
-    if(response.serverToConnect.isEmpty()) System.exit(1);
+    if ( response.serverToConnect.isEmpty() )
+      System.exit( 1 );
     String[] connectionIdentifier = response.serverToConnect.split( ":" );
     metadata.getNavigator().setSectorMapSize( response.mapSize );
     metadata.getNavigator().setSectorBoundarySize( response.sectorSize );
