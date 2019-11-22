@@ -279,7 +279,7 @@ public class Navigator implements Runnable {
         
         deliver();
         
-        TimeUnit.MILLISECONDS.sleep( 100 );
+        TimeUnit.MILLISECONDS.sleep( 40 );
       }
     } catch ( InterruptedException | IOException e )
     {
