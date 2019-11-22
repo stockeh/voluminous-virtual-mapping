@@ -62,7 +62,7 @@ public class Client implements Node {
 
   private Histogram histogram;
 
-  private Path pathToRequestMetrics;
+  // private Path pathToRequestMetrics;
   private Path pathToTmpLogFile;
 
   private static final Comparator<SectorWindowResponse> rowComparator =
@@ -129,17 +129,18 @@ public class Client implements Node {
 
     LOG.info( "Created dir " + dir );
 
-    pathToRequestMetrics =
-        Paths.get( dir.getAbsolutePath(), "client-metrics.csv" );
-    try
-    {
-      Files.createFile( pathToRequestMetrics );
-    } catch ( IOException e )
-    {
-      LOG.error( "Unable to create path to " + pathToRequestMetrics.toString()
-          + ", " + e.toString() );
-      e.printStackTrace();
-    }
+    // pathToRequestMetrics =
+    // Paths.get( dir.getAbsolutePath(), "client-metrics.csv" );
+    // try
+    // {
+    //// Files.createFile( pathToRequestMetrics );
+    // } catch ( IOException e )
+    // {
+    // LOG.error( "Unable to create path to " +
+    // pathToRequestMetrics.toString()
+    // + ", " + e.toString() );
+    // e.printStackTrace();
+    // }
     // String header = "initial_timestamp,duration\n";
     // logToDir( pathToRequestMetrics, header.getBytes() );
 
