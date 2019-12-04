@@ -8,7 +8,7 @@ Our paper can be found [ [here](.) ]
 
 ![](docs/media/architectural-diagrams/Area-Mapping-Application-Arch-HDFS.png)
 
-### Contributors
+## Contributors
 
 Jason D. Stock - stock@colostate.edu - [stockeh](https://github.com/stockeh)  
 Evan Steiner - evanjs@colostate.edu - [evanjs97](https://github.com/evanjs97)  
