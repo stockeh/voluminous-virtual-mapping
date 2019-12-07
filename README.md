@@ -4,7 +4,7 @@ To improve the efforts of game development we design a balanced and scalable clo
 
 This architecture will be broken into four components, including; (a) a Client application for moving within the environment, (b) Application Servers for simulating the render of a client's environment, (c) a Control Switch to oversee the control flow, and (d) a distributed file system to effectively manage the data composing the application.
 
-Our paper can be found [ [here](.) ]
+Our paper can be found [ [here](docs/final_report.pdf) ]
 
 ![](docs/media/architectural-diagrams/Area-Mapping-Application-Arch-HDFS.png)
 
